@@ -22,6 +22,13 @@ from odoo.addons.portal.controllers.portal import CustomerPortal, pager as porta
 import werkzeug.exceptions
 import werkzeug.urls
 import werkzeug.wrappers
+import logging
+import traceback
+from werkzeug.exceptions import NotFound
+
+
+_logger = logging.getLogger(__name__)
+
 
 
 class CustomerPortalCustom(CustomerPortal):
@@ -37,159 +44,157 @@ class CustomerPortalCustom(CustomerPortal):
     def request_cotisation(self, redirect=None, **post):
         return request.render("internship_management_module.portal_declaration")
 
-    @route(['/demande-inscription'], type='http', auth='public', website=True, csrf=True)
-    def request_registration(self, redirect=None, **post):
-
-        partners = request.env['res.partner'].sudo().search([
-            ('mode_registration', '!=', 'pm'),
-            ('status_register', '=', 'registred')
+    @http.route('/demande-inscription', type='http', auth='public', website=True, csrf=True, methods=['GET', 'POST'])
+    def request_registration(self, **post):
+        companies = request.env['res.partner'].sudo().search([
+            ('is_company', '=', True),
+            ('company_type', '=', 'company')
         ])
+        _logger.info("Liste des companies: %s", companies)
 
-        companies = request.env['res.company'].sudo().search([])
+        if request.httprequest.method == 'GET':
+            return request.render("internship_management_module.portal_request_registration", {
+                'companies': companies,
+                'error_message': None
+            })
 
-        vals = {
-            'register_types': [
-                ["pp", "Personne physique"],
-                ["pm", "Personne morale"]
-            ],
-            'companies': companies,
-            'partners': partners,
-            'error': {},
-            'error_message': None
-        }
+        # Requête POST - Vérifier si c'est une requête AJAX
+        is_ajax = request.httprequest.headers.get('X-Requested-With') == 'XMLHttpRequest'
 
-
-        if post and request.httprequest.method == 'POST':
+        try:
             error_messages = []
+            mode = post.get('mode_registration')
+            type_sel = post.get('type_selection')
 
-
-            required_fields = {
-                'mode_registration': "Mode d'inscription est requis",
-                'type_selection': "Type d'inscription est requis",
-                'name': "Nom est requis",
-                'prenom': "Prénom est requis",
-                'email': "Email est requis",
-                'copie_cin': "Copie CIN est requise",
-                'diplome_document': "Diplôme est requis"
-            }
-
-            for field, message in required_fields.items():
-                if not post.get(field):
-                    error_messages.append(message)
-
+            # Validation des champs obligatoires
             if not post.get('declaration_honneur'):
                 error_messages.append("Vous devez accepter la déclaration sur l'honneur")
 
+            # Validation selon le mode
+            required_fields = []
+            if mode == 'pp':
+                required_fields = ['name', 'prenom', 'email']
+                if type_sel in ['b', 'd']:
+                    required_fields.append('office_id')
+            elif mode == 'pm' and type_sel == 'c':
+                required_fields = ['denomination', 'name', 'prenom', 'email']
 
-            if post.get('type_selection') in ['b', 'd'] and not post.get('cabinet_rattache'):
-                error_messages.append("Cabinet rattaché est requis pour ce type d'inscription")
+            for field in required_fields:
+                if not post.get(field):
+                    error_messages.append(f"Le champ {field} est obligatoire")
+
+            # Validation des fichiers
+            for file_field in ['copie_cin', 'diplome_document']:
+                if file_field not in request.httprequest.files or not request.httprequest.files[file_field].filename:
+                    error_messages.append(f"Le fichier {file_field} est obligatoire")
 
             if error_messages:
-                vals['error_message'] = error_messages
-                return request.render("internship_management_module.portal_request_registration", vals)
+                if is_ajax:
+                    return request.make_response(
+                        json.dumps({
+                            'success': False,
+                            'errors': error_messages
+                        }),
+                        headers=[('Content-Type', 'application/json')],
+                        status=400
+                    )
+                return request.render("internship_management_module.portal_request_registration", {
+                    'companies': companies,
+                    'error_message': error_messages
+                })
 
+            # Préparation des données
+            partner_vals = {
+                'mode_registration': mode,
+                'type_selection': type_sel,
+                'status_register': 'draft',
+            }
+
+            # Champs communs
+            for field in ['name', 'prenom', 'email', 'denomination', 'rc', 'ice', 'siege_social', 'office_id']:
+                if post.get(field):
+                    partner_vals[field] = post[field]
+
+            # Gestion des fichiers
+            for file_field in ['copie_cin', 'diplome_document', 'statuts']:
+                if file_field in request.httprequest.files and request.httprequest.files[file_field].filename:
+                    file_obj = request.httprequest.files[file_field]
+                    partner_vals[file_field] = base64.b64encode(file_obj.read())
+                    partner_vals[file_field + '_filename'] = file_obj.filename
+
+            # Création du partenaire
+            partner = request.env['res.partner'].sudo().create(partner_vals)
+
+            # Envoi de notification
             try:
-
-                partner_vals = {
-                    'name': post.get('name'),
-                    'prenom': post.get('prenom'),
-                    'email': post.get('email'),
-                    'mode_registration': post.get('mode_registration'),
-                    'type_selection': post.get('type_selection'),
-                    'status_register': 'draft',
-                    'cabinet_rattache': post.get('cabinet_rattache'),
-                }
-
-
-                if 'copie_cin' in request.httprequest.files:
-                    cin_file = request.httprequest.files['copie_cin']
-                    partner_vals['copie_cin'] = base64.b64encode(cin_file.read())
-                    partner_vals['copie_cin_filename'] = cin_file.filename
-
-                if 'diplome_document' in request.httprequest.files:
-                    diplome_file = request.httprequest.files['diplome_document']
-                    partner_vals['diplome_document'] = base64.b64encode(diplome_file.read())
-                    partner_vals['diplome_filename'] = diplome_file.filename
-
-
-                if post.get('mode_registration') == 'pm':
-                    partner_vals.update({
-                        'denomination': post.get('denomination'),
-                        'rc': post.get('rc'),
-                        'ice': post.get('ice'),
-                        'siege_social': post.get('siege_social')
-                    })
-
-                    if 'statuts' in request.httprequest.files:
-                        statuts_file = request.httprequest.files['statuts']
-                        partner_vals['statuts'] = base64.b64encode(statuts_file.read())
-                        partner_vals['statuts_filename'] = statuts_file.filename
-
-
-                partner = request.env['res.partner'].sudo().create(partner_vals)
-
-
-                partner._send_registration_notification()
-
-                return request.redirect('/demande-inscription/confirmation?partner_id=%s' % partner.id)
-
+                if hasattr(partner, '_send_registration_notification'):
+                    partner._send_registration_notification()
             except Exception as e:
-                vals['error_message'] = ["Une erreur est survenue lors de la création: %s" % str(e)]
-                return request.render("internship_management_module.portal_request_registration", vals)
+                _logger.error("Erreur lors de l'envoi de la notification: %s", str(e))
 
-        return request.render("internship_management_module.portal_request_registration", vals)
+            if is_ajax:
+                return request.make_response(
+                    json.dumps({
+                        'success': True,
+                        'reference': partner.id,
+                        'message': 'Demande enregistrée avec succès'
+                    }),
+                    headers=[('Content-Type', 'application/json')]
+                )
+            return request.redirect('/demande-inscription/confirmation?partner_id=%s' % partner.id)
 
-    @route(['/demande-inscription/confirmation'], type='http', auth='public', website=True)
-    def registration_confirmation(self, **post):
-        registration_data = request.session.get('registration_data', {})
 
-        if not registration_data:
+        except Exception as e:
+
+            import traceback
+
+            _logger.error("Erreur création partenaire: %s", str(e))
+
+            _logger.error("Traceback: %s", traceback.format_exc())
+            error_message = "Une erreur technique s'est produite. Veuillez réessayer."
+            if is_ajax:
+                return request.make_response(
+                    json.dumps({
+                        'success': False,
+                        'errors': [error_message]
+                    }),
+                    headers=[('Content-Type', 'application/json')],
+                    status=500
+                )
+            return request.render("internship_management_module.portal_request_registration", {
+                'companies': companies,
+                'error_message': [error_message]
+            })
+
+    @http.route('/demande-inscription/confirmation', type='http', auth='public', website=True)
+    def registration_confirmation(self, **kwargs):
+        partner_id = kwargs.get('partner_id')
+        if not partner_id:
             return request.redirect('/demande-inscription')
 
-        if post.get('confirm'):
-            return request.redirect('/registration')
-
-
-        values = {
-            'name': registration_data.get('name', ''),
-            'prenom': registration_data.get('prenom', ''),
-            'email': registration_data.get('email', ''),
-            'mode': self._get_mode_label(registration_data.get('mode_registration')),
-            'type_selection': registration_data.get('type_selection', ''),
-            'has_copie_cin': registration_data.get('has_copie_cin', False),
-            'has_diplome': registration_data.get('has_diplome', False),
-            'show_pp_rattache': registration_data.get('mode_registration') == 'pm',
-            'pp_rattache': self._get_partner_name(registration_data.get('pp_rattache')),
-        }
-
-        return request.render("internship_management_module.portal_inscription_submit", values)
-
-    def _get_mode_label(self, mode):
-        modes = {
-            "pm": "Personne morale",
-            "pp1": "Personne physique à titre individuel",
-            "pp2": "Personne physique exerçant en société",
-            "pp3": "Personne physique en tant que salarié",
-            "pp4": "Personne physique exerçant en tant qu'associé"
-        }
-        return modes.get(mode, "")
-
-    def _get_partner_name(self, partner_id):
-        if not partner_id:
-            return ""
         partner = request.env['res.partner'].sudo().browse(int(partner_id))
-        return partner.name if partner.exists() else ""
+        if not partner.exists():
+            return request.redirect('/demande-inscription')
 
-    @route(['/download/document'], type='http', auth='public')
-    def download_document(self, doc_type=None, **kwargs):
-        registration_data = request.session.get('registration_data', {})
+        return request.render("internship_management_module.portal_registration_confirmation", {
+            'partner': partner
+        })
+
+    @http.route('/download/document', type='http', auth='public')
+    def download_document(self, doc_type=None, partner_id=None, **kwargs):
+        if not doc_type or not partner_id:
+            raise NotFound()
+
+        partner = request.env['res.partner'].sudo().browse(int(partner_id))
+        if not partner.exists():
+            raise NotFound()
 
         if doc_type == 'cin':
-            content = registration_data.get('copie_cin_content')
-            filename = registration_data.get('copie_cin_filename', 'cin.pdf')
+            content = partner.copie_cin
+            filename = partner.copie_cin_filename or 'cin.pdf'
         elif doc_type == 'diplome':
-            content = registration_data.get('diplome_content')
-            filename = registration_data.get('diplome_filename', 'diplome.pdf')
+            content = partner.diplome_document
+            filename = partner.diplome_document_filename or 'diplome.pdf'
         else:
             raise NotFound()
 
@@ -200,10 +205,9 @@ class CustomerPortalCustom(CustomerPortal):
             base64.b64decode(content),
             headers=[
                 ('Content-Type', 'application/pdf'),
-                ('Content-Disposition', f'attachment; filename="{filename}"')
+                ('Content-Disposition', content_disposition(filename))
             ]
         )
-
     @route(['/registration'], type='http', auth='user', website=True)
     def registration(self, redirect=None, **post):
         print("$$$$$$$$$$$$$$$$$$$$")

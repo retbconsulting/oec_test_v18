@@ -78,125 +78,53 @@
 
     <template id="portal_request_registration">
         <t t-call="portal.portal_layout">
-            <!--<t t-set="status_register" t-value="request.env.user.partner_id.status_register"/>
-            <t t-set="all_statuses" t-value="request.env['res.partner']._get_status_register()"/>
-            <t t-set="status_keys" t-value="[s[0] for s in all_statuses]"/>
-            <t t-set="current_index"
-               t-value="status_keys.index(status_register) if status_register in status_keys else 0"/>
-
-            <div class="progress-tracker" style="margin-bottom: 30px;">
-                <ol class="step-list" style="display: flex; list-style: none; padding-left: 0;">
-                    <t t-foreach="all_statuses" t-as="step">
-                        <t t-set="step_key" t-value="step[0]"/>
-                        <t t-set="step_label" t-value="step[1]"/>
-                        <t t-set="step_index" t-value="all_statuses.index(step)"/>
-
-                        <li t-attf-class="step-item
-                #{'completed' if step_index &lt; current_index else ''}
-                #{'active' if step_key == status_register else ''}"
-                            style="flex: 1; text-align: center; padding: 10px; position: relative;">
-
-                            <div style="width: 30px; height: 30px; border-radius: 50%; background: #{'green' if step_key == status_register else '#ccc'}; margin: auto;">
-                                <span style="color: white; line-height: 30px;">
-                                    <t t-esc="step_index + 1"/>
-                                </span>
-                            </div>
-                            <div style="margin-top: 5px;">
-                                <t t-esc="step_label"/>
-                            </div>
-
-                            <t t-if="not step_index == len(all_statuses) - 1">
-                                <div style="position: absolute; top: 15px; right: -50%; width: 100%; height: 2px; background: #ccc;"></div>
-                            </t>
-                        </li>
-                    </t>
-                </ol>
-            </div>
-
-            <style>
-                .circle {
-                width: 35px;
-                height: 35px;
-                border-radius: 50%;
-                background: #ccc;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                font-size: 14px;
-                font-weight: bold;
-                }
-
-                .step-item {
-                position: relative;
-                }
-
-                .step-label {
-                font-size: 13px;
-                font-weight: 500;
-                max-width: 120px;
-                margin: auto;
-                }
-
-                .connector {
-                position: absolute;
-                top: 17px;
-                left: 50%;
-                width: 100%;
-                height: 2px;
-                background: #ccc;
-                z-index: -1;
-                }
-
-                .step-item.completed .circle {
-                background: #4C0000;
-                }
-
-                .step-item.completed .coennector {
-                background: #4C0000;
-                }
-
-                .step-item.completed .step-label {
-                color: #4C0000;
-                font-weight: bold;
-                }
-
-                .step-item .circle {
-                transition: background 0.3s ease;
-                }
-
-                .progress-tracker {
-                -active: #4C0000;
-                }
-            </style>-->
-
-
             <t t-set="additional_title">Demande d'inscription</t>
 
             <style>
-                .hidden-field {
-                display: none;
-                }
-                .required-field::after {
-                content: " *";
-                color: red;
-                }
-                .form-section {
-                margin-bottom: 30px;
+                .hidden { display: none; }
+                .hidden-field { display: none; }
+                .required-field::after { content: " *"; color: red; }
+                .form-section { margin-bottom: 30px; padding: 20px; background: #f9f9f9; border-radius: 5px; }
+                .alert-danger { color: #721c24; background-color: #f8d7da; border-color: #f5c6cb; padding: 10px;
+                margin-bottom: 20px; border-radius: 4px; }
+                .confirmation-message {
+                background: #d4edda;
+                color: #155724;
                 padding: 20px;
-                background: #f9f9f9;
                 border-radius: 5px;
+                margin-bottom: 30px;
+                text-align: center;
+                font-size: 18px;
                 }
+                #submitBtn { cursor: pointer; }
             </style>
-            <input type="hidden" name="send_notification" value="1"/>
-            <form action="/demande-inscription" method="post" enctype="multipart/form-data">
+
+            <div id="confirmationMessage" class="confirmation-message hidden-field">
+                <i class="fa fa-check-circle" style="font-size: 48px; color: #28a745;"></i>
+                <h3>Votre demande a été envoyée avec succès !</h3>
+                <p>Nous avons bien reçu votre demande d'inscription.</p>
+                <p>Numéro de référence :
+                    <strong id="referenceNumber"></strong>
+                </p>
+                <a href="/" class="btn btn-primary">Retour à l'accueil</a>
+            </div>
+
+            <form id="registrationForm" action="/demande-inscription" method="post" enctype="multipart/form-data">
                 <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+
+                <div t-if="error_message" class="alert alert-danger">
+                    <t t-foreach="error_message" t-as="error">
+                        <p t-esc="error"/>
+                    </t>
+                </div>
 
                 <div class="form-section">
                     <h3>Type d'inscription</h3>
 
                     <div class="form-group">
                         <label for="mode_registration_inscription" class="required-field">Mode d'inscription</label>
-                        <select id="mode_registration_inscription" class="form-control" required="required">
+                        <select id="mode_registration_inscription" name="mode_registration" class="form-control"
+                                required="required">
                             <option value="">-- Sélectionner --</option>
                             <option value="pp">Personne Physique</option>
                             <option value="pm">Personne Morale</option>
@@ -205,7 +133,7 @@
 
                     <div class="form-group">
                         <label for="type_selection" class="required-field">Type d'inscription</label>
-                        <select id="type_selection" class="form-control" required="required">
+                        <select id="type_selection" name="type_selection" class="form-control" required="required">
                             <option value="">-- Sélectionner un type --</option>
                         </select>
                     </div>
@@ -229,11 +157,13 @@
                         </div>
                         <div class="form-group col-md-6">
                             <label class="required-field">CIN (Recto/Verso)</label>
-                            <input type="file" name="copie_cin" class="form-control" required="required"/>
+                            <input type="file" name="copie_cin" class="form-control" required="required"
+                                   accept=".pdf,.jpg,.jpeg,.png"/>
                         </div>
                         <div class="form-group col-md-6">
                             <label class="required-field">Diplôme</label>
-                            <input type="file" name="diplome_document" class="form-control" required="required"/>
+                            <input type="file" name="diplome_document" class="form-control" required="required"
+                                   accept=".pdf,.jpg,.jpeg,.png"/>
                         </div>
                     </div>
                 </div>
@@ -243,22 +173,21 @@
                     <h3>Cabinet Rattaché</h3>
                     <div class="form-group">
                         <label class="required-field">Cabinet</label>
-                        <select name="cabinet_rattache" class="form-control" required="required">
+                        <select name="office_id" class="form-control">
                             <option value="">-- Sélectionner --</option>
                             <t t-foreach="companies" t-as="company">
-                                <option t-att-value="company.id" t-esc="company.name"/>
+                                <option t-att-value="company.id"><t t-esc="company.name"/></option>
                             </t>
                         </select>
                     </div>
                 </div>
-
                 <!-- Champs Personne Morale -->
                 <div class="form-section hidden-field" id="pm_fields">
                     <h3>Informations Personne Morale</h3>
                     <div class="row">
                         <div class="form-group col-md-6">
                             <label class="required-field">Dénomination</label>
-                            <input type="text" name="denomination" class="form-control" required="required"/>
+                            <input type="text" name="denomination" class="form-control" />
                         </div>
                         <div class="form-group col-md-6">
                             <label>Numéro RC</label>
@@ -274,7 +203,7 @@
                         </div>
                         <div class="form-group col-md-6">
                             <label>Statuts</label>
-                            <input type="file" name="statuts" class="form-control"/>
+                            <input type="file" name="statuts" class="form-control" accept=".pdf,.jpg,.jpeg,.png"/>
                         </div>
                     </div>
                 </div>
@@ -292,20 +221,26 @@
                     <div class="form-group">
                         <input type="checkbox" name="declaration_honneur" id="declaration_honneur" required="required"/>
                         <label for="declaration_honneur" class="required-field">
-                            J’autorise le Conseil Régional de l’Ordre des Experts-Comptables de Casablanca et Régions du
+                            J'autorise le Conseil Régional de l'Ordre des Experts-Comptables de Casablanca et Régions du
                             Centre
                             à collecter et traiter mes données personnelles, conformément à la loi 09-08 relative à la
-                            protection des personnes physiques à l’égard du traitement des données à caractère
+                            protection des personnes physiques à l'égard du traitement des données à caractère
                             personnel.
                         </label>
                     </div>
                 </div>
 
-                <button type="submit" class="btn btn-primary">Envoyer la demande</button>
+                <button type="submit" id="submitBtn" class="btn btn-primary">
+                    <span id="submitText">Envoyer la demande</span>
+                    <span id="submitSpinner" class="hidden" style="margin-left: 8px;">
+                        <i class="fa fa-spinner fa-spin"/>
+                    </span>
+                </button>
             </form>
 
             <script type="text/javascript">
                 document.addEventListener("DOMContentLoaded", function() {
+                // Configuration des options
                 var optionsConfig = {
                 pp: [
                 ["e", "Inscription d'une personne physique à titre individuel"],
@@ -318,61 +253,195 @@
                 ]
                 };
 
+                // Charger les options de type
                 function loadTypeOptions() {
                 var mode = document.getElementById("mode_registration_inscription").value;
                 var typeSelect = document.getElementById("type_selection");
 
                 typeSelect.innerHTML = '';
-                typeSelect.add(new Option("-- Sélectionner --", ""));
+                var defaultOption = new Option("-- Sélectionner un type --", "");
+                typeSelect.add(defaultOption);
 
                 if (mode &amp;&amp; optionsConfig[mode]) {
                 optionsConfig[mode].forEach(function(opt) {
-                typeSelect.add(new Option(opt[1], opt[0]));
+                var newOption = new Option(opt[1], opt[0]);
+                typeSelect.add(newOption);
                 });
                 }
                 }
 
+                // Mettre à jour les champs visibles
                 function updateFields() {
                 var mode = document.getElementById("mode_registration_inscription").value;
                 var type = document.getElementById("type_selection").value;
 
-                // Reset
-                document.getElementById("base_fields").style.display = "none";
-                document.getElementById("cabinet_rattache_row").style.display = "none";
-                document.getElementById("pm_fields").style.display = "none";
-                document.getElementById("login_required_section").style.display = "none";
+                // Masquer toutes les sections
+                document.getElementById("base_fields").classList.add("hidden-field");
+                document.getElementById("cabinet_rattache_row").classList.add("hidden-field");
+                document.getElementById("pm_fields").classList.add("hidden-field");
+                document.getElementById("login_required_section").classList.add("hidden-field");
 
-                // PP individuelle
-                if (mode === "pp" &amp;&amp; type === "e") {
-                document.getElementById("base_fields").style.display = "block";
+                // Afficher les sections appropriées
+                if (mode === "pp") {
+                document.getElementById("base_fields").classList.remove("hidden-field");
+
+                if (type === "b" || type === "d") {
+                document.getElementById("cabinet_rattache_row").classList.remove("hidden-field");
                 }
-                // PP salarié/associé
-                else if (mode === "pp" &amp;&amp; (type === "b" || type === "d")) {
-                document.getElementById("base_fields").style.display = "block";
-                document.getElementById("cabinet_rattache_row").style.display = "block";
                 }
-                // PM + PP
                 else if (mode === "pm" &amp;&amp; type === "c") {
-                document.getElementById("base_fields").style.display = "block";
-                document.getElementById("pm_fields").style.display = "block";
+                document.getElementById("base_fields").classList.remove("hidden-field");
+                document.getElementById("pm_fields").classList.remove("hidden-field");
                 }
-                // PM par PP existante
                 else if (mode === "pm" &amp;&amp; type === "a") {
-                document.getElementById("login_required_section").style.display = "block";
+                document.getElementById("login_required_section").classList.remove("hidden-field");
                 }
                 }
 
+                // Gestionnaire de soumission du formulaire
+                document.getElementById("registrationForm").addEventListener("submit", function(e) {
+                e.preventDefault();
+
+                var form = this;
+                var submitBtn = document.getElementById("submitBtn");
+                var submitText = document.getElementById("submitText");
+                var submitSpinner = document.getElementById("submitSpinner");
+
+                // Désactiver le bouton pendant l'envoi
+                submitBtn.disabled = true;
+                submitText.textContent = "Envoi en cours...";
+                submitSpinner.classList.remove("hidden");
+
+                // Validation côté client
+                var errors = [];
+
+                // Vérifier la déclaration sur l'honneur
+                if (!document.getElementById("declaration_honneur").checked) {
+                errors.push("Vous devez accepter la déclaration sur l'honneur");
+                }
+
+                // Vérifier les fichiers obligatoires
+                var fileInputs = document.querySelectorAll('input[type="file"][required]');
+                fileInputs.forEach(function(input) {
+                if (!input.files || input.files.length === 0) {
+                errors.push("Le fichier " + input.previousElementSibling.textContent + " est obligatoire");
+                }
+                });
+
+                if (errors.length > 0) {
+                showErrors(errors);
+                resetSubmitButton();
+                return;
+                }
+
+                // Envoyer les données via AJAX
+                var formData = new FormData(form);
+
+                fetch(form.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+                }
+                })
+                .then(function(response) {
+                if (!response.ok) {
+                throw new Error("Erreur réseau: " + response.status);
+                }
+                return response.json();
+                })
+                .then(function(data) {
+                if (data.success) {
+                // Afficher le message de confirmation
+                document.getElementById("confirmationMessage").classList.remove("hidden-field");
+                form.classList.add("hidden-field");
+                document.getElementById("referenceNumber").textContent = data.reference;
+                } else {
+                showErrors(data.errors || ["Erreur lors de l'enregistrement"]);
+                }
+                })
+                .catch(function(error) {
+                showErrors(["Une erreur s'est produite lors de l'envoi du formulaire"]);
+                console.error("Erreur:", error);
+                })
+                .finally(function() {
+                resetSubmitButton();
+                });
+
+                function showErrors(errors) {
+                var errorContainer = document.getElementById("errorContainer");
+                if (!errorContainer) {
+                errorContainer = document.createElement("div");
+                errorContainer.id = "errorContainer";
+                form.insertBefore(errorContainer, form.firstChild);
+                }
+
+                errorContainer.innerHTML = '';
+                errorContainer.className = 'alert alert-danger';
+
+                errors.forEach(function(error) {
+                var errorElement = document.createElement("p");
+                errorElement.textContent = error;
+                errorContainer.appendChild(errorElement);
+                });
+                }
+
+                function resetSubmitButton() {
+                submitBtn.disabled = false;
+                submitText.textContent = "Envoyer la demande";
+                submitSpinner.classList.add("hidden");
+                }
+                });
+
+                // Initialisation
+                loadTypeOptions();
+
+                // Écouteurs d'événements
                 document.getElementById("mode_registration_inscription").addEventListener("change", function() {
                 loadTypeOptions();
                 updateFields();
                 });
 
                 document.getElementById("type_selection").addEventListener("change", updateFields);
-
-                // Initial load
-                loadTypeOptions();
                 });
             </script>
+        </t>
+    </template>
+
+    <template id="portal_registration_confirmation">
+        <t t-call="portal.portal_layout">
+            <t t-set="additional_title">Confirmation de demande</t>
+
+            <div class="confirmation-message">
+                <i class="fas fa-check-circle" style="font-size: 48px; color: #28a745;"></i>
+                <h3>Votre demande a été envoyée avec succès !</h3>
+                <p>Nous avons bien reçu votre demande d'inscription.</p>
+                <p>Vous recevrez un email de confirmation sous peu.</p>
+                <p>Numéro de référence :
+                    <strong t-esc="partner.id"/>
+                </p>
+
+                <div style="margin-top: 30px;">
+                    <a href="/" class="btn btn-primary">Retour à l'accueil</a>
+                    <a href="/mes-demandes" class="btn btn-secondary" style="margin-left: 10px;">Voir mes demandes</a>
+                </div>
+            </div>
+
+            <style>
+                .confirmation-message {
+                text-align: center;
+                max-width: 600px;
+                margin: 40px auto;
+                padding: 30px;
+                background: #f8f9fa;
+                border-radius: 8px;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                }
+                .confirmation-message h3 {
+                color: #28a745;
+                margin: 20px 0;
+                }
+            </style>
         </t>
     </template>
 
@@ -991,7 +1060,7 @@
                                 <div class="row">
                                     <div t-attf-class="form-group col-xl-6" data-type="binary">
                                         <label class="col-form-label" for="copie_cin">
-                                                Une photocopie certifiée conforme de la CNIE
+                                            Une photocopie certifiée conforme de la CNIE
                                             <span t-if="partner.copie_cin" style="color:blue">(Document déjà chargé)
                                             </span>
                                         </label>
@@ -1009,7 +1078,8 @@
 
                                                 Copie de la CNIE pour le ou les associés
 
-                                                <span t-if="partner.copie_cnie" style="color:blue">(Document déjà chargé)
+                                                <span t-if="partner.copie_cnie" style="color:blue">(Document déjà
+                                                    chargé)
                                                 </span>
                                             </label>
                                             <br/>
@@ -1439,11 +1509,12 @@
                                         <div t-attf-class="form-group col-xl-6" data-type="binary">
                                             <label class="col-form-label" for="attestation_inscription">
                                                 <t t-if="partner.mode_registration in ['pp3']">
-                                                Attestation d'inscription à la Taxe Professionnelle, au nom du cabinet
-                                                (datant de moins de trois mois)
+                                                    Attestation d'inscription à la Taxe Professionnelle, au nom du
+                                                    cabinet
+                                                    (datant de moins de trois mois)
                                                 </t>
                                                 <t t-if="partner.mode_registration in ['pm']">
-                                                Attestation d'inscription à la Taxe Professionnelle
+                                                    Attestation d'inscription à la Taxe Professionnelle
                                                 </t>
                                                 <span t-if="partner.attestation_inscription" style="color:blue">
                                                     (Document
@@ -1838,7 +1909,8 @@
                                     <t t-if="partner.mode_registration in ['pp2','pp4']">
                                         <div t-attf-class="form-group col-xl-6" data-type="binary">
                                             <label class="col-form-label" for="statuts_mis_a_jour">
-                                                Statuts mis à jour suite aux différentes modifications (certifiés conformes), cf modèles OEC
+                                                Statuts mis à jour suite aux différentes modifications (certifiés
+                                                conformes), cf modèles OEC
                                                 <span class="text-danger">*</span>
                                                 <span t-if="partner.statuts_mis_a_jour" style="color:blue">
                                                     (Document déjà chargé)

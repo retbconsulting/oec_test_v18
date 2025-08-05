@@ -788,12 +788,20 @@ class ResPartner(models.Model):
         copy=False,
         default='New'
     )
+    type_selection = fields.Selection([
+        ('a', "Inscription d'une personne morale par une PP inscrite"),
+        ('b', "PP salarié d’un cabinet inscrit"),
+        ('c', "PM + PP"),
+        ('d', "PP associée d’un cabinet inscrit"),
+        ('e', "PP individuelle"),
+    ], string="Type d'inscription")
 
     start_date = fields.Date(
         string='Date de début du stage',
         compute='_compute_get_start_date',
         store=True
     )
+    prenom = fields.Char(string="Prénom")
 
     derogation = fields.Boolean(
         string='Dérogation'
