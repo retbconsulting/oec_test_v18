@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+
+	<template id="new_declaration">
+		<t t-call="portal.portal_layout">
+        <t t-set="additional_title">Nouvelle déclaration</t>
+        <form action="/declaration" method="post" enctype="multipart/form-data">
+
+
+            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+            <div class="row">
+                <div class="form-group col-xl-12">
+                    <div class="o_website_calendar row float-right">
+                        <ul class="wizard mt32 float-right" style="font-size:10px">
+                            <li t-attf-class="#{state=='draft' and 'text-primary' or 'text-muted'}">
+									Brouillon
+                                <span class="chevron"/>
+                            </li>
+                            <li t-attf-class="#{state=='in_progress' and 'text-primary' or 'text-muted'}">
+									En attente de validation
+                                <span class="chevron"/>
+                            </li>
+                            <li t-attf-class="#{state=='validated' and 'text-primary' or 'text-muted'}">
+									Validé
+                                <span class="chevron"/>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="row" style="background-color: #fff;margin-bottom:20px;margin-top:20px;font-family: 'Times New Roman'">
+                <h2 style="display: inline-block;border-top-left-radius: 6px;border-top-right-radius: 6px;margin: 0;padding: 0 20px;color: #fff;font-size: 14px;line-height: 40px;background:linear-gradient(150deg, #814747 20%, #630000 80%) !important">INFORMATIONS GENERALES</h2>
+                <div class="col-xl-12"/>
+                <div class="form-group col-xl-12">
+					<label class="col-form-label" for="name">DENOMINATION DU CABINET</label>
+					<input type="text" name="name" t-att-value="name or ''" class="form-control" readonly="1"/>
+				</div>
+				<div class="form-group col-xl-12">
+					<label class="col-form-label" for="creation_date">DATE DE CREATION</label>
+					<input type="text" name="creation_date" t-att-value="creation_date or ''" class="form-control" readonly="1"/>
+				</div>
+				<div class="form-group col-xl-12">
+					<label class="col-form-label" for="associe_gerant">ASSOCIE(S) - GERANT(S)</label>
+					<input type="text" name="associe_gerant" t-att-value="associe_gerant or ''" class="form-control" readonly="1"/>
+				</div>
+            </div>
+            
+            <div class="row" style="background-color: #fff;margin-bottom:20px;margin-top:20px;font-family: 'Times New Roman'">
+                <h2 style="display: inline-block;border-top-left-radius: 6px;border-top-right-radius: 6px;margin: 0;padding: 0 20px;color: #fff;font-size: 14px;line-height: 40px;background:linear-gradient(150deg, #814747 20%, #630000 80%) !important">INFORMATIONS SUR LE CABINET</h2>
+                <div class="col-xl-12"/>
+                <div class="form-group col-xl-6">
+					<label class="col-form-label" for="mode_exercice">Mode d'exercice</label>
+					<input type="text" name="mode_exercice" t-att-value="mode_exercice or ''" class="form-control" readonly="1"/>
+				</div>
+				<div class="form-group col-xl-6">
+					<label class="col-form-label" for="forme_juridique">Forme juridique de la société</label>
+					<input type="text" name="forme_juridique" t-att-value="forme_juridique or ''" class="form-control" readonly="1"/>
+				</div>
+				<div class="form-group col-xl-6">
+					<label class="col-form-label" for="nombre_bureaux">Nombre de bureaux</label>
+					<input type="number" name="nombre_bureaux" t-att-value="declaration.nombre_bureaux or ''" class="form-control" t-att-readonly="None if state=='draft' else '1'"/>
+				</div>
+				<div class="form-group col-xl-6">
+					<label class="col-form-label" for="reseau_appartenance">Réseau d'appartenance (2)</label>
+					<input type="text" name="reseau_appartenance" t-att-value="reseau_appartenance or ''" class="form-control" t-att-readonly="None if state=='draft' else '1'"/>
+				</div>
+				<div class="form-group col-xl-12">
+					<label class="col-form-label" for="name">Nombre de mandats</label>
+					<input type="number" name="mandat_number" t-att-value="declaration.mandats_number or ''" class="form-control" readonly="1"/>
+				</div>
+				<div class="form-group col-xl-12" style="margin-top: 0px;margin-bottom: 0px;">
+				    <label class="col-form-label" for="mandat_number">dont :</label>
+				</div>
+				<div class="form-group col-xl-3">
+					<label class="col-form-label" for="audit_legal" style="font-size:13px">Audit légal</label>
+					<input type="number" name="audit_legal" t-att-value="declaration.audit_legal or 0" class="form-control" readonly="1"/>
+				</div>
+				<div class="form-group col-xl-3">
+					<label class="col-form-label" for="audit_contractuel" style="font-size:13px">Audit contractuel</label>
+					<input type="number" name="audit_contractuel" t-att-value="declaration.audit_contractuel or 0" class="form-control" readonly="1"/>
+				</div>
+				<div class="form-group col-xl-3">
+					<label class="col-form-label" for="autres_missions_legales" style="font-size:13px">Autres missions légales</label>
+					<input type="number" name="autres_missions_legales" t-att-value="declaration.autres_missions_legales or 0" class="form-control" readonly="1"/>
+				</div>
+				<div class="form-group col-xl-3">
+					<label class="col-form-label" for="autres_missions_echeances" style="font-size:13px">Autres missions liées</label>
+					<input type="number" name="autres_missions_echeances" t-att-value="declaration.autres_missions_echeances or 0" class="form-control" readonly="1"/>
+				</div>
+				<div class="form-group col-xl-12">
+					<label class="col-form-label" for="poids_ca">Poids de l'audit dans le CA du cabinet</label>
+					<input type="number" name="poids_ca" t-att-value="declaration.poids_ca or ''" class="form-control" t-att-readonly="None if state=='draft' else '1'"/>
+				</div>
+				<div class="form-group col-xl-12">
+					<label class="col-form-label" for="number_pages">Nombre de pages d'annexes jointes</label>
+					<input type="number" name="number_pages" t-att-value="declaration.number_pages or ''" class="form-control" readonly="1"/>
+				</div>
+            </div>
+            
+            <div class="row" style="background-color: #fff;margin-bottom:20px;margin-top:20px;font-family: 'Times New Roman'">
+                <h2 style="display: inline-block;border-top-left-radius: 6px;border-top-right-radius: 6px;margin: 0;padding: 0 20px;color: #fff;font-size: 14px;line-height: 40px;background:linear-gradient(150deg, #814747 20%, #630000 80%) !important">INFORMATIONS SUR LES EFFECTIFS ET LES ASSOCIES</h2>
+                <div class="col-xl-12"/>
+                <div class="form-group col-xl-12">
+					<label class="col-form-label" for="effectif_audit">Effectif moyen des salariés d'audit</label>
+					<input type="number" id="effectif_audit" name="effectif_audit" t-att-value="declaration.effectif_audit or ''" class="form-control" readonly="1"/>
+				</div>
+				<div class="form-group col-xl-12" style="margin-top: 0px;margin-bottom: 0px;">
+				    <label class="col-form-label" for="audit_legal">dont :</label>
+				</div>
+				<div class="form-group col-xl-3">
+					<label class="col-form-label" for="directeurs_mission" style="font-size:13px">Directeurs de mission ou adjoints</label>
+					<input type="number" id="directeurs_mission" name="directeurs_mission" t-att-value="declaration.directeurs_mission or ''" class="form-control" t-att-readonly="None if state=='draft' else '1'"/>
+				</div>
+				<div class="form-group col-xl-3">
+					<label class="col-form-label" for="responsables_mission" style="font-size:13px">Responsables de mission ou adjoints</label>
+					<input type="number" id="responsables_mission" name="responsables_mission" t-att-value="declaration.responsables_mission or ''" class="form-control" t-att-readonly="None if state=='draft' else '1'"/>
+				</div>
+				<div class="form-group col-xl-3">
+					<label class="col-form-label" for="auditeurs" style="font-size:13px">Auditeurs débutants ou confirmés</label>
+					<input type="number" id="auditeurs" name="auditeurs" t-att-value="declaration.auditeurs or ''" class="form-control" t-att-readonly="None if state=='draft' else '1'"/>
+				</div>
+				<div class="form-group col-xl-3">
+					<label class="col-form-label" for="autres_cas" style="font-size:13px">Autres le cas échéant (à préciser)</label>
+					<input type="number" id="autres_cas" name="autres_cas" t-att-value="declaration.autres_cas or ''" class="form-control" t-att-readonly="None if state=='draft' else '1'"/>
+				</div>
+				<div class="form-group col-xl-12">
+					<label class="col-form-label" for="sous_traitance">Recours à la sous-traitance</label>
+					<select class="form-control" name="sous_traitance" t-att-readonly="None if state=='draft' else '1'">
+						<option value="1">Oui</option>
+						<option value="2">Non</option>
+                    </select>
+				</div>
+				<div class="form-group col-xl-12">
+					<label class="col-form-label" for="number_associes">Nombre d'associés</label>
+					<input type="number" id="number_associes" name="number_associes" t-att-value="declaration.number_associes or ''" class="form-control" readonly="1"/>
+				</div>
+				<div class="form-group col-xl-12" style="margin-top: 0px;margin-bottom: 0px;">
+				    <label class="col-form-label" for="audit_legal">dont :</label>
+				</div>
+				<div class="form-group col-xl-6">
+					<label class="col-form-label" for="number_associes_ec">Nombre d'E.C associés membres de l'Ordre</label>
+					<input type="number" id="number_associes_ec" name="number_associes_ec" t-att-value="declaration.number_associes_ec or ''" class="form-control" t-att-readonly="None if state=='draft' else '1'"/>
+				</div>
+				<div class="form-group col-xl-6">
+					<label class="col-form-label" for="number_salaries_ec">Nombre d'E.C salariés membres de l'Ordre</label>
+					<input type="number" id="number_salaries_ec" name="number_salaries_ec" t-att-value="declaration.number_salaries_ec or ''" class="form-control" t-att-readonly="None if state=='draft' else '1'"/>
+				</div>
+				<div class="form-group col-xl-12">
+					<label class="col-form-label" for="list_associes_signature">Liste des associés signataires (3)</label>
+					<input type="text" name="list_associes_signature" t-att-value="declaration.list_associes_signature or ''" class="form-control" t-att-readonly="None if state=='draft' else '1'"/>
+				</div>
+				<div class="form-group col-xl-12" style="display:none;">
+					<input type="text" name="id" t-att-value="declaration.id or ''" class="form-control"/>
+				</div>
+            </div>
+            
+            <div class="row" style="background-color: #fff;margin-bottom:20px;margin-top:20px;font-family: 'Times New Roman'">
+                <h2 style="display: inline-block;border-top-left-radius: 6px;border-top-right-radius: 6px;margin: 0;padding: 0 20px;color: #fff;font-size: 14px;line-height: 40px;background:linear-gradient(150deg, #814747 20%, #630000 80%) !important">Déclarations</h2>
+                <t t-if="state == 'draft'">
+                    <div class="form-group col-xl-12" data-type="binary" style="text-align: right">
+                        <input style="box-shadow: 0 1px 1px #16181b;" type="file" name="mandats_canevas" class="file" data-show-upload="true" data-show-caption="true" data-show-preview="true"/>
+                        <button class="badge badge-pill badge-success" style="font-size: 14px;background-color: #814747 !important" >Importer</button>
+                    </div>
+                </t>
+                <div class="table-responsive" style="background-color: #fff;margin-bottom:20px;margin-top:20px;margin-right:20px;margin-left:20px">
+                    <t t-call="portal.portal_table">
+                        <thead style="font-size:12px">
+                			<tr class="active">
+        						<th>#</th>
+        						<th class="text-left">Secteur d'activité</th>
+        						<th class="text-left">Forme juridique</th>
+        						<th class="text-left">Entité APE</th>
+        						<th class="text-left">Appartenance à un groupe</th>
+        						<th></th>
+        					</tr>
+             			</thead>
+             			<t t-foreach="mandats" t-as="mandat">
+                 			<tr style="font-size:12px">
+                 			    <td class="text-left">#</td>
+                 			    <td class="text-left"><span t-field="mandat.secteur_activite" /></td>
+                 			    <td class="text-left"><span t-field="mandat.forme_juridique" /></td>
+                 			    <td class="text-left"><span t-field="mandat.entite_ape" /></td>
+                 			    <td class="text-left"><span t-field="mandat.in_group" /></td>
+                 			    <td class="text-left">
+                     			    <a t-attf-href="/declaration/#{slug(declaration)}/mandat/#{slug(mandat)}" class="badge badge-pill badge-success" style="font-size: 14px;background-color: #814747 !important"><t t-if="state == 'draft'">Consulter et modifier</t><t t-if="state != 'draft'">Consulter</t>
+    			                    </a>
+			                    </td>
+            			   </tr>
+        			   </t>
+         			</t>
+                </div>
+                <t t-if="state == 'draft'">
+                    <a t-attf-href="/declaration/#{slug(declaration)}/mandat/new" class="badge badge-pill badge-success" style="font-size: 14px;background-color: green;">Ajouter un mandat</a>
+                </t>
+            </div>
+            <div class="row" id="report_submit">
+                <div class="col-lg-12 text-center mt32 mb32">
+                    <t t-if="state == 'draft'">
+                        <button type="submit" class="btn btn-primary float-left mb3">Enregistrer</button>
+                    </t>
+                    <t t-if="state == 'draft'">
+                        <a t-attf-href="/declaration/#{slug(declaration)}/submit" class="btn btn-primary float-right mb32">Soumettre</a>
+                    </t>
+                </div>
+            </div>
+        </form>
+			<link href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.13.6/css/selectize.bootstrap2.css" rel="stylesheet"/>
+			<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.13.6/js/selectize.min.js">
+			</script>
+    </t>
+	</template>
+	
+	<template id="declarations" name="Declarations">
+			<t t-call="portal.portal_layout">
+			<t t-set="breadcrumbs_searchbar" t-value="True"/>
+
+			<t t-call="portal.portal_searchbar">
+				<t t-set="title">Declarations</t>
+			</t>
+			<t t-if="not declarations">
+				<p>There are currently no declaration for your account.</p>
+			</t>
+			<t t-if="declarations" t-call="portal.portal_table">
+				<thead>
+					<tr class="active">
+						<th rowspan="2" style="font-family: 'Times New Roman'">Etat</th>
+						<th colspan="3" class="text-center" style="font-family: 'Times New Roman'">Mandats clos (1) entre</th>
+						<th rowspan="2" style="font-family: 'Times New Roman'">Nombre de mandats</th>
+					</tr>
+					<tr class="active">
+						<th class="text-center" style="font-family: 'Times New Roman'">Le</th>
+						<th class="text-center" style="font-family: 'Times New Roman'">Et</th>
+						<th class="text-center" style="font-family: 'Times New Roman'">Le</th>
+					</tr>
+				</thead>
+				<t t-foreach="declarations" t-as="declaration">
+					<tr>
+						<td class="text-left" style="font-family: 'Times New Roman'">
+							<span t-field="declaration.state"/>
+						</td>
+						<td class="text-center" style="font-family: 'Times New Roman'">
+							<span t-field="declaration.date_start"/>
+						</td>
+						<td class="text-center" style="font-family: 'Times New Roman'">
+						    -
+						</td>
+						<td class="text-center" style="font-family: 'Times New Roman'">
+							<span t-field="declaration.date_end"/>
+						</td>
+						<td class="text-left" style="font-family: 'Times New Roman'">
+							<span t-field="declaration.mandats_number"/>
+						</td>
+						<td class="text-center">
+    			            <a t-attf-href="/declaration/#{slug(declaration)}" class="mb-2 btn btn-secondary rounded-circle btn-sm">
+    			                <t t-if="state == 'draft'">Consulter et modifier</t>
+    			                <t t-if="state != 'draft'">Consulter</t>
+    			            </a>
+    			            <a t-attf-href="/declaration/#{slug(declaration)}/duplicate" class="mb-2 btn btn-secondary rounded-circle btn-sm">
+    			                Charger depuis N-1
+    			            </a>
+			          </td>
+					</tr>
+				</t>
+				<br/>
+				
+			</t>
+			<br/>
+			(1) Mission dont le rapport a été présenté au commanditaire. En cas d'audit de plusieurs exercices, chaque exercice donne lieu à un mandat à déclarer.
+		</t>
+	</template>
+	
+	<template id="portal_declaration_submit_success">
+        <t t-call="portal.portal_layout">
+            <t t-set="additional_title">Dossier Soumis</t>
+            <form action="/my" method="post">
+                <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                <div id="wrap">
+                    <div class="oe_structure">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <!--<h1 class="text-center">Félicitations!</h1>-->
+                                    <p class="text-center">
+                                        Votre déclaration a été soumis avec succès.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="row" id="o_submit">
+                                <div class="col-lg-12 text-center mt32 mb32">
+                                    <button type="submit" class="btn btn-primary float-center mb32 ">
+                                        Continuer sur notre site Web
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </form>
+        </t>
+    </template>
+</odoo>
+	

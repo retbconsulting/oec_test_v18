@@ -1,0 +1,13 @@
+<svg width="64" height="64" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+  <!-- Clipboard base -->
+  <rect x="14" y="12" width="36" height="48" rx="4" stroke="#630000" stroke-width="2" fill="none"/>
+  <!-- Clip -->
+  <rect x="26" y="8" width="12" height="6" rx="2" fill="#630000"/>
+
+  <!-- User Icon -->
+  <circle cx="32" cy="30" r="6" fill="#630000"/>
+  <path d="M24 42c0-4.4 3.6-8 8-8s8 3.6 8 8v1H24v-1z" fill="#630000" opacity="0.9"/>
+
+  <!-- Checkmark -->
+  <path d="M24 50l4 4 12-12" stroke="#630000" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

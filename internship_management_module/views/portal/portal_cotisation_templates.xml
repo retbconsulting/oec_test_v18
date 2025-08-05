@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+	
+	<template id="portal_declarations">
+		<t t-call="portal.portal_layout">
+			<t t-set="additional_title">Inscription</t>
+				<form action="/registration" method="post" enctype="multipart/form-data">
+				<input type="hidden" name="csrf_token" t-att-value="request.csrf_token()" />
+
+
+				<div class="row">
+					<div class="form-group col-lg-12">
+						<div class="o_website_calendar">
+							
+						</div>
+					</div>
+				</div>
+				<label class="col-form-label" for="conseil_regional">INFORMATIONS SUR LE CABINET</label>
+				<div class="row">
+					<div
+						t-attf-class="form-group col-xl-6">
+						<label class="col-form-label" for="name">Mode d'exercice</label>
+						<input type="text" t-att-value="name or partner.name" name="name"
+							t-attf-class="form-control" />
+					</div>
+					<div
+						t-attf-class="form-group col-xl-6">
+						<label class="col-form-label" for="second_name">Forme juridique de la société</label>
+						<input type="text" t-att-value="second_name or partner.second_name"
+							name="second_name"
+							t-attf-class="form-control " />
+					</div>
+					<div id="sexe"
+						t-attf-class="form-group col-xl-6">
+						<label class="col-form-label" for="sexe">Nombre de bureaux</label>
+						<select class="form-control" name="sexe">
+							<option value="male" t-att-selected="partner.sexe == 'male'">Homme</option>
+							<option value="female" t-att-selected="partner.sexe == 'female'">Femme</option>
+						</select>
+					</div>
+					<div id="sexe"
+						t-attf-class="form-group col-xl-6">
+						<label class="col-form-label" for="sexe">Réseau d'appartenance (2)</label>
+						<select class="form-control" name="sexe">
+							<option value="male" t-att-selected="partner.sexe == 'male'">Homme</option>
+							<option value="female" t-att-selected="partner.sexe == 'female'">Femme</option>
+						</select>
+					</div>
+					<div id="sexe"
+						t-attf-class="form-group col-xl-6">
+						<label class="col-form-label" for="sexe">Nombre de mandats dont :</label>
+						<select class="form-control" name="sexe">
+							<option value="male" t-att-selected="partner.sexe == 'male'">Homme</option>
+							<option value="female" t-att-selected="partner.sexe == 'female'">Femme</option>
+						</select>
+					</div>
+				</div>
+			</form>
+		</t>
+	</template>
+</odoo>

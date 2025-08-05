@@ -1,0 +1,8 @@
+<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect x="12" y="8" width="40" height="48" rx="4" stroke="#630000" stroke-width="2" fill="none"/>
+  <line x1="20" y1="20" x2="44" y2="20" stroke="#630000" stroke-width="2"/>
+  <line x1="20" y1="28" x2="44" y2="28" stroke="#630000" stroke-width="2"/>
+  <line x1="20" y1="36" x2="36" y2="36" stroke="#630000" stroke-width="2"/>
+  <circle cx="44" cy="44" r="8" fill="#630000"/>
+  <text x="40" y="48" font-size="10" fill="white" font-family="Arial" font-weight="bold">€</text>
+</svg>

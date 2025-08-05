@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<template id="portal_stagiaires" name="Stagiaires">
+		<t t-call="portal.portal_layout">
+			<t t-set="breadcrumbs_searchbar" t-value="True" />
+
+			<t t-call="portal.portal_searchbar">
+				<t t-set="title">Stagiaires</t>
+			</t>
+			<t t-if="not stagiaires">
+				<p>There are currently no stagiaire for your account.</p>
+			</t>
+			<t t-if="stagiaires" t-call="portal.portal_table">
+				<thead>
+					<tr class="active">
+						<th>#</th>
+						<th class="text-left">Nom</th>
+						<th class="text-left">Prénom</th>
+						<th class="text-left">Téléphone</th>
+						<th class="text-left">Email</th>
+						<th class="text-left">Maître de stage</th>
+						<th class="text-left">Contrôleur de stage</th>
+						<th class="text-left">Niveau</th>
+						<th />
+					</tr>
+				</thead>
+				<t t-foreach="stagiaires" t-as="stagiaire">
+					<tr>
+						<td class="text-left">
+							#
+						</td>
+						<td class="text-left">
+							<span t-field="stagiaire.name" />
+						</td>
+						<td class="text-left">
+							<span t-field="stagiaire.second_name" />
+						</td>
+						<td class="text-left">
+							<span t-field="stagiaire.phone" />
+						</td>
+						<td class="text-left">
+							<span t-field="stagiaire.email" />
+						</td>
+						<td class="text-left">
+							<span t-field="stagiaire.internship_supervisor_id" />
+						</td>
+						<td class="text-left">
+							<span t-field="stagiaire.internship_controler_id" />
+						</td>
+						<td class="text-left">
+							<span t-field="stagiaire.contact_level_id" class="badge badge-pill badge-success"/>
+						</td>
+						<td class="text-center">
+							<a href="/my/report" class="mb-2 btn btn-secondary rounded-circle btn-sm">Rapport</a>
+						</td>
+					</tr>
+				</t>
+			</t>
+		</t>
+	</template>
+	
+	<template id="portal_members" name="Membres">
+		<t t-call="portal.portal_layout">
+			<t t-set="breadcrumbs_searchbar" t-value="True" />
+
+			<t t-call="portal.portal_searchbar">
+				<t t-set="title">Members</t>
+			</t>
+			<t t-if="not members">
+				<p>There are currently no member for your account.</p>
+			</t>
+			<t t-if="members" t-call="portal.portal_table">
+				<thead>
+					<tr class="active">
+						<th>#</th>
+						<th class="text-left">Nom</th>
+						<th class="text-left">Prénom</th>
+						<th class="text-left">Téléphone</th>
+						<th class="text-left">Email</th>
+					</tr>
+				</thead>
+				<t t-foreach="members" t-as="member">
+					<tr>
+						<td class="text-left">
+							#
+						</td>
+						<td class="text-left">
+							<span t-field="member.name" />
+						</td>
+						<td class="text-left">
+							<span t-field="member.second_name" />
+						</td>
+						<td class="text-left">
+							<span t-field="member.phone" />
+						</td>
+						<td class="text-left">
+							<span t-field="member.email" />
+						</td>
+					</tr>
+				</t>
+			</t>
+		</t>
+	</template>
+</odoo>

@@ -1,0 +1,2619 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Assets -->
+
+
+    <template id="portal_confirm_request_registration">
+        <t t-call="portal.portal_layout">
+            <t t-set="additional_title">Confirmation</t>
+            <style>
+                .steps-form {
+                display: table;
+                width: 100%;
+                position: relative;
+                }
+                .steps-form .steps-row {
+                display: table-row;
+                }
+                .steps-form .steps-row:before {
+                top: 14px;
+                bottom: 0;
+                position: absolute;
+                content: " ";
+                width: 100%;
+                height: 1px;
+                background-color: #ccc;
+                }
+                .steps-form .steps-row .steps-step {
+                display: table-cell;
+                text-align: center;
+                position: relative;
+                }
+                .steps-form .steps-row .steps-step p {
+                margin-top: 0.5rem;
+                }
+                .steps-form .steps-row .steps-step button[disabled] {
+                opacity: 1 !important;
+                filter: alpha(opacity=100) !important;
+                }
+                .steps-form .steps-row .steps-step .btn-circle {
+                width: 30px;
+                height: 30px;
+                text-align: center;
+                padding: 6px 0;
+                font-size: 12px;
+                line-height: 1.428571429;
+                border-radius: 15px;
+                margin-top: 0;
+                }
+                select[disabled] {
+                -webkit-appearance: none;
+                -moz-appearance: none;
+                text-indent: 0.01px;
+                text-overflow: '';
+                }
+            </style>
+            <form action="/registration/submit" method="post">
+                <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                <div class="row o_portal_details col-xl-8">
+                    <div class="alert alert-danger float-center" style="position: absolute"
+                         role="alert">
+                        <h4 class="alert-heading">Confirmation!</h4>
+                        <p>Nous confirmons la réception de votre demande. Un lien vous
+                            sera envoyé pour continuer votre inscription
+                        </p>
+                        <hr/>
+                        <p class="mb-0">
+                            <a href="/" class="mb-2 btn btn-secondary rounded-circle btn-sm">
+                                Page d'acceuil
+                            </a>
+
+                        </p>
+                    </div>
+                </div>
+            </form>
+        </t>
+    </template>
+
+    <template id="portal_request_registration">
+        <t t-call="portal.portal_layout">
+            <!--<t t-set="status_register" t-value="request.env.user.partner_id.status_register"/>
+            <t t-set="all_statuses" t-value="request.env['res.partner']._get_status_register()"/>
+            <t t-set="status_keys" t-value="[s[0] for s in all_statuses]"/>
+            <t t-set="current_index"
+               t-value="status_keys.index(status_register) if status_register in status_keys else 0"/>
+
+            <div class="progress-tracker" style="margin-bottom: 30px;">
+                <ol class="step-list" style="display: flex; list-style: none; padding-left: 0;">
+                    <t t-foreach="all_statuses" t-as="step">
+                        <t t-set="step_key" t-value="step[0]"/>
+                        <t t-set="step_label" t-value="step[1]"/>
+                        <t t-set="step_index" t-value="all_statuses.index(step)"/>
+
+                        <li t-attf-class="step-item
+                #{'completed' if step_index &lt; current_index else ''}
+                #{'active' if step_key == status_register else ''}"
+                            style="flex: 1; text-align: center; padding: 10px; position: relative;">
+
+                            <div style="width: 30px; height: 30px; border-radius: 50%; background: #{'green' if step_key == status_register else '#ccc'}; margin: auto;">
+                                <span style="color: white; line-height: 30px;">
+                                    <t t-esc="step_index + 1"/>
+                                </span>
+                            </div>
+                            <div style="margin-top: 5px;">
+                                <t t-esc="step_label"/>
+                            </div>
+
+                            <t t-if="not step_index == len(all_statuses) - 1">
+                                <div style="position: absolute; top: 15px; right: -50%; width: 100%; height: 2px; background: #ccc;"></div>
+                            </t>
+                        </li>
+                    </t>
+                </ol>
+            </div>
+
+            <style>
+                .circle {
+                width: 35px;
+                height: 35px;
+                border-radius: 50%;
+                background: #ccc;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 14px;
+                font-weight: bold;
+                }
+
+                .step-item {
+                position: relative;
+                }
+
+                .step-label {
+                font-size: 13px;
+                font-weight: 500;
+                max-width: 120px;
+                margin: auto;
+                }
+
+                .connector {
+                position: absolute;
+                top: 17px;
+                left: 50%;
+                width: 100%;
+                height: 2px;
+                background: #ccc;
+                z-index: -1;
+                }
+
+                .step-item.completed .circle {
+                background: #4C0000;
+                }
+
+                .step-item.completed .coennector {
+                background: #4C0000;
+                }
+
+                .step-item.completed .step-label {
+                color: #4C0000;
+                font-weight: bold;
+                }
+
+                .step-item .circle {
+                transition: background 0.3s ease;
+                }
+
+                .progress-tracker {
+                -active: #4C0000;
+                }
+            </style>-->
+
+
+            <t t-set="additional_title">Demande d'inscription</t>
+
+            <style>
+                .hidden-field {
+                display: none;
+                }
+                .required-field::after {
+                content: " *";
+                color: red;
+                }
+                .form-section {
+                margin-bottom: 30px;
+                padding: 20px;
+                background: #f9f9f9;
+                border-radius: 5px;
+                }
+            </style>
+            <input type="hidden" name="send_notification" value="1"/>
+            <form action="/demande-inscription" method="post" enctype="multipart/form-data">
+                <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+
+                <div class="form-section">
+                    <h3>Type d'inscription</h3>
+
+                    <div class="form-group">
+                        <label for="mode_registration_inscription" class="required-field">Mode d'inscription</label>
+                        <select id="mode_registration_inscription" class="form-control" required="required">
+                            <option value="">-- Sélectionner --</option>
+                            <option value="pp">Personne Physique</option>
+                            <option value="pm">Personne Morale</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="type_selection" class="required-field">Type d'inscription</label>
+                        <select id="type_selection" class="form-control" required="required">
+                            <option value="">-- Sélectionner un type --</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Champs Personne Physique -->
+                <div class="form-section" id="base_fields">
+                    <h3>Informations Personne Physique</h3>
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <label class="required-field">Nom</label>
+                            <input type="text" name="name" class="form-control" required="required"/>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label class="required-field">Prénom</label>
+                            <input type="text" name="prenom" class="form-control" required="required"/>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label class="required-field">Email</label>
+                            <input type="email" name="email" class="form-control" required="required"/>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label class="required-field">CIN (Recto/Verso)</label>
+                            <input type="file" name="copie_cin" class="form-control" required="required"/>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label class="required-field">Diplôme</label>
+                            <input type="file" name="diplome_document" class="form-control" required="required"/>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cabinet rattaché -->
+                <div class="form-section hidden-field" id="cabinet_rattache_row">
+                    <h3>Cabinet Rattaché</h3>
+                    <div class="form-group">
+                        <label class="required-field">Cabinet</label>
+                        <select name="cabinet_rattache" class="form-control" required="required">
+                            <option value="">-- Sélectionner --</option>
+                            <t t-foreach="companies" t-as="company">
+                                <option t-att-value="company.id" t-esc="company.name"/>
+                            </t>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Champs Personne Morale -->
+                <div class="form-section hidden-field" id="pm_fields">
+                    <h3>Informations Personne Morale</h3>
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <label class="required-field">Dénomination</label>
+                            <input type="text" name="denomination" class="form-control" required="required"/>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label>Numéro RC</label>
+                            <input type="text" name="rc" class="form-control"/>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label>ICE</label>
+                            <input type="text" name="ice" class="form-control"/>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label>Siège social</label>
+                            <input type="text" name="siege_social" class="form-control"/>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label>Statuts</label>
+                            <input type="file" name="statuts" class="form-control"/>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Connexion requise -->
+                <div class="form-section hidden-field" id="login_required_section">
+                    <h3>Connexion Requise</h3>
+                    <p>Vous devez être connecté en tant que personne physique déjà inscrite pour effectuer cette
+                        demande.
+                    </p>
+                    <a href="/web/login" class="btn btn-primary">Se connecter</a>
+                </div>
+
+                <div class="form-section">
+                    <div class="form-group">
+                        <input type="checkbox" name="declaration_honneur" id="declaration_honneur" required="required"/>
+                        <label for="declaration_honneur" class="required-field">
+                            J’autorise le Conseil Régional de l’Ordre des Experts-Comptables de Casablanca et Régions du
+                            Centre
+                            à collecter et traiter mes données personnelles, conformément à la loi 09-08 relative à la
+                            protection des personnes physiques à l’égard du traitement des données à caractère
+                            personnel.
+                        </label>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Envoyer la demande</button>
+            </form>
+
+            <script type="text/javascript">
+                document.addEventListener("DOMContentLoaded", function() {
+                var optionsConfig = {
+                pp: [
+                ["e", "Inscription d'une personne physique à titre individuel"],
+                ["b", "Inscription d'une personne physique en tant que salarié d'un cabinet inscrit"],
+                ["d", "Inscription d'une personne physique en tant qu'associé d'un cabinet inscrit"]
+                ],
+                pm: [
+                ["c", "Inscription d'une personne morale et d'une personne physique"],
+                ["a", "Inscription d'une personne morale nouvelle par une personne physique déjà inscrite"]
+                ]
+                };
+
+                function loadTypeOptions() {
+                var mode = document.getElementById("mode_registration_inscription").value;
+                var typeSelect = document.getElementById("type_selection");
+
+                typeSelect.innerHTML = '';
+                typeSelect.add(new Option("-- Sélectionner --", ""));
+
+                if (mode &amp;&amp; optionsConfig[mode]) {
+                optionsConfig[mode].forEach(function(opt) {
+                typeSelect.add(new Option(opt[1], opt[0]));
+                });
+                }
+                }
+
+                function updateFields() {
+                var mode = document.getElementById("mode_registration_inscription").value;
+                var type = document.getElementById("type_selection").value;
+
+                // Reset
+                document.getElementById("base_fields").style.display = "none";
+                document.getElementById("cabinet_rattache_row").style.display = "none";
+                document.getElementById("pm_fields").style.display = "none";
+                document.getElementById("login_required_section").style.display = "none";
+
+                // PP individuelle
+                if (mode === "pp" &amp;&amp; type === "e") {
+                document.getElementById("base_fields").style.display = "block";
+                }
+                // PP salarié/associé
+                else if (mode === "pp" &amp;&amp; (type === "b" || type === "d")) {
+                document.getElementById("base_fields").style.display = "block";
+                document.getElementById("cabinet_rattache_row").style.display = "block";
+                }
+                // PM + PP
+                else if (mode === "pm" &amp;&amp; type === "c") {
+                document.getElementById("base_fields").style.display = "block";
+                document.getElementById("pm_fields").style.display = "block";
+                }
+                // PM par PP existante
+                else if (mode === "pm" &amp;&amp; type === "a") {
+                document.getElementById("login_required_section").style.display = "block";
+                }
+                }
+
+                document.getElementById("mode_registration_inscription").addEventListener("change", function() {
+                loadTypeOptions();
+                updateFields();
+                });
+
+                document.getElementById("type_selection").addEventListener("change", updateFields);
+
+                // Initial load
+                loadTypeOptions();
+                });
+            </script>
+        </t>
+    </template>
+
+    <!-- <template id="portal_inscription_submit" >
+         <t t-call="portal.portal_layout">
+             <div class="container mt-4 mb-5">
+                 <div class="card">
+                     <div class="card-header bg-primary text-white">
+                         <h3 class="mb-0">Confirmation de votre demande d'inscription</h3>
+                     </div>
+
+                     <div class="card-body">
+                         <div class="row">
+                             <div class="col-md-6">
+                                 <h4 class="text-primary">Informations personnelles</h4>
+                                 <div class="form-group row">
+                                     <label class="col-sm-4 col-form-label">Nom:</label>
+                                     <div class="col-sm-8">
+                                         <p class="form-control-plaintext" t-esc="name"/>
+                                     </div>
+                                 </div>
+
+                                 <div class="form-group row">
+                                     <label class="col-sm-4 col-form-label">Prénom:</label>
+                                     <div class="col-sm-8">
+                                         <p class="form-control-plaintext" t-esc="prenom"/>
+                                     </div>
+                                 </div>
+
+                                 <div class="form-group row">
+                                     <label class="col-sm-4 col-form-label">Email:</label>
+                                     <div class="col-sm-8">
+                                         <p class="form-control-plaintext" t-esc="email"/>
+                                     </div>
+                                 </div>
+
+                                 <div class="form-group row">
+                                     <label class="col-sm-4 col-form-label">Mode d'inscription:</label>
+                                     <div class="col-sm-8">
+                                         <p class="form-control-plaintext" t-esc="mode"/>
+                                     </div>
+                                 </div>
+
+                                 <div t-if="type_selection" class="form-group row">
+                                     <label class="col-sm-4 col-form-label">Type de sélection:</label>
+                                     <div class="col-sm-8">
+                                         <p class="form-control-plaintext" t-esc="type_selection"/>
+                                     </div>
+                                 </div>
+
+                                 <div t-if="show_pp_rattache and pp_rattache" class="form-group row">
+                                     <label class="col-sm-4 col-form-label">Rattaché à:</label>
+                                     <div class="col-sm-8">
+                                         <p class="form-control-plaintext" t-esc="pp_rattache"/>
+                                     </div>
+                                 </div>
+                             </div>
+
+                             <div class="col-md-6">
+                                 <h4 class="text-primary">Documents joints</h4>
+
+                                 <div t-if="has_copie_cin" class="form-group">
+                                     <label>Copie CIN:</label>
+                                     <div>
+                                         <a href="/download/document?doc_type=cin" class="btn btn-outline-primary">
+                                             <i class="fa fa-download mr-2"/> Télécharger
+                                         </a>
+                                     </div>
+                                 </div>
+
+                                 <div t-if="has_diplome" class="form-group">
+                                     <label>Diplôme:</label>
+                                     <div>
+                                         <a href="/download/document?doc_type=diplome" class="btn btn-outline-primary">
+                                             <i class="fa fa-download mr-2"/> Télécharger
+                                         </a>
+                                     </div>
+                                 </div>
+                             </div>
+                         </div>
+
+                         <div class="text-center mt-4">
+                             <form method="post">
+                                 <button type="submit" name="confirm" class="btn btn-primary mr-3">
+                                     <i class="fa fa-check mr-2"/> Confirmer l'inscription
+                                 </button>
+                                 <a href="/demande-inscription" class="btn btn-secondary">
+                                     <i class="fa fa-edit mr-2"/> Modifier
+                                 </a>
+                             </form>
+                         </div>
+                     </div>
+                 </div>
+             </div>
+         </t>
+ </template>-->
+
+    <template id="portal_registration">
+        <t t-call="portal.portal_layout">
+            <t t-set="additional_title">Inscription</t>
+            <form action="/registration" method="post" enctype="multipart/form-data">
+                <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+
+
+                <div class="row">
+                    <div class="form-group col-lg-12">
+                        <div class="o_website_calendar">
+                            <ul class="wizard mt32 float-right">
+                                <li
+                                        t-attf-class="#{partner.status_register=='draft' and 'text-primary' or 'text-muted'}"
+                                        class="text-primary">
+                                    Inscription
+                                    <span class="chevron"/>
+                                </li>
+                                <li
+                                        t-attf-class="#{partner.status_register=='in_progress' and 'text-primary' or 'text-muted'}">
+                                    En cours de traitement
+                                    <span class="chevron"/>
+                                </li>
+                                <li
+                                        t-attf-class="#{partner.status_register=='registred' and 'text-primary' or 'text-muted'}">
+                                    Inscrit
+                                    <span class="chevron"/>
+                                </li>
+                                <li
+                                        t-attf-class="#{partner.status_register=='rejected' and 'text-primary' or 'text-muted'}">
+                                    Rejeté
+                                    <span class="chevron"/>
+                                </li>
+                            </ul>
+                            <style>
+                                .o_website_calendar {
+                                /* Overall container styling */
+                                background-color: #f0f0f0; /* Adjust background color as needed */
+                                border: 1px solid #ccc;
+                                border-radius: 5px;
+                                padding: 20px;
+                                }
+
+                                .wizard {
+                                display: flex;
+                                justify-content: space-between;
+                                list-style: none;
+                                padding: 0;
+                                margin: 0;
+                                }
+
+                                .wizard li {
+                                flex: 1;
+                                text-align: center;
+                                padding: 10px;
+                                border-bottom: 2px solid transparent; /* For active step */
+                                }
+
+                                .wizard li.text-primary {
+                                /* Active step styling */
+                                border-bottom-color: #007bff; /* Adjust color as needed */
+                                color: #007bff;
+                                font-weight: bold;
+                                }
+
+                                .chevron {
+                                /* Style the chevron as needed */
+                                display: inline-block;
+                                margin-left: 5px;
+                                /* Add appropriate font-family, font-size, and color */
+                                }
+                            </style>
+                            <div class="col-lg-12">
+                                <div t-if="error_message" class="alert alert-danger" role="alert">
+                                    <t t-foreach="error_message" t-as="err">
+                                        <t t-out="err"/>
+                                        <br/>
+                                    </t>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-lg-12">
+                        <label for="mode_registration">Mode d'inscription</label>
+                        <select class="form-control" id="mode_registration" name="mode_registration" disabled="true">
+                            <t t-foreach="register_types" t-as="register_type">
+                                <option t-att-selected="register_type[0] == partner.mode_registration"
+                                        t-att-value="register_type[0]">
+                                    <t t-out="register_type[1]"/>
+                                </option>
+                            </t>
+                        </select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-lg-12">
+                        <label for="mode_registration">Type d'inscription</label>
+                        <select class="form-control" id="type_selection" name="type_selection" disabled="true">
+                            <t t-foreach="type_selection" t-as="type_selection">
+                                <option t-att-selected="type_selection[0] == partner.type_selection"
+                                        t-att-value="type_selection[0]">
+                                    <t t-out="type_selection[1]"/>
+                                </option>
+                            </t>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div
+                            t-attf-class="form-group #{error.get('name') and 'o_has_error' or ''} col-xl-6">
+                        <label class="col-form-label" for="name">Nom</label>
+                        <input t-att-disabled="partner.status_register == 'in_progress'" type="text"
+                               t-att-value="name or partner.name" name="name"
+                               t-attf-class="form-control #{error.get('name') and 'is-invalid' or ''}"/>
+                    </div>
+                    <div
+                            t-attf-class="form-group #{error.get('second_name') and 'o_has_error' or ''} col-xl-6">
+                        <label class="col-form-label" for="second_name">Prénom</label>
+                        <input t-att-disabled="partner.status_register == 'in_progress'" type="text"
+                               t-att-value="second_name or partner.second_name"
+                               name="second_name"
+                               t-attf-class="form-control #{error.get('second_name') and 'is-invalid' or ''}"/>
+                    </div>
+                    <!-- 					<div id="adresse_professionnelle" -->
+                    <!-- 						t-attf-class="form-group #{error.get('adresse_professionnelle') and 'o_has_error' or ''} col-xl-6"> -->
+                    <!-- 						<label class="col-form-label" for="adresse_professionnelle">Adresse professionnelle -->
+                    <!-- 						</label> -->
+                    <!-- 						<input type="text" t-att-value="street or partner.street" -->
+                    <!-- 							name="adresse_professionnelle" -->
+                    <!-- 							t-attf-class="form-control #{error.get('adresse_professionnelle') and 'is-invalid' or ''}" /> -->
+                    <!-- 					</div> -->
+                    <div id="sexe"
+                         t-attf-class="form-group #{error.get('sexe') and 'o_has_error' or ''} col-xl-6">
+                        <label class="col-form-label" for="sexe">Sexe</label>
+                        <select t-att-disabled="partner.status_register == 'in_progress'" class="form-control"
+                                name="sexe">
+                            <option value="male" t-att-selected="partner.sexe == 'male'">Homme</option>
+                            <option value="female" t-att-selected="partner.sexe == 'female'">Femme</option>
+                        </select>
+                    </div>
+                    <div
+                            t-attf-class="form-group #{error.get('cin_number') and 'o_has_error' or ''} col-xl-6">
+                        <label class="col-form-label" for="cin_number">CIN</label>
+                        <input t-att-disabled="partner.status_register == 'in_progress'" type="text" name="cin_number"
+                               t-attf-class="form-control #{error.get('cin_number') and 'is-invalid' or ''}"
+                               t-att-value="cin_number or partner.cin_number"/>
+                    </div>
+                    <div
+                            t-attf-class="form-group #{error.get('phone') and 'o_has_error' or ''} col-xl-6">
+                        <label class="col-form-label" for="phone">Téléphone fixe</label>
+                        <input t-att-disabled="partner.status_register == 'in_progress'" type="phone" name="phone"
+                               t-attf-class="form-control #{error.get('phone') and 'is-invalid' or ''}"
+                               t-att-value="phone or partner.phone"/>
+                        <small>Format: +212 06-XXXXXXXX</small>
+                    </div>
+                    <div
+                            t-attf-class="form-group #{error.get('fax') and 'o_has_error' or ''} col-xl-6">
+                        <label class="col-form-label" for="fax">Fax</label>
+                        <input t-att-disabled="partner.status_register == 'in_progress'" type="text" name="fax"
+                               t-attf-class="form-control #{error.get('fax') and 'is-invalid' or ''}"
+                               t-att-value="fax or partner.phone"/>
+                    </div>
+                    <div
+                            t-attf-class="form-group #{error.get('gsm') and 'o_has_error' or ''} col-xl-6">
+                        <label class="col-form-label" for="gsm">Téléphone mobile</label>
+                        <input t-att-disabled="partner.status_register == 'in_progress'" type="phone" name="gsm"
+                               t-attf-class="form-control #{error.get('gsm') and 'is-invalid' or ''}"
+                               t-att-value="gsm or partner.gsm"/>
+                        <small>Format: +212 06-XXXXXXXX</small>
+                    </div>
+                    <div
+                            t-attf-class="form-group #{error.get('email') and 'o_has_error' or ''} col-xl-6">
+                        <label class="col-form-label" for="email">Adresse E-mail</label>
+                        <input t-att-disabled="partner.status_register == 'in_progress'" type="email" name="email"
+                               t-attf-class="form-control #{error.get('email') and 'is-invalid' or ''}"
+                               t-att-value="email or partner.email"/>
+                    </div>
+                    <div id="diplome_tab"
+                         t-attf-class="form-group #{error.get('diplome') and 'o_has_error' or ''} col-xl-6">
+                        <label class="col-form-label" for="diplome">Diplôme</label>
+                        <select t-att-disabled="partner.status_register == 'in_progress'" class="form-control"
+                                name="diplome" id="diplome">
+                            <option t-att-selected="partner.diplome == 'marocain'"
+                                    value="marocain">Marocain
+                            </option>
+                            <option t-att-selected="partner.diplome == 'francais'"
+                                    value="francais">Français
+                            </option>
+                            <option t-att-selected="partner.diplome == 'autre'"
+                                    value="autre">Autre
+                            </option>
+                        </select>
+                    </div>
+                    <!--<div id="country"
+                        t-attf-class="form-group #{error.get('country') and 'o_has_error' or ''} col-xl-6">
+                        <label class="col-form-label" for="country">Pays
+                        </label>
+                        <select name="country"
+                            t-attf-class="form-control #{error.get('country') and 'is-invalid' or ''}">
+                            <option value="">Pays...</option>
+                            <t t-foreach="payss or []" t-as="pays">
+                                <option t-att-value="pays.id"
+                                    t-att-selected="pays.id == int(pays) if pays else pays.id == partner.country.id">
+                                    <t t-out="pays.name" />
+                                </option>
+                            </t>
+                        </select>
+                    </div>-->
+                </div>
+                <br/>
+                <br/>
+
+                <div class="row">
+                    <t t-if="partner.mode_registration not in ['e']">
+                        <div id="raison_sociale"
+                             t-attf-class="form-group #{error.get('raison_sociale') and 'o_has_error' or ''} col-xl-6">
+                            <label class="col-form-label" for="raison_sociale">Raison sociale</label>
+                            <input t-att-disabled="partner.status_register == 'in_progress'" type="text"
+                                   name="raison_sociale"
+                                   t-attf-class="form-control #{error.get('raison_sociale') and 'is-invalid' or ''}"
+                                   t-att-value="raison_sociale or partner.raison_sociale"/>
+                        </div>
+                    </t>
+                    <t t-if="partner.mode_registration not in ['e']">
+                        <div id="forme_juridique"
+                             t-attf-class="form-group #{error.get('forme_juridique') and 'o_has_error' or ''} col-xl-6">
+                            <label class="col-form-label" for="forme_juridique">Forme juridique</label>
+                            <select t-att-disabled="partner.status_register == 'in_progress'" class="form-control"
+                                    name="forme_juridique">
+                                <option t-att-selected="partner.forme_juridique == 'sa'"
+                                        value="sa">SA
+                                </option>
+                                <option t-att-selected="partner.forme_juridique == 'sarl'"
+                                        value="sarl">SARL
+                                </option>
+                                <option t-att-selected="partner.forme_juridique == 'sas'"
+                                        value="sa">SAS
+                                </option>
+                                <option t-att-selected="partner.forme_juridique == 'sarlau'"
+                                        value="sarl">SARLAU
+                                </option>
+                            </select>
+                        </div>
+                    </t>
+                    <t t-if="partner.mode_registration not in ['e']">
+                        <div id="siege_social"
+                             t-attf-class="form-group #{error.get('siege_social') and 'o_has_error' or ''} col-xl-6">
+                            <label class="col-form-label" for="siege_social">Siège social</label>
+                            <input t-att-disabled="partner.status_register == 'in_progress'" type="text"
+                                   name="siege_social"
+                                   t-attf-class="form-control #{error.get('siege_social') and 'is-invalid' or ''}"
+                                   t-att-value="siege_social or partner.siege_social"/>
+                        </div>
+                    </t>
+                    <t t-if="partner.mode_registration not in ['e']">
+                        <div id="effectif"
+                             t-attf-class="form-group #{error.get('effectif') and 'o_has_error' or ''} col-xl-6">
+                            <label class="col-form-label" for="effectif">Effectif employé par le cabinet
+                            </label>
+                            <input t-att-disabled="partner.status_register == 'in_progress'" type="number"
+                                   name="effectif"
+                                   t-attf-class="form-control #{error.get('effectif') and 'is-invalid' or ''}"
+                                   t-att-value="effectif or partner.effectif"/>
+                        </div>
+                    </t>
+                    <t t-if="partner.mode_registration not in ['e']">
+                        <div id="identifiant_fiscal"
+                             t-attf-class="form-group #{error.get('identifiant_fiscal') and 'o_has_error' or ''} col-xl-6">
+                            <label class="col-form-label" for="identifiant_fiscal">Identifiant fiscal</label>
+                            <input t-att-disabled="partner.status_register == 'in_progress'" type="text"
+                                   name="identifiant_fiscal"
+                                   t-attf-class="form-control #{error.get('identifiant_fiscal') and 'is-invalid' or ''}"
+                                   t-att-value="identifiant_fiscal or partner.identifiant_fiscal"/>
+                        </div>
+                    </t>
+                    <t t-if="partner.mode_registration not in ['e']">
+                        <div id="taxe_professionnelle"
+                             t-attf-class="form-group #{error.get('taxe_professionnelle') and 'o_has_error' or ''} col-xl-6">
+                            <label class="col-form-label" for="taxe_professionnelle">Taxe professionnelle
+                            </label>
+                            <input t-att-disabled="partner.status_register == 'in_progress'" type="text"
+                                   name="taxe_professionnelle"
+                                   t-attf-class="form-control #{error.get('taxe_professionnelle') and 'is-invalid' or ''}"
+                                   t-att-value="taxe_professionnelle or partner.taxe_professionnelle"/>
+                        </div>
+                    </t>
+                    <t t-if="partner.mode_registration not in ['e']">
+                        <div id="conseil_regional"
+                             t-attf-class="form-group #{error.get('conseil_regional') and 'o_has_error' or ''} col-lg-12">
+                            <label class="col-form-label" for="conseil_regional">Conseil Régional de l'Ordre auquel vous
+                                souhaitez appartenir
+                            </label>
+                            <select t-att-disabled="partner.status_register == 'in_progress'" name="conseil_regional"
+                                    t-attf-class="form-control #{error.get('conseil_regional') and 'is-invalid' or ''}">
+                                <option value="">Conseil régional...</option>
+                                <!-- Option activée -->
+                                <option value="casablanca_centre"
+                                        t-att-selected="'casablanca_centre' == conseil_regional or (not conseil_regional and partner.conseil_regional == 'casablanca_centre')">
+                                    Casablanca et Centre
+                                </option>
+
+                                <!-- Options désactivées pour le moment -->
+                                <option value="rabat_sale_kenitra" disabled="disabled">Rabat-Salé-Kénitra</option>
+                                <option value="tanger_tetouan_alhoceima" disabled="disabled">Tanger-Tétouan-Al Hoceima
+                                </option>
+                                <option value="fes_meknes_oriental" disabled="disabled">Fès-Meknès et Régions de
+                                    l'Oriental
+                                </option>
+                                <option value="marrakech_safi" disabled="disabled">Marrakech-Safi</option>
+                                <option value="souss_massa_sud" disabled="disabled">Souss-Massa et Régions du Sud
+                                </option>
+
+                            </select>
+                        </div>
+                    </t>
+                    <t t-if="partner.mode_registration not in ['e']">
+                        <label class="col-form-label" for="conseil_regional">Etat de répartition du capital social
+                        </label>
+                        <table
+                                class="form-group col-lg-12 table table-striped table-sm js_cart_lines">
+                            <thead>
+                                <tr>
+                                    <th name="associe_label" colspan="2" style="text-align:center">Associé</th>
+                                    <th name="percentage_label">Pourcentage</th>
+                                    <th name="associe_qualite_label">Qualité de l'associé</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>#1</td>
+                                    <td>
+                                        <input t-att-disabled="partner.status_register == 'in_progress'" type="text"
+                                               name="name1" class="form-control" t-att-value="name1"/>
+                                    </td>
+                                    <td>
+                                        <input t-att-disabled="partner.status_register == 'in_progress'" type="number"
+                                               name="percentage1" class="form-control"
+                                               t-att-value="percentage1"/>
+                                    </td>
+                                    <td>
+                                        <select t-att-disabled="partner.status_register == 'in_progress'"
+                                                class="form-control" name="status1">
+                                            <option t-att-selected="status1 == 'associe_expert_comptable'"
+                                                    value="associe_expert_comptable">Associé Expert comptable inscrit
+                                            </option>
+                                            <option t-att-selected="status1 == 'associe_salarie'"
+                                                    value="associe_salarie">Associé Salarié
+                                            </option>
+                                            <option t-att-selected="status1 == 'associe_non_salarie'"
+                                                    value="associe_non_salarie">Associé Non Salarié
+                                            </option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>#2</td>
+                                    <td>
+                                        <input t-att-disabled="partner.status_register == 'in_progress'" type="text"
+                                               name="name2" class="form-control" t-att-value="name2"/>
+                                    </td>
+                                    <td>
+                                        <input t-att-disabled="partner.status_register == 'in_progress'" type="number"
+                                               name="percentage2" class="form-control"
+                                               t-att-value="percentage2"/>
+                                    </td>
+                                    <td>
+                                        <select t-att-disabled="partner.status_register == 'in_progress'"
+                                                class="form-control" name="status2">
+                                            <option t-att-selected="status2 == 'associe_expert_comptable'"
+                                                    value="associe_expert_comptable">Associé Expert comptable inscrit
+                                            </option>
+                                            <option t-att-selected="status2 == 'associe_salarie'"
+                                                    value="associe_salarie">Associé Salarié
+                                            </option>
+                                            <option t-att-selected="status2 == 'associe_non_salarie'"
+                                                    value="associe_non_salarie">Associé Non Salarié
+                                            </option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>#3</td>
+                                    <td>
+                                        <input t-att-disabled="partner.status_register == 'in_progress'" type="text"
+                                               name="name3" class="form-control" t-att-value="name3"/>
+                                    </td>
+                                    <td>
+                                        <input t-att-disabled="partner.status_register == 'in_progress'" type="number"
+                                               name="percentage3" class="form-control"
+                                               t-att-value="percentage3"/>
+                                    </td>
+                                    <td>
+                                        <select t-att-disabled="partner.status_register == 'in_progress'"
+                                                class="form-control" name="status3">
+                                            <option t-att-selected="status3 == 'associe_expert_comptable'"
+                                                    value="associe_expert_comptable">Associé Expert comptable inscrit
+                                            </option>
+                                            <option t-att-selected="status3 == 'associe_salarie'"
+                                                    value="associe_salarie">Associé Salarié
+                                            </option>
+                                            <option t-att-selected="status3 == 'associe_non_salarie'"
+                                                    value="associe_non_salarie">Associé Non Salarié
+                                            </option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>#4</td>
+                                    <td>
+                                        <input t-att-disabled="partner.status_register == 'in_progress'" type="text"
+                                               name="name4" class="form-control" t-att-value="name4"/>
+                                    </td>
+                                    <td>
+                                        <input t-att-disabled="partner.status_register == 'in_progress'" type="number"
+                                               name="percentage4" class="form-control"
+                                               t-att-value="percentage4"/>
+                                    </td>
+                                    <td>
+                                        <select t-att-disabled="partner.status_register == 'in_progress'"
+                                                class="form-control" name="status4">
+                                            <option t-att-selected="status4 == 'associe_expert_comptable'"
+                                                    value="associe_expert_comptable">Associé Expert comptable inscrit
+                                            </option>
+                                            <option t-att-selected="status4 == 'associe_salarie'"
+                                                    value="associe_salarie">Associé Salarié
+                                            </option>
+                                            <option t-att-selected="status4 == 'associe_non_salarie'"
+                                                    value="associe_non_salarie">Associé Non Salarié
+                                            </option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>#5</td>
+                                    <td>
+                                        <input t-att-disabled="partner.status_register == 'in_progress'" type="text"
+                                               name="name5" class="form-control" t-att-value="name5"/>
+                                    </td>
+                                    <td>
+                                        <input t-att-disabled="partner.status_register == 'in_progress'" type="number"
+                                               name="percentage5" class="form-control"
+                                               t-att-value="percentage5"/>
+                                    </td>
+                                    <td>
+                                        <select t-att-disabled="partner.status_register == 'in_progress'"
+                                                class="form-control" name="status5">
+                                            <option t-att-selected="status5 == 'associe_expert_comptable'"
+                                                    value="associe_expert_comptable">Associé Expert comptable inscrit
+                                            </option>
+                                            <option t-att-selected="status5 == 'associe_salarie'"
+                                                    value="associe_salarie">Associé Salarié
+                                            </option>
+                                            <option t-att-selected="status5 == 'associe_non_salarie'"
+                                                    value="associe_non_salarie">Associé Non Salarié
+                                            </option>
+                                        </select>
+                                    </td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+                    </t>
+
+                    <!--<t t-if="partner.mode_registration in ['pp']">
+                        <div t-attf-class="form-group col-xl-6" data-type="binary">
+                            <label class="col-form-label" for="lettre_demande_inscription">
+                                Lettre de demande d’inscription à l'ordre
+                                <span t-if="partner.lettre_demande_inscription" style="color:blue">(Document
+                                    déjà chargé)
+                                </span>
+                            </label>
+                            <br/>
+                            <input t-att-disabled="partner.status_register == 'in_progress'" id="upload" type="file"
+                                   name="lettre_demande_inscription"
+                                   class="file" data-show-upload="true" data-show-caption="true"
+                                   data-show-preview="true"
+                                   t-att-readonly="None if partner.status_register=='draft' else '1'"/>
+                        </div>-->
+                    <!-- <div t-attf-class="form-group col-xl-6" data-type="binary"
+                          t-att-style="'visibility:hidden;' if partner.mode_registration in ['pm'] else ''">
+                         <label class="col-form-label" for="extrait_casier_judiciaire">
+                             Un extrait du casier judiciaire ou une fiche anthropométrique datant de moins de trois
+                             mois
+                             <span t-if="partner.extrait_casier_judiciaire" style="color:blue">(Document
+                                 déjà chargé)
+                             </span>
+                         </label>
+                         <br/>
+                         <input t-att-disabled="partner.status_register == 'in_progress'" id="upload" type="file"
+                                name="extrait_casier_judiciaire"
+                                class="file" data-show-upload="true" data-show-caption="true"
+                                data-show-preview="true"
+                                t-att-readonly="None if partner.status_register=='draft' else '1'"/>
+                     </div>
+                    <div t-attf-class="form-group col-xl-6" data-type="binary">
+                        <label class="col-form-label" for="extrait_acte_naissance">
+                            Un extrait d’acte de naissance datant de moins de trois mois (Recto/Verso)
+                            <span t-if="partner.extrait_acte_naissance" style="color:blue">(Document
+                                déjà chargé)
+                            </span>
+                        </label>
+                        <br/>
+                        <input t-att-disabled="partner.status_register == 'in_progress'" id="upload" type="file"
+                               name="extrait_acte_naissance"
+                               class="file" data-show-upload="true" data-show-caption="true"
+                               data-show-preview="true"
+                               t-att-readonly="None if partner.status_register=='draft' else '1'"/>
+                    </div>
+                </t>-->
+
+                    <div class="col-lg-12">
+                        <div class="card mb-4">
+                            <div class="card-header bg-danger text-white">
+                                <h4>Documents d'identité</h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div t-attf-class="form-group col-xl-6" data-type="binary">
+                                        <label class="col-form-label" for="copie_cin">
+                                                Une photocopie certifiée conforme de la CNIE
+                                            <span t-if="partner.copie_cin" style="color:blue">(Document déjà chargé)
+                                            </span>
+                                        </label>
+                                        <br/>
+                                        <input t-att-disabled="partner.status_register == 'in_progress'" id="upload"
+                                               type="file"
+                                               name="copie_cin" class="file"
+                                               data-show-upload="true" data-show-caption="true"
+                                               data-show-preview="true"
+                                               t-att-readonly="None if partner.status_register=='draft' else '1'"/>
+                                    </div>
+                                    <t t-if="partner.mode_registration in ['pp2']">
+                                        <div t-attf-class="form-group col-xl-6" data-type="binary">
+                                            <label class="col-form-label" for="copie_cnie">
+
+                                                Copie de la CNIE pour le ou les associés
+
+                                                <span t-if="partner.copie_cnie" style="color:blue">(Document déjà chargé)
+                                                </span>
+                                            </label>
+                                            <br/>
+                                            <input t-att-disabled="partner.status_register == 'in_progress'" id="upload"
+                                                   type="file"
+                                                   name="copie_cnie" class="file"
+                                                   data-show-upload="true" data-show-caption="true"
+                                                   data-show-preview="true"
+                                                   t-att-readonly="None if partner.status_register=='draft' else '1'"/>
+                                        </div>
+                                    </t>
+                                    <t t-if="partner.mode_registration in ['pp3','pp1','pp2','pp4']">
+                                        <div t-attf-class="form-group col-xl-6" data-type="binary">
+                                            <label class="col-form-label" for="extrait_casier_judiciaire">
+                                                Un extrait du casier judiciaire ou une fiche anthropométrique datant de
+                                                moins de
+                                                trois
+                                                mois
+                                                <span t-if="partner.extrait_casier_judiciaire" style="color:blue">
+                                                    (Document
+                                                    déjà chargé)
+                                                </span>
+                                            </label>
+                                            <br/>
+                                            <input t-att-disabled="partner.status_register == 'in_progress'" id="upload"
+                                                   type="file"
+                                                   name="extrait_casier_judiciaire"
+                                                   class="file" data-show-upload="true" data-show-caption="true"
+                                                   data-show-preview="true"
+                                                   t-att-readonly="None if partner.status_register=='draft' else '1'"/>
+                                        </div>
+                                    </t>
+                                    <t t-if="partner.mode_registration in ['pp3','pp1','pp2','pp4']">
+                                        <div t-attf-class="form-group col-xl-6" data-type="binary">
+                                            <label class="col-form-label" for="photographies_recentes">
+                                                Trois photographies récentes du candidat
+                                                <span t-if="partner.photographies_recentes" style="color:blue">(Document
+                                                    déjà chargé)
+                                                </span>
+                                            </label>
+                                            <br/>
+                                            <input t-att-disabled="partner.status_register == 'in_progress'" id="upload"
+                                                   type="file"
+                                                   name="photographies_recentes"
+                                                   class="file" data-show-upload="true" data-show-caption="true"
+                                                   data-show-preview="true"
+                                                   t-att-readonly="None if partner.status_register=='draft' else '1'"/>
+                                        </div>
+                                    </t>
+                                    <!--<t t-if="partner.mode_registration in ['pp']">
+                                        <div t-attf-class="form-group col-xl-6" data-type="binary">
+                                            <label class="col-form-label" for="certificat_residence">
+                                                Un certificat de résidence et éventuellement les justificatifs de
+                                                paiement d’impôts au
+                                                Maroc, pour les candidats étrangers
+                                                <span t-if="partner.certificat_residence" style="color:blue">(Document
+                                                    déjà chargé)
+                                                </span>
+                                            </label>
+                                            <br/>
+                                            <input t-att-disabled="partner.status_register == 'in_progress'" id="upload"
+                                                   type="file"
+                                                   name="certificat_residence"
+                                                   class="file" data-show-upload="true" data-show-caption="true"
+                                                   data-show-preview="true"
+                                                   t-att-readonly="None if partner.status_register=='draft' else '1'"/>
+                                        </div>
+                                    </t>-->
+                                    <t t-if="partner.mode_registration in ['pp3','pp1','pp2','pp4']">
+                                        <div t-attf-class="form-group col-xl-6" data-type="binary">
+                                            <label class="col-form-label" for="extrait_acte_naissance">
+                                                Un extrait d’acte de naissance datant de moins de trois mois
+                                                (Recto/Verso)
+                                                <span t-if="partner.extrait_acte_naissance" style="color:blue">(Document
+                                                    déjà chargé)
+                                                </span>
+                                            </label>
+                                            <br/>
+                                            <input t-att-disabled="partner.status_register == 'in_progress'" id="upload"
+                                                   type="file"
+                                                   name="extrait_acte_naissance"
+                                                   class="file" data-show-upload="true" data-show-caption="true"
+                                                   data-show-preview="true"
+                                                   t-att-readonly="None if partner.status_register=='draft' else '1'"/>
+                                        </div>
+                                    </t>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-12">
+                        <div class="card mb-4">
+                            <div class="card-header bg-danger text-white">
+                                <h4>Déclarations</h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div t-attf-class="form-group col-xl-6" data-type="binary">
+                                        <label class="col-form-label" for="declaration_sur_honneur">
+                                            Déclaration sur l’honneur
+                                            <span t-if="partner.declaration_sur_honneur" style="color:blue">
+                                                (Document déjà chargé)
+                                            </span>
+                                        </label>
+
+                                        <!-- ✅ Lien de téléchargement si le fichier existe -->
+                                        <t t-if="partner.declaration_sur_honneur">
+                                            <a t-att-href="'/web/content/res.partner/%s/declaration_sur_honneur?download=true' % partner.id"
+                                               target="_blank"
+                                               class="btn btn-outline-primary btn-sm mt-1">
+                                                📥 Télécharger le document
+                                            </a>
+                                        </t>
+
+                                        <br/>
+
+                                        <!-- Champ de chargement -->
+                                        <input t-att-disabled="partner.status_register == 'in_progress'"
+                                               id="upload"
+                                               type="file"
+                                               name="declaration_sur_honneur"
+                                               class="file"
+                                               data-show-upload="true"
+                                               data-show-caption="true"
+                                               data-show-preview="true"
+                                               t-att-readonly="None if partner.status_register=='draft' else '1'"/>
+                                    </div>
+                                    <t t-if="partner.mode_registration in ['pp3','pm','pp1','pp2','pp4']">
+                                        <div t-attf-class="form-group col-xl-6" data-type="binary">
+                                            <label class="col-form-label" for="questionnaire">
+                                                Questionnaire dûment rempli, daté et signé
+                                                <span t-if="partner.questionnaire" style="color:blue">
+                                                    (Document déjà chargé)
+                                                </span>
+                                            </label>
+                                            <br/>
+                                            <input t-att-disabled="partner.status_register == 'in_progress'"
+                                                   id="questionnaire"
+                                                   type="file" name="questionnaire"
+                                                   class="file" data-show-upload="true" data-show-caption="true"
+                                                   data-show-preview="true"
+                                                   t-att-readonly="None if partner.status_register=='draft' else '1'"/>
+                                        </div>
+                                    </t>
+                                    <t t-if="partner.mode_registration in ['pp3','pp1']">
+                                        <div t-attf-class="form-group col-xl-6" data-type="binary">
+                                            <label class="col-form-label" for="demande_inscription_salarie">
+                                                <t t-if="partner.mode_registration in ['pp3']">
+                                                    Lettre de demande d’inscription à l’Ordre, daté et signée par le
+                                                    salarié
+                                                </t>
+                                                <t t-if="partner.mode_registration in ['pp1']">
+                                                    Lettre de demande d’inscription à l’Ordre
+                                                </t>
+                                                <span t-if="partner.demande_inscription_salarie" style="color:blue">
+                                                    (Document
+                                                    déjà chargé)
+                                                </span>
+                                            </label>
+                                            <br/>
+                                            <input t-att-disabled="partner.status_register == 'in_progress'" id="upload"
+                                                   type="file" name="demande_inscription_salarie"
+                                                   class="file" data-show-upload="true" data-show-caption="true"
+                                                   data-show-preview="true"
+                                                   t-att-readonly="None if partner.status_register=='draft' else '1'"/>
+                                        </div>
+                                    </t>
+                                    <t t-if="partner.mode_registration in ['pp3','pp4']">
+                                        <div t-attf-class="form-group col-xl-6" data-type="binary">
+                                            <label class="col-form-label" for="engagement">
+                                                Engagement de la société de prendre en charge tout membre de l'ordre
+                                                salarié de
+                                                société
+                                                <span t-if="partner.engagement" style="color:blue">(Document déjà
+                                                    chargé)
+                                                </span>
+                                            </label>
+                                            <br/>
+                                            <input t-att-disabled="partner.status_register == 'in_progress'" id="upload"
+                                                   type="file"
+                                                   name="engagement" class="file"
+                                                   data-show-upload="true" data-show-caption="true"
+                                                   data-show-preview="true"
+                                                   t-att-readonly="None if partner.status_register=='draft' else '1'"/>
+                                        </div>
+                                    </t>
+                                    <t t-if="partner.mode_registration in ['pp3']">
+                                        <div t-attf-class="form-group col-xl-6" data-type="binary">
+                                            <label class="col-form-label" for="lettre_demande_inscription">
+                                                Lettre de demande d’inscription à l'ordre, cachetée et signée par la
+                                                société
+                                                <span t-if="partner.lettre_demande_inscription" style="color:blue">
+                                                    (Document
+                                                    déjà chargé)
+                                                </span>
+                                            </label>
+                                            <br/>
+                                            <input t-att-disabled="partner.status_register == 'in_progress'" id="upload"
+                                                   type="file"
+                                                   name="lettre_demande_inscription"
+                                                   class="file" data-show-upload="true" data-show-caption="true"
+                                                   data-show-preview="true"
+                                                   t-att-readonly="None if partner.status_register=='draft' else '1'"/>
+                                        </div>
+                                    </t>
+                                    <t t-if="partner.mode_registration in ['pp2','pp1']">
+                                        <div t-attf-class="form-group col-xl-6" data-type="binary">
+                                            <label class="col-form-label" for="engagement_prise_en_charge">
+                                                Engagement de prise en charge de tout membre de l’Ordre salarié de la
+                                                société
+                                                <span t-if="partner.engagement_prise_en_charge" style="color:blue">
+                                                    (Document déjà chargé)
+                                                </span>
+                                            </label>
+                                            <br/>
+                                            <input t-att-disabled="partner.status_register == 'in_progress'"
+                                                   id="engagement_prise_en_charge" type="file"
+                                                   name="engagement_prise_en_charge"
+                                                   class="file" data-show-upload="true" data-show-caption="true"
+                                                   data-show-preview="true"
+                                                   t-att-readonly="None if partner.status_register=='draft' else '1'"/>
+                                        </div>
+                                    </t>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-12" t-if="partner.mode_registration not in ['pm']">
+                        <div class="card mb-4">
+                            <div class="card-header bg-danger text-white">
+                                <h4>Diplômes</h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <t t-if="partner.mode_registration in ['pp3','pp1','pp2','pp4']">
+                                        <div t-attf-class="form-group col-xl-6" data-type="binary">
+                                            <label class="col-form-label" for="photocopie_diplome">
+                                                Une photocopie du diplôme national d’Expert-Comptable ou d’un diplôme
+                                                reconnu
+                                                équivalent, signé et cacheté (certifiée conforme à l’original)
+                                                <span t-if="partner.photocopie_diplome" style="color:blue">(Document
+                                                    déjà chargé)
+                                                </span>
+                                            </label>
+                                            <br/>
+                                            <input t-att-disabled="partner.status_register == 'in_progress'" id="upload"
+                                                   type="file"
+                                                   name="photocopie_diplome"
+                                                   class="file" data-show-upload="true" data-show-caption="true"
+                                                   data-show-preview="true"
+                                                   t-att-readonly="None if partner.status_register=='draft' else '1'"/>
+                                        </div>
+                                    </t>
+                                    <t t-if="partner.mode_registration not in ['pm']">
+                                        <div t-attf-class="form-group col-xl-6" data-type="binary">
+                                            <label class="col-form-label" for="fiches_annuelles">
+                                                Trois Fiches annuelles de stage, pour le diplôme français (Recto/Verso)
+                                                <span t-if="partner.fiches_annuelles" style="color:blue">(Document
+                                                    déjà chargé)
+                                                </span>
+                                            </label>
+                                            <br/>
+                                            <input t-att-disabled="partner.status_register == 'in_progress'" id="upload"
+                                                   type="file"
+                                                   name="fiches_annuelles"
+                                                   class="file" data-show-upload="true" data-show-caption="true"
+                                                   data-show-preview="true"
+                                                   t-att-readonly="None if partner.status_register=='draft' else '1'"/>
+                                        </div>
+                                    </t>
+                                    <t t-if="partner.mode_registration in ['pp3','pp1','pp2','pp4']">
+                                        <div t-attf-class="form-group col-xl-6" data-type="binary">
+                                            <label class="col-form-label" for="attestation_fin_stage">
+                                                L'attestation de fin de stage, pour le diplôme étrangers
+                                                <span t-if="partner.attestation_fin_stage" style="color:blue">(Document
+                                                    déjà chargé)
+                                                </span>
+                                            </label>
+                                            <br/>
+                                            <input t-att-disabled="partner.status_register == 'in_progress'" id="upload"
+                                                   type="file"
+                                                   name="attestation_fin_stage"
+                                                   class="file" data-show-upload="true" data-show-caption="true"
+                                                   data-show-preview="true"
+                                                   t-att-readonly="None if partner.status_register=='draft' else '1'"/>
+                                        </div>
+                                    </t>
+                                    <t t-if="partner.mode_registration in ['pp3','pp1','pp2','pp4']">
+                                        <div t-attf-class="form-group col-xl-6" data-type="binary">
+                                            <label class="col-form-label" for="fiche_generale_synthese">
+                                                La fiche générale de synthèse, pour le diplôme étrangers
+                                                <span t-if="partner.fiche_generale_synthese" style="color:blue">
+                                                    (Document
+                                                    déjà chargé)
+                                                </span>
+                                            </label>
+                                            <br/>
+                                            <input t-att-disabled="partner.status_register == 'in_progress'" id="upload"
+                                                   type="file"
+                                                   name="fiche_generale_synthese"
+                                                   class="file" data-show-upload="true" data-show-caption="true"
+                                                   data-show-preview="true"
+                                                   t-att-readonly="None if partner.status_register=='draft' else '1'"/>
+                                        </div>
+                                    </t>
+                                    <t t-if="partner.mode_registration in ['pp3','pp1','pp2','pp4']">
+                                        <div t-attf-class="form-group col-xl-6" data-type="binary">
+                                            <label class="col-form-label" for="fiche_annuelle">
+                                                Les 03 Fiches annuelles de stage, pour le diplôme étrangers
+                                                <span t-if="partner.fiche_annuelle" style="color:blue">(Document
+                                                    déjà chargé)
+                                                </span>
+                                            </label>
+                                            <br/>
+                                            <input t-att-disabled="partner.status_register == 'in_progress'" id="upload"
+                                                   type="file"
+                                                   name="fiche_annuelle"
+                                                   class="file" data-show-upload="true" data-show-caption="true"
+                                                   data-show-preview="true"
+                                                   t-att-readonly="None if partner.status_register=='draft' else '1'"/>
+                                        </div>
+                                    </t>
+                                    <t t-if="partner.mode_registration in ['pp3','pp1','pp2','pp4']">
+                                        <div t-attf-class="form-group col-xl-6" data-type="binary">
+                                            <label class="col-form-label" for="attestation_equivalence">
+                                                Une attestation d’équivalence au diplôme national d’expertise comptable,
+                                                délivrée par le
+                                                ministère d’enseignement supérieur, pour tous les diplômes étrangers
+                                                <span t-if="partner.attestation_equivalence" style="color:blue">
+                                                    (Document
+                                                    déjà chargé)
+                                                </span>
+                                            </label>
+                                            <br/>
+                                            <input t-att-disabled="partner.status_register == 'in_progress'" id="upload"
+                                                   type="file"
+                                                   name="attestation_equivalence"
+                                                   class="file" data-show-upload="true" data-show-caption="true"
+                                                   data-show-preview="true"
+                                                   t-att-readonly="None if partner.status_register=='draft' else '1'"/>
+                                        </div>
+                                    </t>
+                                    <t t-if="partner.mode_registration in ['pp3','pp1','pp2','pp4']">
+                                        <div t-attf-class="form-group col-xl-6" data-type="binary">
+                                            <label class="col-form-label" for="fiche_annuelle">
+                                                La fiche annuelle de 200 heures d’audit pour les diplômes étrangers
+                                                <span t-if="partner.fiche_annuelle" style="color:blue">(Document
+                                                    déjà chargé)
+                                                </span>
+                                            </label>
+                                            <br/>
+                                            <input t-att-disabled="partner.status_register == 'in_progress'" id="upload"
+                                                   type="file"
+                                                   name="fiche_annuelle"
+                                                   class="file" data-show-upload="true" data-show-caption="true"
+                                                   data-show-preview="true"
+                                                   t-att-readonly="None if partner.status_register=='draft' else '1'"/>
+                                        </div>
+                                    </t>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--<t t-if="partner.mode_registration in ['pm']">
+                        <div t-attf-class="form-group col-xl-6" data-type="binary">
+                            <label class="col-form-label" for="actes_modificatifs">
+                                Actes modificatifs des statuts (certifiés conformes aux originaux)
+                                <span t-if="partner.actes_modificatifs" style="color:blue">(Document déjà
+                                    chargé)
+                                </span>
+                            </label>
+                            <br/>
+                            <input t-att-disabled="partner.status_register == 'in_progress'" id="upload" type="file"
+                                   name="actes_modificatifs"
+                                   class="file" data-show-upload="true" data-show-caption="true"
+                                   data-show-preview="true"
+                                   t-att-readonly="None if partner.status_register=='draft' else '1'"/>
+                        </div>
+                    </t>-->
+
+                    <!--  <t t-if="partner.mode_registration in ['pm']">
+                          <div t-attf-class="form-group col-xl-6" data-type="binary">
+                              <label class="col-form-label" for="copie_bo_jal">
+                                  Copie du BO et du JAL
+                                  <span t-if="partner.copie_bo_jal" style="color:blue">(Document déjà
+                                      chargé)
+                                  </span>
+                              </label>
+                              <br/>
+                              <input t-att-disabled="partner.status_register == 'in_progress'" id="upload" type="file"
+                                     name="copie_bo_jal" class="file"
+                                     data-show-upload="true" data-show-caption="true"
+                                     data-show-preview="true"
+                                     t-att-readonly="None if partner.status_register=='draft' else '1'"/>
+                          </div>
+                      </t>-->
+
+                    <!--<t t-if="partner.mode_registration in ['pm']">
+                        <div t-attf-class="form-group col-xl-6" data-type="binary">
+                            <label class="col-form-label" for="actes_cession">
+                                Actes de cession de parts sociales ou de transferts d’actions, le cas échéant (certifiés
+                                conformes aux originaux)
+                                <span t-if="partner.actes_cession" style="color:blue">(Document déjà
+                                    chargé)
+                                </span>
+                            </label>
+                            <br/>
+                            <input t-att-disabled="partner.status_register == 'in_progress'" id="upload" type="file"
+                                   name="actes_cession" class="file"
+                                   data-show-upload="true" data-show-caption="true"
+                                   data-show-preview="true"
+                                   t-att-readonly="None if partner.status_register=='draft' else '1'"/>
+                        </div>
+                    </t>-->
+
+                    <div class="col-lg-12">
+                        <div class="card mb-4">
+                            <div class="card-header bg-danger text-white">
+                                <h4>Documents juridiques</h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <t t-if="partner.mode_registration in ['pp3','pm']">
+                                        <div t-attf-class="form-group col-xl-6" data-type="binary">
+                                            <label class="col-form-label" for="attestation_inscription">
+                                                <t t-if="partner.mode_registration in ['pp3']">
+                                                Attestation d'inscription à la Taxe Professionnelle, au nom du cabinet
+                                                (datant de moins de trois mois)
+                                                </t>
+                                                <t t-if="partner.mode_registration in ['pm']">
+                                                Attestation d'inscription à la Taxe Professionnelle
+                                                </t>
+                                                <span t-if="partner.attestation_inscription" style="color:blue">
+                                                    (Document
+                                                    déjà chargé)
+                                                </span>
+                                            </label>
+                                            <br/>
+                                            <input t-att-disabled="partner.status_register == 'in_progress'" id="upload"
+                                                   type="file"
+                                                   name="attestation_inscription"
+                                                   class="file" data-show-upload="true" data-show-caption="true"
+                                                   data-show-preview="true"
+                                                   t-att-readonly="None if partner.status_register=='draft' else '1'"/>
+                                        </div>
+                                    </t>
+                                    <t t-if="partner.mode_registration in ['pp2','pp1','pp4']">
+                                        <div t-attf-class="form-group col-xl-6" data-type="binary">
+                                            <label class="col-form-label" for="attestation_inscription">
+                                                Attestation d'inscription à la Taxe Professionnelle (datant de moins de
+                                                trois mois)
+                                                <span t-if="partner.attestation_inscription" style="color:blue">
+                                                    (Document
+                                                    déjà chargé)
+                                                </span>
+                                            </label>
+                                            <br/>
+                                            <input t-att-disabled="partner.status_register == 'in_progress'" id="upload"
+                                                   type="file"
+                                                   name="attestation_inscription"
+                                                   class="file" data-show-upload="true" data-show-caption="true"
+                                                   data-show-preview="true"
+                                                   t-att-readonly="None if partner.status_register=='draft' else '1'"/>
+                                        </div>
+                                    </t>
+                                    <t t-if="partner.mode_registration in ['pp2','pp1']">
+                                        <div t-attf-class="form-group col-xl-6" data-type="binary">
+                                            <label class="col-form-label" for="copie_contrat_bail">
+                                                Une copie certifiée du contrat de bail certifiée conforme ou certificat
+                                                de
+                                                propriété
+                                                du siège social
+                                                <span t-if="partner.copie_contrat_bail" style="color:blue">(Document
+                                                    déjà chargé)
+                                                </span>
+                                            </label>
+                                            <br/>
+                                            <input t-att-disabled="partner.status_register == 'in_progress'" id="upload"
+                                                   type="file"
+                                                   name="copie_contrat_bail"
+                                                   class="file" data-show-upload="true" data-show-caption="true"
+                                                   data-show-preview="true"
+                                                   t-att-readonly="None if partner.status_register=='draft' else '1'"/>
+                                        </div>
+                                    </t>
+                                    <t t-if="partner.mode_registration in ['pp3']">
+                                        <div t-attf-class="form-group col-xl-6" data-type="binary">
+                                            <label class="col-form-label" for="bulletin_notification">
+                                                Bulletin de notification de l’Identifiant Fiscal, au nom du cabinet
+                                                (datant de moins de trois mois)
+                                                <span t-if="partner.bulletin_notification" style="color:blue">(Document
+                                                    déjà chargé)
+                                                </span>
+                                            </label>
+                                            <br/>
+                                            <input t-att-disabled="partner.status_register == 'in_progress'" id="upload"
+                                                   type="file"
+                                                   name="bulletin_notification"
+                                                   class="file" data-show-upload="true" data-show-caption="true"
+                                                   data-show-preview="true"
+                                                   t-att-readonly="None if partner.status_register=='draft' else '1'"/>
+                                        </div>
+                                    </t>
+                                    <t t-if="partner.mode_registration in ['pm']">
+                                        <div t-attf-class="form-group col-xl-6" data-type="binary">
+                                            <label class="col-form-label" for="bulletin_notification">
+                                                Bulletin de notification de l’Identifiant Fiscal
+                                                <span t-if="partner.bulletin_notification" style="color:blue">(Document
+                                                    déjà chargé)
+                                                </span>
+                                            </label>
+                                            <br/>
+                                            <input t-att-disabled="partner.status_register == 'in_progress'" id="upload"
+                                                   type="file"
+                                                   name="bulletin_notification"
+                                                   class="file" data-show-upload="true" data-show-caption="true"
+                                                   data-show-preview="true"
+                                                   t-att-readonly="None if partner.status_register=='draft' else '1'"/>
+                                        </div>
+                                    </t>
+                                    <t t-if="partner.mode_registration in ['pp2','pp1','pp4']">
+                                        <div t-attf-class="form-group col-xl-6" data-type="binary">
+                                            <label class="col-form-label" for="bulletin_notification">
+                                                Bulletin de notification de l’Identifiant Fiscal
+                                                (datant de moins de trois mois)
+                                                <span t-if="partner.bulletin_notification" style="color:blue">(Document
+                                                    déjà chargé)
+                                                </span>
+                                            </label>
+                                            <br/>
+                                            <input t-att-disabled="partner.status_register == 'in_progress'" id="upload"
+                                                   type="file"
+                                                   name="bulletin_notification"
+                                                   class="file" data-show-upload="true" data-show-caption="true"
+                                                   data-show-preview="true"
+                                                   t-att-readonly="None if partner.status_register=='draft' else '1'"/>
+                                        </div>
+                                    </t>
+                                    <t t-if="partner.mode_registration in ['pp3','pm','pp2','pp1','pp4']">
+                                        <div t-attf-class="form-group col-xl-6" data-type="binary">
+                                            <label class="col-form-label" for="attestation_assurance">
+                                                <t t-if="partner.mode_registration in ['pm','pp2','pp1']">
+                                                    Attestation d’assurance Responsabilité Civile Professionnelle au nom
+                                                    de la société
+                                                </t>
+                                                <t t-if="partner.mode_registration in ['pp3']">
+                                                    Attestation d’assurance Responsabilité Civile Professionnelle, au
+                                                    nom du cabinet
+                                                </t>
+                                                <t t-if="partner.mode_registration in ['pp1']">
+                                                    Attestation d’assurance Responsabilité Civile Professionnelle (avec
+                                                    mention d’expert-comptable)
+                                                </t>
+                                                <t t-if="partner.mode_registration in ['pp4']">
+                                                    Attestation d’assurance Responsabilité Civile Professionnelle
+                                                </t>
+                                                <span t-if="partner.attestation_assurance" style="color:blue">(Document
+                                                    déjà chargé)
+                                                </span>
+                                            </label>
+                                            <br/>
+                                            <input t-att-disabled="partner.status_register == 'in_progress'" id="upload"
+                                                   type="file"
+                                                   name="attestation_assurance"
+                                                   class="file" data-show-upload="true" data-show-caption="true"
+                                                   data-show-preview="true"
+                                                   t-att-readonly="None if partner.status_register=='draft' else '1'"/>
+                                        </div>
+                                    </t>
+                                    <!--<t t-if="partner.mode_registration in ['pm']">
+                                        <div t-attf-class="form-group col-xl-6" data-type="binary">
+                                            <label class="col-form-label" for="statuts">
+                                                Statuts ou Status mis à jour intervenues (certifiés conformes aux
+                                                originaux)
+                                                <span t-if="partner.statuts" style="color:blue">(Document déjà chargé)
+                                                </span>
+                                            </label>
+                                            <br/>
+                                            <input t-att-disabled="partner.status_register == 'in_progress'" id="upload"
+                                                   type="file"
+                                                   name="statuts" class="file"
+                                                   data-show-upload="true" data-show-caption="true"
+                                                   data-show-preview="true"
+                                                   t-att-readonly="None if partner.status_register=='draft' else '1'"/>
+                                        </div>
+                                    </t>-->
+                                    <t t-if="partner.mode_registration in ['pm','pp2','pp1','pp4']">
+                                        <div t-attf-class="form-group col-xl-6" data-type="binary">
+                                            <label class="col-form-label" for="actes_modificatifs">
+                                                Actes modificatifs des statuts (certifiés conformes aux originaux)
+                                                <span t-if="partner.actes_modificatifs" style="color:blue">(Document
+                                                    déjà
+                                                    chargé)
+                                                </span>
+                                            </label>
+                                            <br/>
+                                            <input t-att-disabled="partner.status_register == 'in_progress'" id="upload"
+                                                   type="file"
+                                                   name="actes_modificatifs"
+                                                   class="file" data-show-upload="true" data-show-caption="true"
+                                                   data-show-preview="true"
+                                                   t-att-readonly="None if partner.status_register=='draft' else '1'"/>
+                                        </div>
+                                    </t>
+                                    <t t-if="partner.mode_registration in ['pm','pp2','pp1','pp4']">
+                                        <div t-attf-class="form-group col-xl-6" data-type="binary">
+                                            <label class="col-form-label" for="copie_bo_jal">
+                                                Une copie du BO et du JAL
+                                                <span t-if="partner.copie_bo_jal" style="color:blue">(Document
+                                                    déjà chargé)
+                                                </span>
+                                            </label>
+                                            <br/>
+                                            <input t-att-disabled="partner.status_register == 'in_progress'" id="upload"
+                                                   type="file"
+                                                   name="copie_convention"
+                                                   class="file" data-show-upload="true" data-show-caption="true"
+                                                   data-show-preview="true"
+                                                   t-att-readonly="None if partner.status_register=='draft' else '1'"/>
+                                        </div>
+                                    </t>
+                                    <t t-if="partner.mode_registration in ['pm','pp2','pp1','pp4']">
+                                        <div t-attf-class="form-group col-xl-6" data-type="binary">
+                                            <label class="col-form-label" for="actes_cession">
+                                                Actes de cession de parts sociales ou de transferts d’actions, le cas
+                                                échéant (certifiés
+                                                conformes aux originaux)
+                                                <span t-if="partner.actes_cession" style="color:blue">(Document déjà
+                                                    chargé)
+                                                </span>
+                                            </label>
+                                            <br/>
+                                            <input t-att-disabled="partner.status_register == 'in_progress'" id="upload"
+                                                   type="file"
+                                                   name="actes_cession" class="file"
+                                                   data-show-upload="true" data-show-caption="true"
+                                                   data-show-preview="true"
+                                                   t-att-readonly="None if partner.status_register=='draft' else '1'"/>
+                                        </div>
+                                    </t>
+                                    <t t-if="partner.mode_registration in ['pp3','pm','pp2','pp1','pp4']">
+                                        <div t-attf-class="form-group col-xl-6" data-type="binary">
+                                            <label class="col-form-label" for="modele_7">
+                                                Certificat modèle 7 du Registre du Commerce (datant de moins de trois
+                                                mois)
+                                                <span t-if="partner.modele_7" style="color:blue">(Document déjà chargé)
+                                                </span>
+                                            </label>
+                                            <br/>
+                                            <input t-att-disabled="partner.status_register == 'in_progress'" id="upload"
+                                                   type="file"
+                                                   name="modele_7" class="file"
+                                                   data-show-upload="true" data-show-caption="true"
+                                                   data-show-preview="true"
+                                                   t-att-readonly="None if partner.status_register=='draft' else '1'"/>
+                                        </div>
+                                    </t>
+                                    <t t-if="partner.mode_registration in ['pm','pp2','pp1']">
+                                        <div t-attf-class="form-group col-xl-6" data-type="binary">
+                                            <label class="col-form-label" for="contrat_travail">
+                                                Contrat de travail pour le ou les associés non-membres de l'Ordre, le
+                                                cas échéant
+                                                <span t-if="partner.contrat_travail" style="color:blue">(Document déjà
+                                                    chargé)
+                                                </span>
+                                            </label>
+                                            <br/>
+                                            <input t-att-disabled="partner.status_register == 'in_progress'" id="upload"
+                                                   type="file"
+                                                   name="contrat_travail" class="file"
+                                                   data-show-upload="true" data-show-caption="true"
+                                                   data-show-preview="true"
+                                                   t-att-readonly="None if partner.status_register=='draft' else '1'"/>
+                                        </div>
+                                    </t>
+                                    <t t-if="partner.mode_registration in ['pm']">
+                                        <div t-attf-class="form-group col-xl-6" data-type="binary">
+                                            <label class="col-form-label" for="copie_conforme_contrat">
+                                                Le contrat de bail (copie certifiée conforme) ou certificat de propriété
+                                                du siège social
+                                                <span t-if="partner.copie_conforme_contrat" style="color:blue">(Document
+                                                    déjà chargé)
+                                                </span>
+                                            </label>
+                                            <br/>
+                                            <input t-att-disabled="partner.status_register == 'in_progress'" id="upload"
+                                                   type="file"
+                                                   name="copie_conforme_contrat"
+                                                   class="file" data-show-upload="true" data-show-caption="true"
+                                                   data-show-preview="true"
+                                                   t-att-readonly="None if partner.status_register=='draft' else '1'"/>
+                                        </div>
+                                    </t>
+                                    <t t-if="partner.mode_registration in ['pp4']">
+                                        <div t-attf-class="form-group col-xl-6" data-type="binary">
+                                            <label class="col-form-label" for="copie_conforme_contrat">
+                                                Copie du contrat de bail du cabinet (certifiée conforme à l’original)
+                                                <span t-if="partner.copie_conforme_contrat" style="color:blue">(Document
+                                                    déjà chargé)
+                                                </span>
+                                            </label>
+                                            <br/>
+                                            <input t-att-disabled="partner.status_register == 'in_progress'" id="upload"
+                                                   type="file"
+                                                   name="copie_conforme_contrat"
+                                                   class="file" data-show-upload="true" data-show-caption="true"
+                                                   data-show-preview="true"
+                                                   t-att-readonly="None if partner.status_register=='draft' else '1'"/>
+                                        </div>
+                                    </t>
+                                    <t t-if="partner.mode_registration in ['pm','pp2','pp1']">
+                                        <div t-attf-class="form-group col-xl-6" data-type="binary">
+                                            <label class="col-form-label" for="attestation_inscription_membre">
+                                                Attestation d’inscription du membre de l'ordre personne physique
+                                                <span t-if="partner.attestation_inscription_membre" style="color:blue">
+                                                    (Document
+                                                    déjà chargé)
+                                                </span>
+                                            </label>
+                                            <br/>
+                                            <input t-att-disabled="partner.status_register == 'in_progress'" id="upload"
+                                                   type="file"
+                                                   name="attestation_inscription_membre"
+                                                   class="file" data-show-upload="true" data-show-caption="true"
+                                                   data-show-preview="true"
+                                                   t-att-readonly="None if partner.status_register=='draft' else '1'"/>
+                                        </div>
+                                    </t>
+                                    <t t-if="partner.mode_registration in ['pp']">
+                                        <div t-attf-class="form-group col-xl-6" data-type="binary">
+                                            <label class="col-form-label" for="copie_convention">
+                                                Une copie de la convention de réciprocité prévue à l’article 20 de la
+                                                loi 15/89 pour les
+                                                étrangers
+                                                <span t-if="partner.copie_convention" style="color:blue">(Document
+                                                    déjà chargé)
+                                                </span>
+                                            </label>
+                                            <br/>
+                                            <input t-att-disabled="partner.status_register == 'in_progress'" id="upload"
+                                                   type="file"
+                                                   name="copie_convention"
+                                                   class="file" data-show-upload="true" data-show-caption="true"
+                                                   data-show-preview="true"
+                                                   t-att-readonly="None if partner.status_register=='draft' else '1'"/>
+                                        </div>
+                                    </t>
+                                    <t t-if="partner.mode_registration in ['pm']">
+                                        <div t-attf-class="form-group col-xl-6" data-type="binary">
+                                            <label class="col-form-label" for="attestation_radiation">
+                                                Attestation de radiation de la personne physique
+                                                <span t-if="partner.attestation_radiation" style="color:blue">(Document
+                                                    déjà chargé)
+                                                </span>
+                                            </label>
+                                            <br/>
+                                            <input t-att-disabled="partner.status_register == 'in_progress'" id="upload"
+                                                   type="file" name="attestation_radiation"
+                                                   class="file" data-show-upload="true" data-show-caption="true"
+                                                   data-show-preview="true"
+                                                   t-att-readonly="None if partner.status_register=='draft' else '1'"/>
+                                        </div>
+                                    </t>
+                                    <t t-if="partner.mode_registration in ['pm']">
+                                        <div t-attf-class="form-group col-xl-6" data-type="binary">
+                                            <label class="col-form-label" for="engagement">
+                                                Engagement de prendre en charge tout membre de l'ordre salarié de
+                                                société
+                                                <span t-if="partner.engagement" style="color:blue">(Document déjà
+                                                    chargé)
+                                                </span>
+                                            </label>
+                                            <br/>
+                                            <input t-att-disabled="partner.status_register == 'in_progress'" id="upload"
+                                                   type="file"
+                                                   name="engagement" class="file"
+                                                   data-show-upload="true" data-show-caption="true"
+                                                   data-show-preview="true"
+                                                   t-att-readonly="None if partner.status_register=='draft' else '1'"/>
+                                        </div>
+                                    </t>
+                                    <t t-if="partner.mode_registration in ['pm']">
+                                        <div t-attf-class="form-group col-xl-6" data-type="binary">
+                                            <label class="col-form-label" for="lettre_demande_inscription">
+                                                Lettre de demande d'inscription précisant la liste des associés, le
+                                                pourcentage de participation de chacun et l'identité des dirigeants
+                                                <span class="text-danger">*</span>
+                                                <span t-if="partner.lettre_demande_inscription" style="color:blue">
+                                                    (Document déjà chargé)
+                                                </span>
+                                            </label>
+                                            <br/>
+                                            <input t-att-disabled="partner.status_register == 'in_progress'" id="upload"
+                                                   type="file"
+                                                   name="lettre_demande_inscription"
+                                                   class="file" data-show-upload="true" data-show-caption="true"
+                                                   data-show-preview="true"
+                                                   t-att-readonly="None if partner.status_register=='draft' else '1'"/>
+                                        </div>
+                                    </t>
+
+                                    <!-- Document 2: Statuts mis à jour -->
+                                    <t t-if="partner.mode_registration in ['pm']">
+                                        <div t-attf-class="form-group col-xl-6" data-type="binary">
+                                            <label class="col-form-label" for="statuts_mis_a_jour">
+                                                Statuts mis à jour suite aux différentes modifications intervenues
+                                                (certifiés conformes aux originaux), cf modèles de statuts proposés par
+                                                l'OEC sur le site
+                                                <span class="text-danger">*</span>
+                                                <span t-if="partner.statuts_mis_a_jour" style="color:blue">
+                                                    (Document déjà chargé)
+                                                </span>
+                                            </label>
+                                            <br/>
+                                            <input t-att-disabled="partner.status_register == 'in_progress'" id="upload"
+                                                   type="file"
+                                                   name="statuts_mis_a_jour"
+                                                   class="file" data-show-upload="true" data-show-caption="true"
+                                                   data-show-preview="true"
+                                                   t-att-readonly="None if partner.status_register=='draft' else '1'"/>
+                                        </div>
+                                    </t>
+                                    <t t-if="partner.mode_registration in ['pp2','pp4']">
+                                        <div t-attf-class="form-group col-xl-6" data-type="binary">
+                                            <label class="col-form-label" for="statuts_mis_a_jour">
+                                                Statuts mis à jour suite aux différentes modifications (certifiés conformes), cf modèles OEC
+                                                <span class="text-danger">*</span>
+                                                <span t-if="partner.statuts_mis_a_jour" style="color:blue">
+                                                    (Document déjà chargé)
+                                                </span>
+                                            </label>
+                                            <br/>
+                                            <input t-att-disabled="partner.status_register == 'in_progress'" id="upload"
+                                                   type="file"
+                                                   name="statuts_mis_a_jour"
+                                                   class="file" data-show-upload="true" data-show-caption="true"
+                                                   data-show-preview="true"
+                                                   t-att-readonly="None if partner.status_register=='draft' else '1'"/>
+                                        </div>
+                                    </t>
+                                    <t t-if="partner.mode_registration in ['pp3']">
+                                        <div t-attf-class="form-group col-xl-6" data-type="binary">
+                                            <label class="col-form-label" for="avenant_contrat_travail">
+                                                Avenant au contrat de travail visé par le Président du Conseil National
+                                                <span t-if="partner.avenant_contrat_travail" style="color:blue">
+                                                    (Document
+                                                    déjà chargé)
+                                                </span>
+                                            </label>
+                                            <br/>
+                                            <input t-att-disabled="partner.status_register == 'in_progress'" id="upload"
+                                                   type="file" name="avenant_contrat_travail"
+                                                   class="file" data-show-upload="true" data-show-caption="true"
+                                                   data-show-preview="true"
+                                                   t-att-readonly="None if partner.status_register=='draft' else '1'"/>
+                                        </div>
+                                    </t>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
+                        <div class="card mb-4">
+                            <div class="card-header bg-danger text-white">
+                                <h4>Paiement</h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="alert alert-info">
+                                            <h5>
+                                                <i class="fas fa-money-check-alt"></i>
+                                                Chèque correspondant au droit d'entrée
+                                                <span class="text-danger">*</span>
+                                            </h5>
+                                            <ul class="mb-3">
+                                                <li>
+                                                    <strong>4000,00 DH</strong>
+                                                    pour les inscrits sur la ville de Casablanca
+                                                </li>
+                                                <li>
+                                                    <strong>3000,00 DH</strong>
+                                                    pour ceux inscrits hors la ville de Casablanca
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group col-xl-6" data-type="binary">
+                                        <label class="col-form-label" for="cheque_droit_entree">
+                                            Chèque du droit d'entrée
+                                            <span class="text-danger">*</span>
+                                            <span t-if="partner.cheque_droit_entree" style="color:blue">
+                                                (Document déjà chargé)
+                                            </span>
+                                        </label>
+                                        <br/>
+                                        <input t-att-disabled="partner.status_register == 'in_progress'"
+                                               type="file"
+                                               name="cheque_droit_entree"
+                                               class="file"
+                                               data-show-upload="true"
+                                               data-show-caption="true"
+                                               data-show-preview="true"
+                                               t-att-readonly="None if partner.status_register=='draft' else '1'"/>
+                                    </div>
+
+                                    <div class="form-group col-xl-6">
+                                        <label class="col-form-label" for="montant_droit_entree">
+                                            Montant du droit d'entrée
+                                            <span class="text-danger">*</span>
+                                        </label>
+                                        <select name="montant_droit_entree"
+                                                class="form-control"
+                                                t-att-disabled="partner.status_register == 'in_progress'"
+                                                t-att-readonly="None if partner.status_register=='draft' else '1'">
+                                            <option value="">-- Sélectionner le montant --</option>
+                                            <option value="4000"
+                                                    t-att-selected="partner.montant_droit_entree == '4000'">
+                                                4000,00 DH (Casablanca)
+                                            </option>
+                                            <option value="3000"
+                                                    t-att-selected="partner.montant_droit_entree == '3000'">
+                                                3000,00 DH (Hors Casablanca)
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!--<t t-if="partner.mode_registration in ['pm', 'pp']">
+                            <div t-attf-class="form-group col-xl-6" data-type="binary">
+                                <label class="col-form-label" for="copie_conforme_contrat">
+                                    Contrat de bail ou certificat de propriété du siège social (Copie certifiée conforme)
+                                    <span t-if="partner.copie_conforme_contrat" style="color:blue">(Document
+                                        déjà chargé)
+                                    </span>
+                                </label>
+                                <br/>
+                                <input t-att-disabled="partner.status_register == 'in_progress'" id="upload" type="file"
+                                       name="copie_conforme_contrat"
+                                       class="file" data-show-upload="true" data-show-caption="true"
+                                       data-show-preview="true"
+                                       t-att-readonly="None if partner.status_register=='draft' else '1'"/>
+                            </div>
+                        </t>-->
+
+                        <!--< <t t-if="partner.mode_registration in ['pm']">
+                             <div t-attf-class="form-group col-xl-6" data-type="binary">
+                                 <label class="col-form-label" for="modele_7">
+                                     Certificat modèle 7 du Registre du Commerce (datant de moins de trois mois)
+                                     <span t-if="partner.modele_7" style="color:blue">(Document déjà chargé)
+                                     </span>
+                                 </label>
+                                 <br/>
+                                 <input t-att-disabled="partner.status_register == 'in_progress'" id="upload" type="file"
+                                        name="modele_7" class="file"
+                                        data-show-upload="true" data-show-caption="true"
+                                        data-show-preview="true"
+                                        t-att-readonly="None if partner.status_register=='draft' else '1'"/>
+                             </div>
+                         </t>-->
+
+                        <!-- <t t-if="partner.mode_registration in ['pm']">
+                             <div t-attf-class="form-group col-xl-6" data-type="binary">
+                                 <label class="col-form-label" for="attestation_radiation">
+                                     Attestation de radiation de la personne physique
+                                     <span t-if="partner.attestation_radiation" style="color:blue">(Document
+                                         déjà chargé)
+                                     </span>
+                                 </label>
+                                 <br/>
+                                 <input t-att-disabled="partner.status_register == 'in_progress'" id="upload" type="file" name="attestation_radiation"
+                                        class="file" data-show-upload="true" data-show-caption="true"
+                                        data-show-preview="true"
+                                        t-att-readonly="None if partner.status_register=='draft' else '1'"/>
+                             </div>
+                         </t>-->
+                        <!--<div class="col-lg-12">
+                            <div class="card mb-4">
+                                <div class="card-header bg-primary text-white">
+                                    <h4>Documents financiers</h4>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <t t-if="partner.mode_registration in ['pp3']">
+                                            <div t-attf-class="form-group col-xl-6" data-type="binary">
+                                                <label class="col-form-label" for="attestation_assurance">
+                                                    <t t-if="partner.mode_registration in ['pm']">
+                                                        Attestation d’assurance Responsabilité Civile Professionnelle au nom
+                                                        de la société
+                                                    </t>
+                                                    <t t-if="partner.mode_registration in ['pp1','pp3','pp4']">
+                                                        Attestation d’assurance Responsabilité Civile Professionnelle (avec
+                                                        mention
+                                                        d’expert-comptable)
+                                                    </t>
+                                                    <span t-if="partner.attestation_assurance" style="color:blue">(Document
+                                                        déjà chargé)
+                                                    </span>
+                                                </label>
+                                                <br/>
+                                                <input t-att-disabled="partner.status_register == 'in_progress'" id="upload"
+                                                       type="file"
+                                                       name="attestation_assurance"
+                                                       class="file" data-show-upload="true" data-show-caption="true"
+                                                       data-show-preview="true"
+                                                       t-att-readonly="None if partner.status_register=='draft' else '1'"/>
+                                            </div>
+                                        </t>
+
+
+
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>-->
+
+                        <!-- <t t-if="partner.mode_registration in ['pm']">
+                             <div t-attf-class="form-group col-xl-6" data-type="binary">
+                                 <label class="col-form-label" for="attestation_inscription">
+                                     Attestation d'inscription à la Taxe Professionnelle
+                                     <span t-if="partner.attestation_inscription" style="color:blue">(Document
+                                         déjà chargé)
+                                     </span>
+                                 </label>
+                                 <br/>
+                                 <input t-att-disabled="partner.status_register == 'in_progress'" id="upload" type="file"
+                                        name="attestation_inscription"
+                                        class="file" data-show-upload="true" data-show-caption="true"
+                                        data-show-preview="true"
+                                        t-att-readonly="None if partner.status_register=='draft' else '1'"/>
+                             </div>
+                         </t>-->
+
+                        <!--    <t t-if="partner.mode_registration in ['pm']">
+                                <div t-attf-class="form-group col-xl-6" data-type="binary">
+                                    <label class="col-form-label" for="bulletin_notification">
+                                        Bulletin de notification de l’Identifiant Fiscal
+                                        <span t-if="partner.bulletin_notification" style="color:blue">(Document
+                                            déjà chargé)
+                                        </span>
+                                    </label>
+                                    <br/>
+                                    <input t-att-disabled="partner.status_register == 'in_progress'" id="upload" type="file"
+                                           name="bulletin_notification"
+                                           class="file" data-show-upload="true" data-show-caption="true"
+                                           data-show-preview="true"
+                                           t-att-readonly="None if partner.status_register=='draft' else '1'"/>
+                                </div>
+                            </t>-->
+
+                        <!-- <div t-attf-class="form-group col-xl-6" data-type="binary">
+                            <label class="col-form-label" for="copie_cheque">
+                                Chèque correspond au droit d'entrée
+                                <span t-if="partner.copie_cheque" style="color:blue">(Document déjà
+                                    chargé)
+                                </span>
+                            </label>
+                            <br />
+                            <input id="upload" type="file" name="copie_cheque" class="file"
+                                data-show-upload="true" data-show-caption="true"
+                                data-show-preview="true"
+                                t-att-readonly="None if partner.status_register=='draft' else '1'" />
+                        </div> -->
+
+                        <!-- <t t-if="partner.mode_registration in ['pm']">
+                             <div t-attf-class="form-group col-xl-6" data-type="binary">
+                                 <label class="col-form-label" for="contrat_travail">
+                                     Contrat de travail pour le ou les associés non membre de l'ordre
+                                     <span t-if="partner.contrat_travail" style="color:blue">(Document déjà
+                                         chargé)
+                                     </span>
+                                 </label>
+                                 <br/>
+                                 <input t-att-disabled="partner.status_register == 'in_progress'" id="upload" type="file"
+                                        name="contrat_travail" class="file"
+                                        data-show-upload="true" data-show-caption="true"
+                                        data-show-preview="true"
+                                        t-att-readonly="None if partner.status_register=='draft' else '1'"/>
+                             </div>
+                         </t>-->
+
+
+                        <!--<t t-if="partner.mode_registration not in ['pm']">
+                            <div t-attf-class="form-group col-xl-6" data-type="binary">
+                                <label class="col-form-label" for="engagement">
+                                    Engagement de prendre en charge tout membre de l'ordre salarié de société
+                                    <span t-if="partner.engagement" style="color:blue">(Document déjà chargé)
+                                    </span>
+                                </label>
+                                <br/>
+                                <input t-att-disabled="partner.status_register == 'in_progress'" id="upload" type="file"
+                                       name="engagement" class="file"
+                                       data-show-upload="true" data-show-caption="true"
+                                       data-show-preview="true"
+                                       t-att-readonly="None if partner.status_register=='draft' else '1'"/>
+                            </div>
+                        </t>-->
+
+                        <!--<t t-if="partner.mode_registration in ['pm']">
+                            <div t-attf-class="form-group col-xl-6" data-type="binary">
+                                <label class="col-form-label" for="attestation_inscription_membre">
+                                    Attestation d’inscription du membre de l'ordre personne physique
+                                    <span t-if="partner.attestation_inscription_membre" style="color:blue">(Document
+                                        déjà chargé)
+                                    </span>
+                                </label>
+                                <br/>
+                                <input t-att-disabled="partner.status_register == 'in_progress'" id="upload" type="file"
+                                       name="attestation_inscription_membre"
+                                       class="file" data-show-upload="true" data-show-caption="true"
+                                       data-show-preview="true"
+                                       t-att-readonly="None if partner.status_register=='draft' else '1'"/>
+                            </div>
+                        </t>-->
+
+
+                        <!-- <t t-if="partner.mode_registration not in ['pm']">
+                             <div t-attf-class="form-group col-xl-6" data-type="binary">
+                                 <label class="col-form-label" for="photographies_recentes">
+                                     Photo récente du candidat
+                                     <span t-if="partner.photographies_recentes" style="color:blue">(Document
+                                         déjà chargé)
+                                     </span>
+                                 </label>
+                                 <br/>
+                                 <input t-att-disabled="partner.status_register == 'in_progress'" id="upload" type="file"
+                                        name="photographies_recentes"
+                                        class="file" data-show-upload="true" data-show-caption="true"
+                                        data-show-preview="true"
+                                        t-att-readonly="None if partner.status_register=='draft' else '1'"/>
+                             </div>
+                         </t>-->
+
+                        <!-- <t t-if="partner.mode_registration in ['pp']">
+                             <div t-attf-class="form-group col-xl-6" data-type="binary">
+                                 <label class="col-form-label" for="attestation_equivalence">
+                                     Une attestation d’équivalence au diplôme national d’expertise comptable, délivrée par le
+                                     ministère d’enseignement supérieur, pour tous les diplômes étrangers
+                                     <span t-if="partner.attestation_equivalence" style="color:blue">(Document
+                                         déjà chargé)
+                                     </span>
+                                 </label>
+                                 <br/>
+                                 <input t-att-disabled="partner.status_register == 'in_progress'" id="upload" type="file"
+                                        name="attestation_equivalence"
+                                        class="file" data-show-upload="true" data-show-caption="true"
+                                        data-show-preview="true"
+                                        t-att-readonly="None if partner.status_register=='draft' else '1'"/>
+                             </div>
+                         </t>-->
+
+                        <!-- <t t-if="partner.mode_registration not in ['pm']">
+                             <div t-attf-class="form-group col-xl-6" data-type="binary">
+                                 <label class="col-form-label" for="fiches_annuelles">
+                                     Trois Fiches annuelles de stage, pour le diplôme français (Recto/Verso)
+                                     <span t-if="partner.fiches_annuelles" style="color:blue">(Document
+                                         déjà chargé)
+                                     </span>
+                                 </label>
+                                 <br/>
+                                 <input t-att-disabled="partner.status_register == 'in_progress'" id="upload" type="file"
+                                        name="fiches_annuelles"
+                                        class="file" data-show-upload="true" data-show-caption="true"
+                                        data-show-preview="true"
+                                        t-att-readonly="None if partner.status_register=='draft' else '1'"/>
+                             </div>
+                         </t>-->
+
+                        <!--<t t-if="partner.mode_registration in ['pp']">
+                            <div t-attf-class="form-group col-xl-6" data-type="binary">
+                                <label class="col-form-label" for="attestation_fin_stage">
+                                    L'attestation de fin de stage, pour le diplôme français
+                                    <span t-if="partner.attestation_fin_stage" style="color:blue">(Document
+                                        déjà chargé)
+                                    </span>
+                                </label>
+                                <br/>
+                                <input t-att-disabled="partner.status_register == 'in_progress'" id="upload" type="file"
+                                       name="attestation_fin_stage"
+                                       class="file" data-show-upload="true" data-show-caption="true"
+                                       data-show-preview="true"
+                                       t-att-readonly="None if partner.status_register=='draft' else '1'"/>
+                            </div>
+                        </t>-->
+
+                        <!-- <t t-if="partner.mode_registration not in ['pm']">
+                            <div t-attf-class="form-group col-xl-6">
+                                <label class="col-form-label" for="hours">
+                                    Avez-vous 200 heures d'audit?
+                                </label>
+                                <br />
+                                <select class="form-control" name="hours">
+                                    <option value="yes" t-att-selected="partner.200_hours == 'yes'">Oui</option>
+                                    <option value="no" t-att-selected="partner.200_hours == 'no'">Non</option>
+                                </select>
+                            </div>
+                        </t> -->
+
+                        <!-- <t t-if="partner.mode_registration in ['pp']">
+                             <div t-attf-class="form-group col-xl-6" data-type="binary">
+                                 <label class="col-form-label" for="fiche_generale_synthese">
+                                     La fiche générale de synthèse, pour le diplôme français
+                                     <span t-if="partner.fiche_generale_synthese" style="color:blue">(Document
+                                         déjà chargé)
+                                     </span>
+                                 </label>
+                                 <br/>
+                                 <input t-att-disabled="partner.status_register == 'in_progress'" id="upload" type="file"
+                                        name="fiche_generale_synthese"
+                                        class="file" data-show-upload="true" data-show-caption="true"
+                                        data-show-preview="true"
+                                        t-att-readonly="None if partner.status_register=='draft' else '1'"/>
+                             </div>
+                         </t>-->
+
+                        <!--<t t-if="partner.mode_registration in ['pp']">
+                            <div t-attf-class="form-group col-xl-6" data-type="binary">
+                                <label class="col-form-label" for="fiche_annuelle">
+                                    Les 03 Fiches annuelles de stage, pour le diplôme français
+                                    <span t-if="partner.fiche_annuelle" style="color:blue">(Document
+                                        déjà chargé)
+                                    </span>
+                                </label>
+                                <br/>
+                                <input t-att-disabled="partner.status_register == 'in_progress'" id="upload" type="file"
+                                       name="fiche_annuelle"
+                                       class="file" data-show-upload="true" data-show-caption="true"
+                                       data-show-preview="true"
+                                       t-att-readonly="None if partner.status_register=='draft' else '1'"/>
+                            </div>
+                        </t>-->
+                        <!-- <t t-if="partner.mode_registration in ['pp']">
+                             <div t-attf-class="form-group col-xl-6" data-type="binary">
+                                 <label class="col-form-label" for="fiche_annuelle">
+                                     La fiche annuelle de 200 heures d’audit pour les diplômes étrangers
+                                     <span t-if="partner.fiche_annuelle" style="color:blue">(Document
+                                         déjà chargé)
+                                     </span>
+                                 </label>
+                                 <br/>
+                                 <input t-att-disabled="partner.status_register == 'in_progress'" id="upload" type="file"
+                                        name="fiche_annuelle"
+                                        class="file" data-show-upload="true" data-show-caption="true"
+                                        data-show-preview="true"
+                                        t-att-readonly="None if partner.status_register=='draft' else '1'"/>
+                             </div>
+                         </t>-->
+                        <!-- <t t-if="partner.mode_registration in ['pm']">
+                             <div t-attf-class="form-group col-xl-6" data-type="binary">
+                                 <label class="col-form-label" for="engagement_prise_en_charge">
+                                     Engagement de prise en charge de tout membre de l’Ordre salarié de la société
+                                     <span t-if="partner.engagement_prise_en_charge" style="color:blue">
+                                         (Document déjà chargé)
+                                     </span>
+                                 </label>
+                                 <br/>
+                                 <input t-att-disabled="partner.status_register == 'in_progress'"
+                                        id="engagement_prise_en_charge" type="file" name="engagement_prise_en_charge"
+                                        class="file" data-show-upload="true" data-show-caption="true"
+                                        data-show-preview="true"
+                                        t-att-readonly="None if partner.status_register=='draft' else '1'"/>
+                             </div>
+                         </t>-->
+                        <!-- <t t-if="partner.mode_registration in ['pm']">
+                             <div t-attf-class="form-group col-xl-6" data-type="binary">
+                                 <label class="col-form-label" for="questionnaire">
+                                     Questionnaire dûment rempli, daté et signé
+                                     <span t-if="partner.questionnaire" style="color:blue">
+                                         (Document déjà chargé)
+                                     </span>
+                                 </label>
+                                 <br/>
+                                 <input t-att-disabled="partner.status_register == 'in_progress'" id="questionnaire"
+                                        type="file" name="questionnaire"
+                                        class="file" data-show-upload="true" data-show-caption="true"
+                                        data-show-preview="true"
+                                        t-att-readonly="None if partner.status_register=='draft' else '1'"/>
+                             </div>
+                         </t>-->
+
+                        <!--  <t t-if="partner.mode_registration in ['pp']">
+                              <div t-attf-class="form-group col-xl-6" data-type="binary">
+                                  <label class="col-form-label" for="copie_convention">
+                                      Une copie de la convention de réciprocité prévue à l’article 20 de la loi 15/89 pour les
+                                      étrangers
+                                      <span t-if="partner.copie_convention" style="color:blue">(Document
+                                          déjà chargé)
+                                      </span>
+                                  </label>
+                                  <br/>
+                                  <input t-att-disabled="partner.status_register == 'in_progress'" id="upload" type="file"
+                                         name="copie_convention"
+                                         class="file" data-show-upload="true" data-show-caption="true"
+                                         data-show-preview="true"
+                                         t-att-readonly="None if partner.status_register=='draft' else '1'"/>
+                              </div>
+                          </t>-->
+                        <!--<t t-if="partner.mode_registration in ['pp']">
+                            <div t-attf-class="form-group col-xl-6" data-type="binary">
+                                <label class="col-form-label" for="copie_bo_jal">
+                                    Une copie du BO et du JAL
+                                    <span t-if="partner.copie_bo_jal" style="color:blue">(Document
+                                        déjà chargé)
+                                    </span>
+                                </label>
+                                <br/>
+                                <input t-att-disabled="partner.status_register == 'in_progress'" id="upload" type="file"
+                                       name="copie_convention"
+                                       class="file" data-show-upload="true" data-show-caption="true"
+                                       data-show-preview="true"
+                                       t-att-readonly="None if partner.status_register=='draft' else '1'"/>
+                            </div>
+                        </t>-->
+
+                        <!-- <t t-if="partner.mode_registration in ['pp']">
+                             <div t-attf-class="form-group col-xl-6" data-type="binary">
+                                 <label class="col-form-label" for="certificat_residence">
+                                     Un certificat de résidence et éventuellement les justificatifs de paiement d’impôts au
+                                     Maroc, pour les candidats étrangers
+                                     <span t-if="partner.certificat_residence" style="color:blue">(Document
+                                         déjà chargé)
+                                     </span>
+                                 </label>
+                                 <br/>
+                                 <input t-att-disabled="partner.status_register == 'in_progress'" id="upload" type="file"
+                                        name="certificat_residence"
+                                        class="file" data-show-upload="true" data-show-caption="true"
+                                        data-show-preview="true"
+                                        t-att-readonly="None if partner.status_register=='draft' else '1'"/>
+                             </div>
+                         </t>-->
+
+                        <!--<t t-if="partner.mode_registration in ['pm']">
+                            <div t-attf-class="form-group col-xl-6" data-type="binary">
+                                <label class="col-form-label" for="demande_inscription_societe">
+                                    Lettre de demande d’inscription précisant la liste des associés, le pourcentage de
+                                    participation de chacun et l’identité des dirigeants
+                                    <span t-if="partner.demande_inscription_societe" style="color:blue">(Document
+                                        déjà chargé)
+                                    </span>
+                                </label>
+                                <br/>
+                                <input t-att-disabled="partner.status_register == 'in_progress'" id="upload" type="file"
+                                       name="demande_inscription_societe"
+                                       class="file" data-show-upload="true" data-show-caption="true"
+                                       data-show-preview="true"
+                                       t-att-readonly="None if partner.status_register=='draft' else '1'"/>
+                            </div>
+                        </t>-->
+
+                        <!-- <t t-if="partner.mode_registration in ['pp3']">
+                             <div t-attf-class="form-group col-xl-6" data-type="binary">
+                                 <label class="col-form-label" for="demande_inscription_salarie">
+                                     Lettre de demande d’inscription à l’Ordre, daté et signée par le salarié
+                                     <span t-if="partner.demande_inscription_salarie" style="color:blue">(Document
+                                         déjà chargé)
+                                     </span>
+                                 </label>
+                                 <br/>
+                                 <input t-att-disabled="partner.status_register == 'in_progress'" id="upload" type="file" name="demande_inscription_salarie"
+                                        class="file" data-show-upload="true" data-show-caption="true"
+                                        data-show-preview="true"
+                                        t-att-readonly="None if partner.status_register=='draft' else '1'"/>
+                             </div>
+                         </t>-->
+
+                        <!--<t t-if="partner.mode_registration in ['pp3']">
+                            <div t-attf-class="form-group col-xl-6" data-type="binary">
+                                <label class="col-form-label" for="avenant_contrat_travail">
+                                    Avenant au contrat de travail visé par le Président du Conseil National
+                                    <span t-if="partner.avenant_contrat_travail" style="color:blue">(Document
+                                        déjà chargé)
+                                    </span>
+                                </label>
+                                <br/>
+                                <input t-att-disabled="partner.status_register == 'in_progress'"  id="upload" type="file" name="avenant_contrat_travail"
+                                       class="file" data-show-upload="true" data-show-caption="true"
+                                       data-show-preview="true"
+                                       t-att-readonly="None if partner.status_register=='draft' else '1'"/>
+                            </div>
+                        </t>-->
+
+
+                        <!--<div t-attf-class="form-group col-xl-6" data-type="binary">
+                            <label class="col-form-label" for="copie_contrat_bail">
+                                Une copie du contrat de bail certifiée conforme ou certificat de propriété du siège social
+                                <span t-if="partner.copie_contrat_bail" style="color:blue">(Document
+                                    déjà chargé)
+                                </span>
+                            </label>
+                            <br/>
+                            <input t-att-disabled="partner.status_register == 'in_progress'" id="upload" type="file"
+                                   name="copie_contrat_bail"
+                                   class="file" data-show-upload="true" data-show-caption="true"
+                                   data-show-preview="true"
+                                   t-att-readonly="None if partner.status_register=='draft' else '1'"/>
+                        </div>-->
+                        <div class="col-lg-12" t-if="partner.status_register == 'in_progress_conseil_national'">
+                            <div class="card mb-4">
+                                <div class="card-header bg-primary text-white">
+                                    <h4>Validation par le Conseil National</h4>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div t-if="partner.status_register == 'in_progress_conseil_national'"
+                                             t-attf-class="form-group col-xl-6" data-type="binary">
+                                            <label class="col-form-label" for="pv_cn">
+                                                PV du Conseil National (Obligatoire pour confirmation)
+                                                <span t-if="partner.pv_cn" style="color:blue">
+                                                    (Document déjà chargé)
+                                                </span>
+                                            </label>
+
+                                            <!-- Lien de téléchargement si le PV existe -->
+                                            <t t-if="partner.pv_cn">
+                                                <a t-att-href="'/web/content/res.partner/%s/pv_cn?download=true' % partner.id"
+                                                   target="_blank"
+                                                   class="btn btn-outline-primary btn-sm mt-1">
+                                                    📥 Télécharger le PV
+                                                </a>
+                                            </t>
+
+                                            <br/>
+
+
+                                            <input id="pv_cn_upload"
+                                                   type="file"
+                                                   name="pv_cn"
+                                                   class="file"
+                                                   data-show-upload="true"
+                                                   data-show-caption="true"
+                                                   data-show-preview="true"
+                                                   required="required"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="card mb-4">
+                                <div class="card-header bg-danger text-white">
+                                    <h4>Autres Documents</h4>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div t-attf-class="form-group col-xl-6" data-type="binary">
+                                            <label class="col-form-label" for="autres_fichiers">
+                                                Autres fichiers (PDF ou JPG uniquement)
+                                            </label>
+                                            <br/>
+                                            <input t-att-disabled="partner.status_register == 'in_progress'"
+                                                   id="autres_fichiers"
+                                                   type="file" name="autres_fichiers"
+                                                   class="file" multiple="multiple" accept=".pdf,.jpg,.jpeg"
+                                                   data-show-upload="true" data-show-caption="true"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <input type="hidden" name="redirect" t-att-value="redirect"/>
+                    </div>
+                </div>
+                <div class="clearfix">
+                    <br/>
+                    <br/>
+                    <div class="row o_portal_details col-lg-12 alert alert-danger">
+                        <h6 class="alert-heading">NB:</h6>
+                        <t t-if="partner.mode_registration == 'pm'">
+                            <ul>
+                                <li>L’activité « Expert-comptable » doit être mentionnée sur l’ensemble des documents
+                                    fivenis
+                                </li>
+                                <li>La domiciliation n’est pas acceptée, le demandeur doit justifier l’existence d’une
+                                    adresse réelle pour l’exercice de son activité d’expertise comptable
+                                </li>
+
+                                <li>L’inscription préalable de la personne physique est obligatoire pour toute
+                                    inscription de la personne morale
+                                </li>
+                                <li>Les statuts de la société doivent être conformes aux dispositions des lois et
+                                    règlements régissant notre Profession, notamment les clauses relatives à l’objet
+                                    social, à la gérance et aux cessions de titres
+                                </li>
+                                <li>Toutes les pièces constitutives du dossier doivent être certifiées conformes à
+                                    l’original
+                                </li>
+                            </ul>
+                        </t>
+                        <t t-else="">
+                            <ul>
+                                <li>L’activité « Expert-comptable » doit être mentionnée sur l’ensemble des documents
+                                    fivenis
+                                </li>
+                                <li>La domiciliation n’est pas acceptée, le demandeur doit justifier l’existence d’une
+                                    adresse réelle pour l’exercice de son activité d’expertise comptable
+                                </li>
+                                <li>Les nouveaux inscrits au tableau de l’OEC sont exonérés de la cotisation annuelle de
+                                    la première année de leur inscription, et de 50% de la cotisation de la deuxième
+                                    année
+                                </li>
+                                <li>Le montant de la cotisation annuelle est fixé à 4000,00 DH pour les personnes
+                                    physiques
+                                </li>
+                                <li>Toutes les pièces constitutives du dossier doivent être certifiées conformes à
+                                    l’original
+                                </li>
+                            </ul>
+                        </t>
+                    </div>
+                    <br/>
+                    <br/>
+                    <div class="form-group">
+                        <input t-att-disabled="partner.status_register == 'in_progress'" type="checkbox"
+                               name="declaration_honneur" id="declaration_honneur" required="required"/>
+                        <label for="declaration_honneur">
+                            J’autorise le Conseil Régional de l’Ordre des Experts-Comptables de Casablanca et Régions du
+                            Centre
+                            à collecter et traiter mes données personnelles, conformément à la loi 09-08 relative à la
+                            protection des personnes physiques à l’égard du traitement des données à caractère
+                            personnel.
+                        </label>
+                    </div>
+                    <!-- <t t-if="partner.status_register == 'in_progress'">
+                         <form action="/update_status" method="post">
+                             <button class="btn btn-primary float-right mb32" name="action" value="accept">Accepter</button>
+                             <button class="btn btn-danger float-right mb32" name="action" value="reject">Rejeter</button>
+                         </form>
+                     </t>-->
+
+                    <button class="btn btn-danger float-left mb32">Enregistrer</button>
+                    <a href="/registration/submit" class="btn btn-danger float-right mb32">Soumettre</a>
+
+                </div>
+            </form>
+            <script type="text/javascript">
+                function validateForm() {
+                var total = 0;
+                var atLeastOneFilled = false;
+                for (var i = 1; i &lt;= 5; i++) {
+                var name = document.querySelector('input[name=&quot;name' + i + '&quot;]').value.trim();
+                var percentageStr = document.querySelector('input[name=&quot;percentage' + i + '&quot;]').value.trim();
+
+                if (name != '' &amp;&amp; percentageStr != '') {
+                atLeastOneFilled = true;
+                var percentage = parseFloat(percentageStr);
+                if (isNaN(percentage) || percentage &lt; 0) {
+                alert('Le pourcentage à la ligne #' + i + ' doit être un nombre positif.');
+                return false;
+                }
+                total += percentage;
+                }
+                }
+
+                if (!atLeastOneFilled) {
+                alert('Veuillez remplir au moins une ligne avec un nom et un pourcentage.');
+                return false;
+                }
+
+                if (total != 100) {
+                alert('La somme des pourcentages doit être exactement égale à 100%.\nSomme actuelle : ' + total + '%');
+                return false;
+                }
+
+                return true;
+                }
+                var pvInput = document.querySelector('input[name="pv_cn"]');
+                if (pvInput) { // Si le champ PV existe sur la page
+                if (!pvInput.files || pvInput.files.length === 0) {
+                alert('Le PV du Conseil National est obligatoire pour confirmer l\'inscription.');
+                return false;
+                }
+
+                // Validation supplémentaire du type de fichier
+                var file = pvInput.files[0];
+                var validTypes = ['application/pdf', 'image/jpeg', 'image/png'];
+                if (validTypes.indexOf(file.type) === -1) {
+                alert('Le PV doit être un fichier PDF, JPG ou PNG.');
+                return false;
+                }
+
+                // Validation de la taille du fichier (max 5MB)
+                if (file.size > 5 * 1024 * 1024) {
+                alert('Le fichier PV est trop volumineux (max 5MB).');
+                return false;
+                }
+                }
+
+                return true;
+                }
+
+
+                document.querySelector('form').onsubmit = validateForm;
+            </script>
+
+        </t>
+    </template>
+
+</odoo>

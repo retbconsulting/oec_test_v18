@@ -1,0 +1,349 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    
+    <template id="report_cotisation_table">
+        <t t-call="web.html_container">
+            <t t-call="web.basic_layout">
+                <t t-if="len(docs)>1">
+                    <h1 style="color:#DD0000; font-weight:bold; font-size: 25px; text-align: center"> On ne peut pas générer plusieurs rapports de déclaration des mandats au même temps pour l'instant :( </h1>
+                    <h3 style="color:#00DD00; font-weight:500; font-size: 18px; text-align: center"> Peut-être que ça va être disponible après ;) </h3>
+                </t>
+                <t t-else="">
+                    <t t-set="o" t-value="docs[0]"/>
+                    <!-- <span t-esc="o"/>
+                    <span t-esc="o.name"/>
+                    <span t-esc="o.oec_mandat_ids"/> -->
+                    <div class="page" style="page-break-after: always;">
+                        <!-- Header Section -->
+                        <!--<div class="text-center">
+                            <h2 style="color:#0070c0; font-weight:bold;">ROYAUME DU MAROC</h2>
+                            <h3 style="color:#0070c0; font-weight:bold;">ORDRE DES EXPERTS COMPTABLES</h3>
+                            <p style="font-size:10px;">(Régi par le Dahir n° 1-92-139 du 14 rajeb 1413 (08 janvier 1993) portant promulgation de la Loi n° 15-89)</p>
+                            <h3 style="color:#0070c0; font-weight:bold;">CONSEIL REGIONAL DE <span t-field="o.name"/></h3>
+                            <div style="border-top:1px solid black; margin:10px 0;"></div>
+                            <h3 style="color:#0070c0; font-weight:bold;">DECLARATION DES MANDATS ET D'ACTIVITE D'AUDIT DES COMPTES</h3>
+                            <h3 style="color:#0070c0; font-weight:bold;">(LEGAL OU CONTRACTUEL)</h3>
+                            <p style="font-size:10px;">(Article 9 de la Norme "Budget - Temps &amp; Honoraires et des paragraphes 4 et 5 de la "Directive" prise pour son application)</p>
+                            <div style="border-top:1px solid black; margin:10px 0;"></div>
+                            <h4 style="color:#0070c0; font-weight:bold;">MANDATS CLOS (1) ENTRE LE 1ER JUILLET 2020 ET LE 30 JUIN 2021</h4>
+                        </div>-->
+
+
+                        <div class="text-center">
+                            <h2 style="color:#0070c0; font-weight:bold; font-size: 18px;">ROYAUME DU MAROC</h2>
+                            <h3 style="color:#0070c0; font-weight:bold; font-size: 16px;">ORDRE DES EXPERTS COMPTABLES</h3>
+                            <p style="font-size:8px;">(Régi par le Dahir n° 1-92-139 du 14 rajeb 1413 (08 janvier 1993) portant promulgation de la Loi n° 15-89)</p>
+                            <h3 style="color:#0070c0; font-weight:bold; font-size: 14px;">CONSEIL REGIONAL DE <span t-field="o.name"/></h3>
+                            <!--<div style="border-top:1px solid black; margin:5px 0;"></div>-->
+                            <h3 style="color:#0070c0; font-weight:bold; font-size: 14px;">DECLARATION DES MANDATS ET D'ACTIVITE D'AUDIT DES COMPTES</h3>
+                            <h3 style="color:#0070c0; font-weight:bold; font-size: 12px;">(LEGAL OU CONTRACTUEL)</h3>
+                            <p style="font-size:8px;">(Article 9 de la Norme "Budget - Temps &amp; Honoraires et des paragraphes 4 et 5 de la "Directive" prise pour son application)</p>
+                            <!--<div style="border-top:1px solid black; margin:5px 0;"></div>-->
+                            <h4 style="color:#0070c0; font-weight:bold; font-size: 14px;">MANDATS CLOS (1) ENTRE LE 1ER JUILLET 2020 ET LE 30 JUIN 2021</h4>
+                        </div>
+                        
+                        <!-- Cabinet Information Section -->
+                        <!--<table style="border-collapse: collapse; margin-top:20px;">
+                            <tr>
+                                <td style="border: 1px solid black; padding: 8px;">DENOMINATION DU CABINET :</td>
+                                <td style="border: 1px solid black; padding: 8px;"><span t-field="o.name"/></td>
+                            </tr>
+                            <tr>
+                                <td style="border: 1px solid black; padding: 8px;">DATE DE CREATION :</td>
+                                <td style="border: 1px solid black; padding: 8px;"><span t-field="o.name"/></td>
+                            </tr>
+                            <tr>
+                                <td style="border: 1px solid black; padding: 8px;">ASSOCIE(S) - GERANT(S) :</td>
+                                <td style="border: 1px solid black; padding: 8px;"><span t-field="o.name"/></td>
+                            </tr>
+                        </table>-->
+
+
+                        <table style="border-collapse: collapse; margin-top: 10px;">
+                            <tr>
+                                <td style="border: 1px solid black; padding: 4px; font-size: 10px;">DENOMINATION DU CABINET :</td>
+                                <td style="border: 1px solid black; padding: 4px; font-size: 10px;"><span t-field="o.partner_id and o.partner_id.parent_id and o.partner_id.parent_id.name"/></td>
+                            </tr>
+                            <tr>
+                                <td style="border: 1px solid black; padding: 4px; font-size: 10px;">DATE DE CREATION :</td>
+                                <td style="border: 1px solid black; padding: 4px; font-size: 10px;"><span t-field="o.name"/></td>
+                            </tr>
+                            <tr>
+                                <td style="border: 1px solid black; padding: 4px; font-size: 10px;">ASSOCIE(S) - GERANT(S) :</td>
+                                <td style="border: 1px solid black; padding: 4px; font-size: 10px;"><span t-esc="o.partner_id and o.partner_id.parent_id and ', '.join(o.partner_id.parent_id.child_ids.mapped('name'))"/></td>
+                            </tr>
+                        </table>
+
+
+                        <br/>
+                        
+                        <!-- Main Information Table -->
+
+                        <table style="border-collapse: collapse; width: 100%;">
+                            <thead>
+                                <tr>
+                                    <th style="border: 1px solid black; padding: 4px; font-size: 10px; background-color: #f2f2f2;" colspan="2">INFORMATIONS SUR LE CABINET</th>
+                                    <th style="border: 1px solid black; padding: 4px; font-size: 10px; background-color: #f2f2f2;" colspan="2">INFORMATIONS SUR LES EFFECTIFS ET LES ASSOCIES</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td style="border: 1px solid black; padding: 4px; font-size: 10px; width: 25%;">Mode d'exercice</td>
+                                    <td style="border: 1px solid black; padding: 4px; font-size: 10px; width: 25%;"><span t-field="o.partner_id.mode_registration"/></td>
+                                    <td style="border: 1px solid black; padding: 4px; font-size: 10px; width: 25%;">Effectif moyen des salariés d'audit dont :</td>
+                                    <td style="border: 1px solid black; padding: 4px; font-size: 10px; width: 25%;"><span t-field="o.effectif_audit"/></td>
+                                </tr>
+                                <tr>
+                                    <td style="border: 1px solid black; padding: 4px; font-size: 10px; width: 25%;">Forme juridique de la société</td>
+                                    <td style="border: 1px solid black; padding: 4px; font-size: 10px; width: 25%;"><span t-field="o.partner_id.legal_form"/></td>
+                                    <td style="border: 1px solid black; padding: 4px; font-size: 10px; width: 25%;">Directeurs de mission ou adjoints</td>
+                                    <td style="border: 1px solid black; padding: 4px; font-size: 10px; width: 25%;"><span t-field="o.directeurs_mission"/></td>
+                                </tr>
+                                <tr>
+                                    <td style="border: 1px solid black; padding: 4px; font-size: 10px; width: 25%;">Nombre de bureaux</td>
+                                    <td style="border: 1px solid black; padding: 4px; font-size: 10px; width: 25%;"><span t-field="o.nombre_bureaux"/></td>
+                                    <td style="border: 1px solid black; padding: 4px; font-size: 10px; width: 25%;">Responsables de mission ou adjoints</td>
+                                    <td style="border: 1px solid black; padding: 4px; font-size: 10px; width: 25%;"><span t-field="o.responsables_mission"/></td>
+                                </tr>
+                                <tr>
+                                    <td style="border: 1px solid black; padding: 4px; font-size: 10px; width: 25%;">Réseau d'appartenance (2)</td>
+                                    <td style="border: 1px solid black; padding: 4px; font-size: 10px; width: 25%;"><span t-field="o.reseau_appartenance"/></td>
+                                    <td style="border: 1px solid black; padding: 4px; font-size: 10px; width: 25%;">Auditeurs débutants ou confirmés</td>
+                                    <td style="border: 1px solid black; padding: 4px; font-size: 10px; width: 25%;"><span t-field="o.auditeurs"/></td>
+                                </tr>
+                                <tr>
+                                    <td style="border: 1px solid black; padding: 4px; font-size: 10px; width: 25%;">Nombre de mandats dont :</td>
+                                    <td style="border: 1px solid black; padding: 4px; font-size: 10px; width: 25%;"><span t-field="o.mandats_number"/></td>
+                                    <td style="border: 1px solid black; padding: 4px; font-size: 10px; width: 25%;">Autres le cas échéant (à préciser)</td>
+                                    <td style="border: 1px solid black; padding: 4px; font-size: 10px; width: 25%;"><span t-field="o.autres_cas"/></td>
+                                </tr>
+                                <tr>
+                                    <td style="border: 1px solid black; padding: 4px; font-size: 10px; width: 25%;">Audit légal</td>
+                                    <td style="border: 1px solid black; padding: 4px; font-size: 10px; width: 25%;"><span t-field="o.audit_legal"/></td>
+                                    <td style="border: 1px solid black; padding: 4px; font-size: 10px; width: 25%;">Recours à la sous-traitance</td>
+                                    <td style="border: 1px solid black; padding: 4px; font-size: 10px; width: 25%;"><span t-field="o.sous_traitance"/></td>
+                                </tr>
+                                <tr>
+                                    <td style="border: 1px solid black; padding: 4px; font-size: 10px;">Audit contractuel</td>
+                                    <td style="border: 1px solid black; padding: 4px; font-size: 10px; width: 25%;"><span t-field="o.audit_contractuel"/></td>
+                                    <td style="border: 1px solid black; padding: 4px; font-size: 10px; width: 25%;">Nombre d'associés dont :</td>
+                                    <td style="border: 1px solid black; padding: 4px; font-size: 10px; 8px; width: 25%;"><span t-field="o.number_associes"/></td>
+                                </tr>
+                                <tr>
+                                    <td style="border: 1px solid black; padding: 4px; font-size: 10px; 8px; width: 25%;">Autres missions légales</td>
+                                    <td style="border: 1px solid black; padding: 4px; font-size: 10px; width: 25%;"><span t-field="o.autres_missions_legales"/></td>
+                                    <td style="border: 1px solid black; padding: 4px; font-size: 10px; width: 25%;">Nombre d'E.C associés membres de l'Ordre</td>
+                                    <td style="border: 1px solid black; padding: 4px; font-size: 10px; width: 25%;"><span t-field="o.number_associes_ec"/></td>
+                                </tr>
+                                <tr>
+                                    <td style="border: 1px solid black; padding: 4px; font-size: 10px; width: 25%;">Autres missions liées le cas échéant</td>
+                                    <td style="border: 1px solid black; padding: 4px; font-size: 10px; width: 25%;"><span t-field="o.autres_missions_echeances"/></td>
+                                    <td style="border: 1px solid black; padding: 4px; font-size: 10px; width: 25%;">Nombre d'E.C salariés membres de l'Ordre</td>
+                                    <td style="border: 1px solid black; padding: 4px; font-size: 10px; width: 25%;"><span t-field="o.number_salaries_ec"/></td>
+                                </tr>
+                                <tr>
+                                    <td style="border: 1px solid black; padding: 4px; font-size: 10px; width: 25%;">Poids de l'audit dans le CA du cabinet</td>
+                                    <td style="border: 1px solid black; padding: 4px; font-size: 10px; width: 25%;"><span t-field="o.poids_ca"/></td>
+                                    <td style="border: 1px solid black; padding: 4px; font-size: 10px; width: 25%;">Liste des associés signataires (3)</td>
+                                    <td style="border: 1px solid black; padding: 4px; font-size: 10px; width: 25%;"><span t-field="o.list_associes_signature"/></td>
+                                </tr>
+                                <tr>
+                                    <td style="border: 1px solid black; padding: 4px; font-size: 10px; width: 25%;">Nombre de pages d'annexes jointes</td>
+                                    <td style="border: 1px solid black; padding: 4px; font-size: 10px; width: 25%;"><span t-field="o.number_pages"/></td>
+                                    <td style="border: 1px solid black; padding: 4px; font-size: 10px; width: 25%;"></td>
+                                    <td style="border: 1px solid black; padding: 4px; font-size: 10px; width: 25%;"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        
+                        <!-- Footer Notes -->
+                        <div style="font-size:10px; margin-top:10px;">
+                            <p>(1) Mission dont le rapport a été présenté au commanditaire. En cas d'audit de plusieurs exercices, chaque exercice donne lieu à un mandat à déclarer.</p>
+                            <p>(2) Réseau tel que défini par les normes professionnelles.</p>
+                            <p>(3) Si plus de 3 joindre liste séparée. Liste à ne mettre à jour qu'en cas de changement.</p>
+                            <p>E.C : Expert-Comptable</p>
+                        </div>
+                        
+                        <!-- Signature Section -->
+                        <div class="row" style="margin-top:20px;">
+                            <div class="col-6" style="font-size:14px;">
+                                <p>Déclaration établie le ......................</p>
+                            </div>
+                            <div class="col-6 text-right" style="font-size:14px;">
+                                <p>Cachet du cabinet et Signature de l'associé gérant</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- <t t-set="mandats_data" t-value="[dict(map(lambda a: (a[0], str(a[1])), _mandat.read([], load='_classic_write')[0].items())) for _mandat in o.oec_mandat_ids]"/> -->
+                    <!-- <t t-set="mandats_dict" t-value="o.read([], load='_classic_write')[0]"/> -->
+                    <!-- <div class="page" style="page-break-after: always;">
+                        <t t-foreach="mandats_data" t-as="mandat_data">
+                            <t t-foreach="mandat_data.items()" t-as="mn_dict_item">
+                                <span t-esc="mn_dict_item"/>
+                            </t>
+                            <hr/>
+                        </t>
+                    </div> -->
+
+                    <t t-set="size" t-value="2"/>
+                    <t t-set="madat_grouped_ids" t-value="[o.oec_mandat_ids.mapped('id')[i:i+size] for i in range(0, o.mandats_number, size)]"/>
+
+                    <!-- <t t-set="normalize" t-value="lambda a: '-' if a in ('False', '') else a"/> -->
+                    
+                    <!-- <t t-set="group_size" t-value="2"/> -->
+                    <!-- <t t-set="grouped_mandats" t-value="[mandats_data[group_size*i:group_size*i + group_size] for i in range(round(len(mandats_data)/group_size + .00000001))]"/> -->
+                    <h4 style="color:#0070c0; font-weight:bold; font-size: 14px; text-align: center">MANDATS CLOS (1) ENTRE LE 1ER JUILLET 2020 ET LE 30 JUIN 2021</h4>
+                    
+                    <t t-foreach="enumerate(madat_grouped_ids)" t-as="mandat_group_ind">
+                        <t t-set="g_index" t-value="mandat_group_ind[0]"/>
+                        <t t-set="mandat_group" t-value="mandat_group_ind[1]"/>
+                        <div class="page" style="page-break-after: always;">
+                            <table style="border-collapse: collapse; width: 100%; font-size: 10px;">
+                                <thead>
+                                    <tr>
+                                        <th style="border: 1px solid black; padding: 4px; background-color: #f2f2f2; width: 10% !important;">N°</th>
+                                        <th colspan="2" style="border: 1px solid black; padding: 4px; background-color: #f2f2f2; width: 30% !important;">SOCIETES CONTROLEES</th>
+                                        <th colspan="2" style="border: 1px solid black; padding: 4px; background-color: #f2f2f2; width: 30% !important;">MANDATS</th>
+                                        <th colspan="2" style="border: 1px solid black; padding: 4px; background-color: #f2f2f2; width: 30% !important;">TEMPS ET RAPPORTS</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-foreach="mandat_group" t-as="mandat_id">
+                                        <t t-set="mandat" t-value="o.env['oec.mandat'].browse(mandat_id)"/>
+                                        <t t-set="mandat_num" t-value="g_index*size + mandat_group.index(mandat_id) + 1"/>
+                                        <td rowspan="13" style="border: 1px solid black; padding: 4px; writing-mode: vertical-rl; transform: rotate(180deg); text-align: center;" t-esc="f'Mandat N°{mandat_num}'"/>
+                                        <tr>
+                                            <td style="border: 1px solid black; padding: 4px;">Secteur d'activité</td>
+                                            <td style="border: 1px solid black; padding: 4px; width: 12% !important;"><span t-field="mandat.secteur_activite"/></td> 
+                                            <td style="border: 1px solid black; padding: 4px;">Nature de la mission</td>
+                                            <td style="border: 1px solid black; padding: 4px; width: 12% !important;"><span t-field="mandat.nature_mission"/></td>
+                                            <td style="border: 1px solid black; padding: 4px;">Budget temps selon Norme</td>
+                                            <td style="border: 1px solid black; padding: 4px; width: 12% !important;"><span t-field="mandat.budget_temps_selon_norme"/></td>
+                                        </tr>
+                                        <tr>
+                                            <td style="border: 1px solid black; padding: 4px;">Forme juridique</td>
+                                            <td style="border: 1px solid black; padding: 4px; width: 12% !important;"><span t-field="mandat.forme_juridique"/></td>
+                                            <td style="border: 1px solid black; padding: 4px;">Date de désignation</td>
+                                            <td style="border: 1px solid black; padding: 4px; width: 12% !important;"><span t-field="mandat.date_designation"/></td>
+                                            <td style="border: 1px solid black; padding: 4px;">Budget retenu lors de l'offre (2)</td>
+                                            <td style="border: 1px solid black; padding: 4px; width: 12% !important;"><span t-field="mandat.budget_retenu_effort"/></td>
+                                        </tr>
+                                        <tr>
+                                            <td style="border: 1px solid black; padding: 4px;">Entité APE</td>
+                                            <td style="border: 1px solid black; padding: 4px; width: 12% !important;"><span t-field="mandat.entite_ape"/></td>
+                                            <td style="border: 1px solid black; padding: 4px;">Mode de désignation (1)</td>
+                                            <td style="border: 1px solid black; padding: 4px; width: 12% !important;"><span t-field="mandat.mode_designation"/></td>
+                                            <td style="border: 1px solid black; padding: 4px;">Budget temps réalisé</td>
+                                            <td style="border: 1px solid black; padding: 4px; width: 12% !important;"><span t-field="mandat.budget_temps_realises"/></td>
+                                        </tr>
+                                        <tr>
+                                            <td style="border: 1px solid black; padding: 4px;">Appartenance à un groupe</td>
+                                            <td style="border: 1px solid black; padding: 4px; width: 12% !important;"><span t-field="mandat.in_group"/></td>
+                                            <td style="border: 1px solid black; padding: 4px;">Exercices couverts par le mandat</td>
+                                            <td style="border: 1px solid black; padding: 4px; width: 12% !important;"><span t-field="mandat.exercces_couverts_par_le_mandat"/></td>
+                                            <td style="border: 1px solid black; padding: 4px;">Temps passé par l'associé signataire</td>
+                                            <td style="border: 1px solid black; padding: 4px; width: 12% !important;"><span t-field="mandat.temps_passe_associe"/></td>
+                                        </tr>
+                                        <tr>
+                                            <td style="border: 1px solid black; padding: 4px;">Audit d'autres entités du groupe</td>
+                                            <td style="border: 1px solid black; padding: 4px; width: 12% !important;"><span t-field="mandat.nombre_autres_entite_groupe"/></td>
+                                            <td style="border: 1px solid black; padding: 4px;">Co-CAC</td>
+                                            <td style="border: 1px solid black; padding: 4px; width: 12% !important;"><span t-field="mandat.coCac"/></td>
+                                            <td style="border: 1px solid black; padding: 4px;">Autres missions réalisées</td>
+                                            <td style="border: 1px solid black; padding: 4px; width: 12% !important;"><span t-field="mandat.autres_missions_realises"/></td>
+                                        </tr>
+                                        <tr>
+                                            <td style="border: 1px solid black; padding: 4px;">Capitaux propres (KMAD)</td>
+                                            <td style="border: 1px solid black; padding: 4px; width: 12% !important;"><span t-field="mandat.capitaux_propres"/></td>
+                                            <td style="border: 1px solid black; padding: 4px;">Dernier exercice contrôlé</td>
+                                            <td style="border: 1px solid black; padding: 4px; width: 12% !important;"><span t-field="mandat.dernier_exercice_control"/></td>
+                                            <td style="border: 1px solid black; padding: 4px;">Honoraires des autres missions</td>
+                                            <td style="border: 1px solid black; padding: 4px; width: 12% !important;"><span t-field="mandat.honoraires_autres_mission"/></td>
+                                        </tr>
+                                        <tr>
+                                            <td style="border: 1px solid black; padding: 4px;">Résultat de l'exercice (KMAD)</td>
+                                            <td style="border: 1px solid black; padding: 4px; width: 12% !important;"><span t-field="mandat.resultat_exercice"/></td>
+                                            <td style="border: 1px solid black; padding: 4px;">Opinion émise relatif à cet exercice</td>
+                                            <td style="border: 1px solid black; padding: 4px; width: 12% !important;"><span t-esc="'-'"/></td> <!--NOT FOUND IN THE MANDAT MODEL!-->
+                                            <td style="border: 1px solid black; padding: 4px;">Nombre de rapports émis dont:</td>
+                                            <td style="border: 1px solid black; padding: 4px; width: 12% !important;"><span t-esc="'-'"/></td> <!--NOT FOUND IN THE MANDAT MODEL!-->
+                                        </tr>
+                                        <tr>
+                                            <td style="border: 1px solid black; padding: 4px;">Total Actif (KMAD)</td>
+                                            <td style="border: 1px solid black; padding: 4px; width: 12% !important;"><span t-field="mandat.total_actif"/></td>
+                                            <td style="border: 1px solid black; padding: 4px;">Nombre de réserves pour limitations</td>
+                                            <td style="border: 1px solid black; padding: 4px; width: 12% !important;"><span t-field="mandat.nombre_reserves_pour_limitation"/></td>
+                                            <td style="border: 1px solid black; padding: 4px;">Rapport d'opinion</td>
+                                            <td style="border: 1px solid black; padding: 4px; width: 12% !important;"><span t-field="mandat.rapport_opinion"/></td>
+                                        </tr>
+                                        <tr>
+                                            <td style="border: 1px solid black; padding: 4px;">Produits d'exploitation (KMAD)</td>
+                                            <td style="border: 1px solid black; padding: 4px; width: 12% !important;"><span t-field="mandat.produit_exploitation"/></td>
+                                            <td style="border: 1px solid black; padding: 4px;">Nombre de réserves pour incertitudes</td>
+                                            <td style="border: 1px solid black; padding: 4px; width: 12% !important;"><span t-field="mandat.nombre_reserves_pour_incertitudes"/></td>
+                                            <td style="border: 1px solid black; padding: 4px;">Rapport de contrôle interne (ou lettre)</td>
+                                            <td style="border: 1px solid black; padding: 4px; width: 12% !important;"><span t-field="mandat.rapport_controle_interne"/></td>
+                                        </tr>
+                                        <tr>
+                                            <td style="border: 1px solid black; padding: 4px;">Produits financiers (KMAD)</td>
+                                            <td style="border: 1px solid black; padding: 4px; width: 12% !important;"><span t-field="mandat.produit_financie"/></td>
+                                            <td style="border: 1px solid black; padding: 4px;">Nombre de réserves pour désaccord</td>
+                                            <td style="border: 1px solid black; padding: 4px; width: 12% !important;"><span t-field="mandat.nombre_reserves_pour_desacord"/></td>
+                                            <td style="border: 1px solid black; padding: 4px;">Rapport détaillé sur les comptes</td>
+                                            <td style="border: 1px solid black; padding: 4px; width: 12% !important;"><span t-field="mandat.rapport_detaille_comptes"/></td>
+                                        </tr>
+                                        <tr>
+                                            <td style="border: 1px solid black; padding: 4px;">Leasign restant à payer (KMAD)</td>
+                                            <td style="border: 1px solid black; padding: 4px; width: 12% !important;"><span t-field="mandat.leasing_restant"/></td>
+                                            <td style="border: 1px solid black; padding: 4px;">Nombre d'observations</td>
+                                            <td style="border: 1px solid black; padding: 4px; width: 12% !important;"><span t-field="mandat.nombre_observation"/></td>
+                                            <td style="border: 1px solid black; padding: 4px;">Rapport spécial</td>
+                                            <td style="border: 1px solid black; padding: 4px; width: 12% !important;"><span t-field="mandat.rapport_special"/></td>
+                                        </tr>
+                                        <tr>
+                                            <td style="border: 1px solid black; padding: 4px;">Honoraires/dernier exercice clos</td>
+                                            <td style="border: 1px solid black; padding: 4px; width: 12% !important;"><span t-field="mandat.honoraires_dernier_exercice_clos"/></td>
+                                            <td style="border: 1px solid black; padding: 4px;">Associé signataire</td>
+                                            <td style="border: 1px solid black; padding: 4px; width: 12% !important;"><span t-field="mandat.associeSignataire"/></td>
+                                            <td style="border: 1px solid black; padding: 4px;">Autres rapports</td>
+                                            <td style="border: 1px solid black; padding: 4px; width: 12% !important;"><span t-field="mandat.autres_rapports"/></td>
+                                        </tr>
+                                    </t>
+                                </tbody>
+                            </table>
+                        </div>
+                    </t>
+                </t>
+            </t>    
+        </t>
+    </template>
+
+
+    <record id="paperformat_lowmargin" model="report.paperformat">
+            <field name="name">Custom Landscape A4 low margin</field>
+            <field name="default" eval="True"/>
+            <field name="format">A4</field>
+            <field name="orientation">Landscape</field>
+            <field name="margin_top">10</field>
+            <field name="margin_bottom">10</field>
+            <field name="margin_left">10</field>
+            <field name="margin_right">10</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">0</field>
+            <field name="dpi">90</field>
+    </record>
+
+
+    <record id="action_custom_report_template" model="ir.actions.report">
+        <field name="name">DECLARATION DES MANDATS</field>
+        <field name="model">oec.mandat.declaration</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">mandat_cotisation_management.report_cotisation_table</field>
+        <field name="report_file">mandat_cotisation_management.declaration_report</field>
+        <field name="binding_model_id" ref="mandat_cotisation_management.model_oec_mandat_declaration"/>
+        <field name="binding_type">report</field>
+        <field name="paperformat_id" ref="paperformat_lowmargin"/>
+    </record>
+
+</odoo>

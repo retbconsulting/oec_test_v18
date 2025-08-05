@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+    	<record id="view_documents_document_report_form" model="ir.ui.view">
+            <field name="name">documents.document.report.form</field>
+            <field name="model">documents.document.report</field>
+            <field name="arch" type="xml">
+                <form string="Rapport">
+				    <sheet>
+					    <div class="oe_title">
+					        <h1>
+					            <field name="name" required="1" placeholder="Name..."/>
+					        </h1>
+					    </div>
+					    <group>
+					      	<group>
+					      		<field name="declenchement" placeholder="01/09"/>
+					      	</group>
+					    </group>
+					    <group>
+      						<group string="Rappels">
+        						<field name="first_rappel"/>
+        						<field name="second_rappel"/>
+        						<field name="third_rappel"/>
+      						</group>
+    					</group> 
+				    </sheet>
+				</form>
+            </field>
+        </record>
+
+        <record id="view_documents_document_report_tree" model="ir.ui.view">
+            <field name="name">documents.document.report.tree</field>
+            <field name="model">documents.document.report</field>
+            <field name="arch" type="xml">
+                <list string="Rapport">
+                	<field name="name"/>
+                	<field name="declenchement"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="action_documents_document_report" model="ir.actions.act_window">
+            <field name="name">Rapports</field>
+            <field name="res_model">documents.document.report</field>
+            <field name="view_mode">list,form</field>
+            <field name="help" type="html">
+              <p class="o_view_nocontent_smiling_face">
+                Add a new report
+              </p>
+            </field>
+        </record>
+
+        <menuitem 
+        	name="Rapports"
+        	id="menu_document_report"
+        	action="action_documents_document_report"
+        	parent="contacts.res_partner_menu_config"
+        	sequence="0"
+        />
+    </data>
+</odoo>

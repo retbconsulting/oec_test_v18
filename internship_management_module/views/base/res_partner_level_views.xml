@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_res_partner_level_tree" model="ir.ui.view">
+            <field name="name">res.partner.level.tree</field>
+            <field name="model">res.partner.level</field>
+            <field name="arch" type="xml">
+                <list string="Niveau" editable="bottom">
+                	<field name ="name"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="action_res_partner_level" model="ir.actions.act_window">
+            <field name="name">Niveau</field>
+            <field name="res_model">res.partner.level</field>
+            <field name="view_mode">list,form</field>
+            <field name="help" type="html">
+              <p class="o_view_nocontent_smiling_face">
+                Add a new niveau
+              </p>
+            </field>
+        </record>
+
+        <menuitem 
+        	name="Niveau"
+        	id="menu_partner_level"
+        	action="action_res_partner_level"
+        	parent="contacts.res_partner_menu_config"
+        	sequence="2"
+        />
+    </data>
+</odoo>

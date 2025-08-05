@@ -1,0 +1,151 @@
+
+.wrapper {
+    background-image: url(../img/background-4.png);
+}
+
+.s-card{
+    position: relative;
+    background: rgb(158,46,50);
+    padding: 49px;
+    background: linear-gradient(90deg, rgba(158,46,50,0.6558998599439776) 0%, rgba(158,46,50,0.3253676470588235) 100%);
+}
+
+.single-button img{
+    width: 49px;
+}
+.single-button {
+    margin: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: white;
+    padding: 20px;
+    border-radius: 120px;
+    width: 150px;
+    height: 150px;
+    justify-content: center;
+    color: #9f3136;
+    background: linear-gradient(90deg, rgb(251 234 234) 0%, rgb(255 252 252) 71%, rgb(255 255 255) 100%);
+}
+.single-button p{
+    font-size: 11px;
+    margin-top: 10px;
+    margin-bottom: -2px;
+    font-weight: 800;
+    text-align: center;
+}
+
+
+.buttons-card {
+    display: grid;
+    margin-top: 19px;
+    grid-template-columns: auto auto auto;
+}
+
+footer {
+    background-image: url(../img/white-layer.png);
+}
+
+header {
+    display: flex;
+
+}
+header ul {
+    display: flex;
+    list-style: none;
+    color: white;
+}
+header li {
+    margin: 25px 20px;
+}
+header .buttons button{
+    background: #b6a9a8ad;
+    padding: 4px 30px;
+    border: none;
+    border-radius: 40px;
+    color: white;
+    backdrop-filter: blur(0px);
+    margin-top: 7px;
+}
+
+header .buttons {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    right: 33px;
+    top: 33px;
+}
+
+.s-card .logo {
+    width: 308px;
+    float: right;
+    text-align: right;
+    position: absolute;
+    bottom: 22px;
+    right: 50px;
+}
+
+
+.avatar-text {
+    padding: 12px 40px;
+    position: relative;
+    left: -20px;
+    z-index: -10;
+    border-top-right-radius: 30px;
+    border-bottom-right-radius: 30px;
+    background: linear-gradient( 
+90deg, rgb(205 166 163) 0%, rgb(255 255 255 / 93%) 100%);
+    color: #9f2a2e;
+}
+
+.avatar-container {
+    display: flex;
+    align-items: center;
+}
+
+.avatar img {
+    border-radius: 50px;
+    width: 80px;
+    box-shadow: 0px 0px 6px 3px rgb(0 0 0 / 35%);
+}
+.t-head td {
+    font-size: 18px;
+    font-weight: 500;
+}
+.t-head {
+    border-bottom: 1px solid;
+}
+table {
+    width: 70vw;
+}
+
+.t-row {
+    border-bottom: 1px solid #8d8b8bb8;
+}
+.t-row td {
+    font-size: 15px;
+    font-weight: 500;
+    padding: 9px 0px;
+}
+
+.success {
+    background: rgb(37 173 110);
+    padding: 4px 7px;
+    color: white;
+    font-weight: 300;
+    font-size: 12px;
+    border-radius: 17px;
+}
+header {
+        background-image: url(../img/red-layer.png);
+}
+.danger {
+    color: #9f3136;
+}
+
+.h-divider {
+    width: 2px;
+    height: 28px;
+    background: white;
+    margin: 22px -3px;
+}

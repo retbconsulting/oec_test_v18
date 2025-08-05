@@ -1,0 +1,744 @@
+<?xml version="1.0" ?>
+<odoo>
+	<data noupdate="1">
+		
+		<record id="email_template_report_deposed"
+			model="mail.template">
+			<field name="name">Dépôt du rapport de stage</field>
+			<field name="model_id" ref="documents.model_documents_document" />
+			<field name="email_from">${ctx['email_from']|safe}</field>
+			<field name="email_to">${ctx['email_to']}</field>
+			<field name="subject">Dépôt du rapport de stage</field>
+			<field name="body_html" type="html">
+				<div style="margin: 0px; padding: 0px;">
+					<p style="margin: 0px; padding: 0px; font-size: 13px;">
+						Cher(e) M. (Mme/Mlle) {{ ctx['name'] }} {{ctx['second_name'] }},
+						<br />
+						<br />Nous vous informons que le stagiaire  {{ ctx['stagiaire_name'] }} {{ ctx['stagiaire_prenom'] }} a bien déposé le rapport sur la plateforme. Nous vous invitons à pocéder à la signature.
+						<br />
+						Cordialement,
+					</p>
+				</div>
+			</field>
+			<field name="auto_delete" eval="True" />
+		</record>
+
+		<record id="email_template_report_examined"
+			model="mail.template">
+			<field name="name">Examination du rapport</field>
+			<field name="model_id" ref="documents.model_documents_document" />
+			<field name="email_from">${ctx['email_from']|safe}</field>
+			<field name="email_to">${ctx['email_to']}</field>
+			<field name="subject">Examination du rapport</field>
+			<field name="body_html" type="html">
+				<div style="margin: 0px; padding: 0px;">
+					<p style="margin: 0px; padding: 0px; font-size: 13px;">
+						Cher(e) M. (Mme/Mlle) ${ctx['name']} ${ctx['second_name']},
+						<br />
+						<br />Nous vous invitons a bien examiné le rapport du ${ctx['stagiaire_name']} ${ctx['stagiaire_prenom']} sur la plateforme.
+						<br />
+						<br />
+						<br />
+						Cordialement,
+					</p>
+				</div>
+			</field>
+			<field name="auto_delete" eval="True" />
+		</record>
+
+		<record id="email_template_report_response"
+			model="mail.template">
+			<field name="name">Décision du contrôleur</field>
+			<field name="model_id" ref="documents.model_documents_document" />
+			<field name="email_from">${ctx['email_from']|safe}</field>
+			<field name="email_to">${ctx['email_to']}</field>
+			<field name="subject">Décision du contrôleur</field>
+			<field name="body_html" type="html">
+				<div style="margin: 0px; padding: 0px;">
+					<p style="margin: 0px; padding: 0px; font-size: 13px;">
+						Cher(e) M. (Mme/Mlle) ${ctx['name']} ${ctx['second_name']},
+						<br />
+						<br />Nous vous informons que votre rapport a été bien examiné par le contrôleur. Nous vous invitons à consulter la plateforme pour plus d'informations.
+						<br />
+						<br />
+						Cordialement,
+					</p>
+				</div>
+			</field>
+			<field name="auto_delete" eval="True" />
+		</record>
+
+		<record id="email_template_demande_registration_ec"
+			model="mail.template">
+			<field name="name">Demande inscription</field>
+			<field name="model_id" ref="base.model_res_partner" />
+			<field name="email_from">${ctx['email_from']|safe}</field>
+			<field name="email_to">${ctx['email_to']}</field>
+			<field name="subject">Demande inscription</field>
+			<field name="body_html" type="html">
+				<div style="margin: 0px; padding: 0px;">
+					<p style="margin: 0px; padding: 0px; font-size: 13px;">
+						Cher(e) M. (Mme/Mlle) {{ object.name }}${object.second_name},
+						<br />
+						<br />Nous vous accusons la réception de votre demande d’inscription
+						<br />
+						<br />
+						Cordialement,
+					</p>
+				</div>
+			</field>
+<!-- 			<field name="lang">${user.lang}</field> -->
+			<field name="auto_delete" eval="True" />
+		</record>
+
+		<record id="email_template_demande_registration_admin"
+			model="mail.template">
+			<field name="name">Demande inscription</field>
+			<field name="model_id" ref="base.model_res_partner" />
+			<field name="email_from">${ctx['email_from']|safe}</field>
+			<field name="email_to">${ctx['email_from']|safe}</field>
+			<field name="subject">Demande inscription</field>
+			<field name="body_html" type="html">
+				<div style="margin: 0px; padding: 0px;">
+					<p style="margin: 0px; padding: 0px; font-size: 13px;">
+						Bonjour,
+						<br />
+						<br />Une nouvelle demande d’inscription est soumise Mme/Mr {{ object.name }}${object.second_name}.
+						<br />
+						<br />
+						Pour plus information veuillez consulter le lien ci-dessous:
+						<center>
+							<a href="${ctx['url']}"
+								style="background-color: #1abc9c; padding: 8px; text-decoration: none; color: #fff; border-radius: 5px; font-size: 13px;"
+								class="o_default_snippet_text">Consulter</a>
+						</center>
+						<br />
+						<br />
+						Cordialement,
+					</p>
+				</div>
+			</field>
+			<!-- <field name="lang">${user.lang}</field> -->
+			<field name="auto_delete" eval="True" />
+		</record>
+
+
+		<record id="email_template_notification_create_user_registration"
+			model="mail.template">
+			<field name="name">Création du compte dans la plateforme OEC</field>
+			<field name="model_id" ref="base.model_res_partner" />
+			<field name="email_from">${ctx['email_from']|safe}</field>
+			<field name="email_to">${ctx['login']}</field>
+			<field name="subject">Votre compte sur la plateforme OEC</field>
+			<field name="body_html" type="html">
+				<div style="margin: 0px; padding: 0px;">
+					<p style="margin: 0px; padding: 0px; font-size: 13px;">
+						Bonjour Mme/Mr {{ object.name }}${object.second_name},
+						<br />
+						<br />
+						Vous avez désormais un accès à votre espace d’inscription au
+						portail de l’ordre des experts comptable vous êtes prié de
+						compléter votre dossier d’inscription via ce lien ci-dessous:
+						<br />
+						<br />
+						<center>
+							<a href="${ctx['url']}"
+								style="background-color: #1abc9c; padding: 8px; text-decoration: none; color: #fff; border-radius: 5px; font-size: 13px;"
+								class="o_default_snippet_text">Consulter</a>
+						</center>
+						<br />
+						<br />
+						Vos identifiants d'accès sont les suivants:
+						<ul>
+							<li>
+								<b> Login : ${ctx['login']}</b>
+							</li>
+							<li>
+								<b> Mot de passe : ${ctx['password']}</b>
+							</li>
+						</ul>
+						Cordialement,
+					</p>
+				</div>
+			</field>
+			<!-- <field name="lang">${user.lang}</field> -->
+			<field name="auto_delete" eval="True" />
+		</record>
+
+
+		<record id="email_template_validation_croec"
+			model="mail.template">
+			<field name="name">Validation phase CROEC</field>
+			<field name="model_id" ref="base.model_res_partner" />
+			<field name="email_from">${ctx['email_from']|safe}</field>
+			<field name="email_to">${ctx['email_from']|safe}</field>
+			<field name="subject">Validation CROEC</field>
+			<field name="body_html" type="html">
+				<div style="margin: 0px; padding: 0px;">
+					<p style="margin: 0px; padding: 0px; font-size: 13px;">
+						Bonjour,
+						<br />
+						<br />Une demande d’inscription a été validée par le CROEC pour {{ object.name }}${object.second_name}.
+						<br />
+						<br />
+						Pour compléter le processus de validation, veuillez consulter le lien ci-dessous:
+						<center>
+							<a href="${ctx['url']}"
+								style="background-color: #1abc9c; padding: 8px; text-decoration: none; color: #fff; border-radius: 5px; font-size: 13px;"
+								class="o_default_snippet_text">Consulter</a>
+						</center>
+						<br />
+						<br />
+						Cordialement,
+					</p>
+				</div>
+			</field>
+			<!-- <field name="lang">${user.lang}</field> -->
+			<field name="auto_delete" eval="True" />
+		</record>
+
+		<record id="email_template_validation_membre_elu"
+			model="mail.template">
+			<field name="name">Validation phase commission réglementation et déontologie</field>
+			<field name="model_id" ref="base.model_res_partner" />
+			<field name="email_from">${ctx['email_from']|safe}</field>
+			<field name="email_to">${ctx['email_to']|safe}</field>
+			<field name="subject">Validation commission réglementation et déontologie</field>
+			<field name="body_html" type="html">
+				<div style="margin: 0px; padding: 0px;">
+					<p style="margin: 0px; padding: 0px; font-size: 13px;">
+						Bonjour,
+						<br />
+						<br />Une demande d’inscription a été validée par le membre élu.
+						<br />
+						<br />
+						Pour compléter le processus de validation, veuillez consulter le lien ci-dessous:
+						<center>
+							<a href="${ctx['url']}"
+								style="background-color: #1abc9c; padding: 8px; text-decoration: none; color: #fff; border-radius: 5px; font-size: 13px;"
+								class="o_default_snippet_text">Consulter</a>
+						</center>
+						<br />
+						<br />
+						Cordialement,
+					</p>
+				</div>
+			</field>
+			<!-- <field name="lang">${user.lang}</field> -->
+			<field name="auto_delete" eval="True" />
+		</record>
+
+		<record id="email_template_validation_secretaire_general"
+			model="mail.template">
+			<field name="name">Validation phase secrétaire général</field>
+			<field name="model_id" ref="base.model_res_partner" />
+			<field name="email_from">${ctx['email_from']|safe}</field>
+			<field name="email_to">${ctx['email_to']|safe}</field>
+			<field name="subject">Validation secrétaire général</field>
+			<field name="body_html" type="html">
+				<div style="margin: 0px; padding: 0px;">
+					<p style="margin: 0px; padding: 0px; font-size: 13px;">
+						Bonjour,
+						<br />
+						<br />Une demande d’inscription a été validée par le secrétaire général.
+						<br />
+						<br />
+						Pour compléter le processus de validation, veuillez consulter le lien ci-dessous:
+						<center>
+							<a href="${ctx['url']}"
+								style="background-color: #1abc9c; padding: 8px; text-decoration: none; color: #fff; border-radius: 5px; font-size: 13px;"
+								class="o_default_snippet_text">Consulter</a>
+						</center>
+						<br />
+						<br />
+						Cordialement,
+					</p>
+				</div>
+			</field>
+			<!-- <field name="lang">${user.lang}</field> -->
+			<field name="auto_delete" eval="True" />
+		</record>
+
+		<record id="email_template_validation_president_conseil"
+			model="mail.template">
+			<field name="name">Validation phase secrétaire général</field>
+			<field name="model_id" ref="base.model_res_partner" />
+			<field name="email_from">${ctx['email_from']|safe}</field>
+			<field name="email_to">${ctx['email_to']|safe}</field>
+			<field name="subject">Validation président de conseil régional</field>
+			<field name="body_html" type="html">
+				<div style="margin: 0px; padding: 0px;">
+					<p style="margin: 0px; padding: 0px; font-size: 13px;">
+						Bonjour,
+						<br />
+						<br />Une demande d’inscription a été validée par le président de conseil régional.
+						<br />
+						<br />
+						Pour compléter le processus de validation, veuillez consulter le lien ci-dessous:
+						<center>
+							<a href="${ctx['url']}"
+								style="background-color: #1abc9c; padding: 8px; text-decoration: none; color: #fff; border-radius: 5px; font-size: 13px;"
+								class="o_default_snippet_text">Consulter</a>
+						</center>
+						<br />
+						<br />
+						Cordialement,
+					</p>
+				</div>
+			</field>
+			<!-- <field name="lang">${user.lang}</field> -->
+			<field name="auto_delete" eval="True" />
+		</record>
+
+		<!--Email template submit Manager -->
+		<record id="email_template_notification_submit_manager" model="mail.template">
+			<field name="name">Dossiers soumise: Notification</field>
+			<field name="model_id" ref="base.model_res_partner" />
+			<field name="email_from">${ctx['email_from']|safe}</field>
+			<field name="email_to">${ctx['email_to']}</field>
+			<field name="subject">Dossiers soumise (Ref ${object.name or 'n/a'})
+			</field>
+			<field name="body_html" type="html">
+				<div style="margin: 0px; padding: 0px;">
+					<p style="margin: 0px; padding: 0px; font-size: 13px;">
+						Bonjour,
+						<br />
+						<br />
+						Le stagiaire {{ object.name }}a soumis son dossier, Pour voir son
+						dossier merci de consulter leur compte en cliquant sur le lien
+						ci-dessous !
+						<center>
+							<a href="${ctx['url']}"
+								style="background-color: #1abc9c; padding: 8px; text-decoration: none; color: #fff; border-radius: 5px; font-size: 13px;"
+								class="o_default_snippet_text">View Details</a>
+						</center>
+					</p>
+				</div>
+			</field>
+			<!-- <field name="lang">${user.lang}</field> -->
+			<field name="auto_delete" eval="True" />
+		</record>
+
+		<!--Email template submit internship -->
+		<record id="email_template_notification_submit_internship"
+			model="mail.template">
+			<field name="name">Dossiers soumise: Notification</field>
+			<field name="model_id" ref="base.model_res_partner" />
+			<field name="email_from">${ctx['email_from']|safe}</field>
+			<field name="email_to">${object.email}</field>
+			<field name="subject">Dossiers soumise (${object.name or 'n/a'})</field>
+			<field name="body_html" type="html">
+				<div style="margin: 0px; padding: 0px;">
+					<p style="margin: 0px; padding: 0px; font-size: 13px;">
+						Bonjour ${object.name},
+						<br />
+						<br />
+						Nous Accusons La reception electronique de votre dossier.
+						<br />
+						<br />
+						Cordialement
+					</p>
+				</div>
+			</field>
+			<!-- <field name="lang">${user.lang}</field> -->
+			<field name="auto_delete" eval="True" />
+		</record>
+
+		<!--Email template complete internship -->
+		<record id="email_template_notification_completed_internship"
+			model="mail.template">
+			<field name="name">Dossiers Complet: Notification</field>
+			<field name="model_id" ref="base.model_res_partner" />
+			<field name="email_from">${ctx['email_from']|safe}</field>
+			<field name="email_to">${object.email}</field>
+			<field name="subject">Dossiers Complet (${object.name or 'n/a'})</field>
+			<field name="body_html" type="html">
+				<div style="margin: 0px; padding: 0px;">
+					<p style="margin: 0px; padding: 0px; font-size: 13px;">
+						Bonjour ${object.name},
+						<br />
+						<br />
+						Votre dossier est valide.Nous vous invitons a deposer votre
+						dossier physique.
+						<br />
+						<br />
+						Cordialement
+					</p>
+				</div>
+			</field>
+			<!-- <field name="lang">${user.lang}</field> -->
+			<field name="auto_delete" eval="True" />
+		</record>
+
+		<!--Email template incomplete internship -->
+		<record id="email_template_notification_incompleted_internship"
+			model="mail.template">
+			<field name="name">Dossiers incomplet: Notification</field>
+			<field name="model_id" ref="base.model_res_partner" />
+			<field name="email_from">${ctx['email_from'] |safe}</field>
+			<field name="email_to">${object.email}</field>
+			<field name="subject">Dossiers incomplet (${object.name or 'n/a'})
+			</field>
+			<field name="body_html" type="html">
+				<div style="margin: 0px; padding: 0px;">
+					<p style="margin: 0px; padding: 0px; font-size: 13px;">
+						Bonjour ${object.name},
+						<br />
+						<br />
+						Votre dossier est Incomplet Sous reserve.
+						<br />
+						<ul>
+							% if (object.valid_inscription_manuscrite == 'no'):
+							<li>${ctx['msg_inscription']}</li>
+							% endif
+
+							% if (object.valid_iscae_certificate == 'no'):
+							<li>${ctx['msg_iscae']}</li>
+							% endif
+
+							% if (object.valid_work_certificate == 'no'):
+							<li>${ctx['msg_work']}</li>
+							% endif
+
+							% if (object.valid_anthropometric_profile == 'no'):
+							<li>${ctx['msg_anthropometric']}</li>
+							% endif
+
+							% if (object.valid_attestation_cnss == 'no'):
+							<li>${ctx['msg_attestation_cnss']}</li>
+							% endif
+
+							% if (object.valid_attestation_prise_en_charge_maitre ==
+							'no'):
+							<li>${ctx['msg_attestation_prise_en_charge_maitre']}</li>
+							% endif
+
+							% if
+							(object.valid_attestation_prise_en_charge_commissaire_compte
+							==
+							'no'):
+							<li>${ctx['msg_attestation_prise_en_charge_commissaire_compte']}
+							</li>
+							% endif
+
+							% if (object.valid_pv == 'no'):
+							<li>${ctx['msg_pv']}</li>
+							% endif
+
+							% if (object.valid_anthropometric_profile == 'no'):
+							<li>${ctx['msg_anthropometric_profile']}</li>
+							% endif
+
+							% if (object.valid_cin == 'no'):
+							<li>${ctx['msg_cin']}</li>
+							% endif
+
+							% if (object.valid_photo == 'no'):
+							<li>${ctx['msg_photo']}</li>
+							% endif
+
+
+
+
+						</ul>
+						<br />
+						<br />
+						Cordialement
+					</p>
+				</div>
+			</field>
+			<!-- <field name="lang">${user.lang}</field> -->
+			<field name="auto_delete" eval="True" />
+		</record>
+
+		<!--Email template deposer internship -->
+		<record id="email_template_notification_drop_off_internship"
+			model="mail.template">
+			<field name="name">Dossiers Depose: Notification</field>
+			<field name="model_id" ref="base.model_res_partner" />
+			<field name="email_from">${ctx['email_from'] |safe}</field>
+			<field name="email_to">${object.email}</field>
+			<field name="subject">Dossiers Depose (${object.name or 'n/a'})</field>
+			<field name="body_html" type="html">
+				<div style="margin: 0px; padding: 0px;">
+					<p style="margin: 0px; padding: 0px; font-size: 13px;">
+						Bonjour ${object.name},
+						<br />
+						<br />
+						Nous vous accusons la réception de votre dossier d'inscription.
+						<br />
+						<br />
+						Veuillez trouver en PJ le reçu.
+						<br />
+						<br />
+						Cordialement
+					</p>
+				</div>
+			</field>
+			<!-- <field name="lang">${user.lang}</field> -->
+			<field name="auto_delete" eval="True" />
+		</record>
+
+
+		<!--Email template incomplete internship -->
+		<record id="email_template_notification_incompleted_registration"
+			model="mail.template">
+			<field name="name">Dossiers incomplet: Notification</field>
+			<field name="model_id" ref="base.model_res_partner" />
+			<field name="email_from">${ctx['email_from'] |safe}</field>
+			<field name="email_to">${object.email}</field>
+			<field name="subject">Dossiers incomplet (${object.name or 'n/a'})
+			</field>
+			<field name="body_html" type="html">
+				<div style="margin: 0px; padding: 0px;">
+					<p style="margin: 0px; padding: 0px; font-size: 13px;">
+						Bonjour ${object.name},
+						<br />
+						<br />
+						Votre dossier est incomplet sous réserve.
+						<br />
+						<ul>
+							% if (object.valid_lettre_demande_inscription == 'no'):
+							<li>${ctx['msg_lettre_demande_inscription']}</li>
+							% endif
+
+							% if (object.valid_declaration_sur_honneur == 'no'):
+							<li>${ctx['msg_declaration_sur_honneur']}</li>
+							% endif
+
+							% if (object.valid_actes_modificatifs == 'no'):
+							<li>${ctx['msg_actes_modificatifs']}</li>
+							% endif
+
+							% if (object.valid_copie_bo_jal == 'no'):
+							<li>${ctx['msg_copie_bo_jal']}</li>
+							% endif
+
+							% if (object.valid_actes_cession == 'no'):
+							<li>${ctx['msg_actes_cession']}</li>
+							% endif
+
+							% if (object.valid_statuts == 'no'):
+							<li>${ctx['msg_statuts']}</li>
+							% endif
+
+							% if
+							(object.valid_copie_conforme_contrat == 'no'):
+							<li>${ctx['msg_copie_conforme_contrat']}
+							</li>
+							% endif
+
+							% if (object.valid_modele_7 == 'no'):
+							<li>${ctx['msg_modele_7']}</li>
+							% endif
+
+							% if (object.valid_attestation_radiation == 'no'):
+							<li>${ctx['msg_attestation_radiation']}</li>
+							% endif
+
+							% if (object.valid_attestation_assurance == 'no'):
+							<li>${ctx['msg_attestation_assurance']}</li>
+							% endif
+
+							% if (object.valid_attestation_inscription == 'no'):
+							<li>${ctx['msg_attestation_inscription']}</li>
+							% endif
+
+							% if (object.valid_bulletin_notification == 'no'):
+							<li>${ctx['msg_bulletin_notification']}</li>
+							% endif
+
+							% if (object.valid_copie_cheque == 'no'):
+							<li>${ctx['msg_copie_cheque']}</li>
+							% endif
+
+							% if (object.valid_contrat_travail == 'no'):
+							<li>${ctx['msg_contrat_travail']}</li>
+							% endif
+
+							% if (object.valid_engagement == 'no'):
+							<li>${ctx['msg_engagement']}</li>
+							% endif
+
+							% if (object.valid_attestation_inscription_membre == 'no'):
+							<li>${ctx['msg_attestation_inscription_membre']}</li>
+							% endif
+
+							% if (object.valid_extrait_casier_judiciaire == 'no'):
+							<li>${ctx['msg_extrait_casier_judiciaire']}</li>
+							% endif
+
+							% if (object.valid_extrait_acte_naissance == 'no'):
+							<li>${ctx['msg_extrait_acte_naissance']}</li>
+							% endif
+
+							% if (object.valid_photographies_recentes == 'no'):
+							<li>${ctx['msg_photographies_recentes']}</li>
+							% endif
+
+							% if (object.valid_photocopie_diplome == 'no'):
+							<li>${ctx['msg_photocopie_diplome']}</li>
+							% endif
+
+							% if (object.valid_attestation_equivalence == 'no'):
+							<li>${ctx['msg_attestation_equivalence']}</li>
+							% endif
+
+							% if (object.valid_fiches_annuelles == 'no'):
+							<li>${ctx['msg_fiches_annuelles']}</li>
+							% endif
+
+							% if (object.valid_attestation_fin_stage == 'no'):
+							<li>${ctx['msg_attestation_fin_stage']}</li>
+							% endif
+
+							% if (object.valid_fiche_generale_synthese == 'no'):
+							<li>${ctx['msg_fiche_generale_synthese']}</li>
+							% endif
+
+							% if (object.valid_fiche_annuelle == 'no'):
+							<li>${ctx['msg_fiche_annuelle']}</li>
+							% endif
+
+							% if (object.valid_copie_convention == 'no'):
+							<li>${ctx['msg_copie_convention']}</li>
+							% endif
+
+							% if (object.valid_certificat_residence == 'no'):
+							<li>${ctx['msg_certificat_residence']}</li>
+							% endif
+
+							% if (object.valid_demande_inscription_societe == 'no'):
+							<li>${ctx['msg_demande_inscription_societe']}</li>
+							% endif
+
+							% if (object.valid_demande_inscription_salarie == 'no'):
+							<li>${ctx['msg_demande_inscription_salarie']}</li>
+							% endif
+
+							% if (object.valid_avenant_contrat_travail == 'no'):
+							<li>${ctx['msg_avenant_contrat_travail']}</li>
+							% endif
+
+							% if (object.valid_copie_contrat_bail == 'no'):
+							<li>${ctx['msg_copie_contrat_bail']}</li>
+							% endif
+
+
+						</ul>
+						<br />
+						<br />
+						Cordialement
+					</p>
+				</div>
+			</field>
+			<!-- <field name="lang">${user.lang}</field> -->
+			<field name="auto_delete" eval="True" />
+		</record>
+
+
+		<record id="email_template_reject_registration"
+			model="mail.template">
+			<field name="name">Dossier rejeté</field>
+			<field name="model_id" ref="base.model_res_partner" />
+			<field name="email_from">${ctx['email_from']|safe}</field>
+			<field name="email_to">${object.email}</field>
+			<field name="subject">Rejet de la demande d'inscription</field>
+			<field name="body_html" type="html">
+				<div style="margin: 0px; padding: 0px;">
+					<p style="margin: 0px; padding: 0px; font-size: 13px;">
+						Bonjour,
+						<br />
+						<br />Nous vous informons que votre demande est rejeté.
+						<br />
+						<br />
+						Cordialement,
+					</p>
+				</div>
+			</field>
+			<!-- <field name="lang">${user.lang}</field> -->
+			<field name="auto_delete" eval="True" />
+		</record>
+
+		<record id="email_template_validation_dossier_registration"
+			model="mail.template">
+			<field name="name">Validation électronique du dossier</field>
+			<field name="model_id" ref="base.model_res_partner" />
+			<field name="email_from">${ctx['email_from']|safe}</field>
+			<field name="email_to">${object.email}</field>
+			<field name="subject">Validation électronique</field>
+			<field name="body_html" type="html">
+				<div style="margin: 0px; padding: 0px;">
+					<p style="margin: 0px; padding: 0px; font-size: 13px;">
+						Bonjour,
+						<br />
+						<br />Nous vous informons que votre demande est traité électroniquement. Nous vous invitons à déposer votre dossier physique auprès de la CROEC.
+						<br />
+						<br />
+						<ul>
+<li> CIN </li>
+<li> Statut de la société</li>
+<li> Copie certifiée conforme du diplôme</li>
+<li> Fiche anthropométrique</li>
+<li> Trois photos professionnelles</li>
+</ul>
+						<br />
+						<br />
+						Cordialement,
+					</p>
+				</div>
+			</field>
+			<!-- <field name="lang">${user.lang}</field> -->
+			<field name="auto_delete" eval="True" />
+		</record>
+
+		<record id="email_template_registration_submit"
+			model="mail.template">
+			<field name="name">Validation phase CROEC</field>
+			<field name="model_id" ref="base.model_res_partner" />
+			<field name="email_from">${ctx['email_from']|safe}</field>
+			<field name="email_to">${ctx['email_from']|safe}</field>
+			<field name="subject">Soumission d'une demande d'inscription</field>
+			<field name="body_html" type="html">
+				<div style="margin: 0px; padding: 0px;">
+					<p style="margin: 0px; padding: 0px; font-size: 13px;">
+						Bonjour,
+						<br />
+						<br />Une demande d’inscription a été soumis pour {{ object.name }}${object.second_name}.
+
+						.
+						<br />
+						<br />
+						Pour la visualiser, veuillez consulter le lien ci-dessous:
+						<center>
+							<a href="${ctx['url']}"
+								style="background-color: #1abc9c; padding: 8px; text-decoration: none; color: #fff; border-radius: 5px; font-size: 13px;"
+								class="o_default_snippet_text">Consulter</a>
+						</center>
+						<br />
+						<br/>
+						Cordialement,
+					</p>
+				</div>
+			</field>
+			<!-- <field name="lang">{{ user.lang }}</field> -->
+			<field name="auto_delete" eval="True"/>
+		</record>
+
+		<record id="email_template_notify_prepare_physical" model="mail.template">
+			<field name="name">Préparation du dossier physique</field>
+			<field name="model_id" ref="base.model_res_partner"/>
+			<field name="subject">Préparation du dossier physique</field>
+			<field name="email_from">{{ctx['email_from']|safe}</field>
+			<field name="email_to">{{object.email}}</field>
+			<field name="body_html"><![CDATA[
+        <p>Bonjour {{object.name}},</p>
+        <p>Votre dossier électronique a été validé.</p>
+        <p>Veuillez préparer votre <strong>dossier physique</strong> et prendre rendez-vous avec <strong>Madame Mouna</strong>.</p>
+        <p>Merci pour votre collaboration.<br/>Le Conseil Régional.</p>
+    ]]></field>
+		</record>
+
+
+	</data>
+</odoo>

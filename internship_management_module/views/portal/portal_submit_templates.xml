@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+	<template id="portal_registration_submit">
+        <t t-call="portal.portal_layout">
+            <t t-set="additional_title">Confirmation</t>
+            <form action="/registration/submit" method="post">
+            	<input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                <div class="row o_portal_details col-xl-8">
+                    <div class="alert alert-danger float-center" style="position: absolute" role="alert">
+                        <h4 class="alert-heading">Confirmation!</h4>
+                        <p>Vous êtes sur le point de valider votre inscription. Voulez vous continuer? </p>
+                        <hr />
+                        <p class="mb-0">
+                            <a href="/registration" class="mb-2 btn btn-secondary rounded-circle btn-sm">
+                                        Retour
+                            </a>
+                            <button type="submit" class="mb-2 btn btn-secondary rounded-circle btn-sm float-right">
+                                        Confirmer
+                            </button>
+        
+                        </p>
+                    </div>
+                </div>
+            </form>
+        </t>
+    </template>
+    
+    <template id="portal_registration_submit_success">
+        <t t-call="portal.portal_layout">
+            <t t-set="additional_title">Dossier Soumis</t>
+            <form action="/submit/success" method="post">
+                <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                <div id="wrap">
+                    <div class="oe_structure">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <h1 class="text-center">Félicitations!</h1>
+                                    <p class="text-center">
+                                        Votre candidature a été soumis avec succès.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="row" id="o_submit">
+                                <div class="col-lg-12 text-center mt32 mb32">
+                                    <button type="submit" class="btn btn-primary float-center mb32 ">
+                                        Continuer sur notre site Web
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </form>
+        </t>
+    </template>
+    
+	<template id="portal_submit">
+        <t t-call="portal.portal_layout">
+            <t t-set="additional_title">Soumettre Dossier</t>
+            <form action="/my/account/submit" method="post">
+            	<input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                <div class="row o_portal_details col-xl-8">
+                    <div class="alert alert-danger float-center" style="position: absolute" role="alert">
+                        <h4 class="alert-heading">Dépôt du dossier!</h4>
+                        <p>Vous êtes sur le point de déposer la version éléctronique de votre dossier. Voulez vous continuer? </p>
+                        <hr />
+                        <p class="mb-0">
+                            <a href="/my/account" class="mb-2 btn btn-secondary rounded-circle btn-sm">
+                                        Retour
+                            </a>
+                            <button type="submit" class="mb-2 btn btn-secondary rounded-circle btn-sm float-right">
+                                        Confirmer
+                            </button>
+        
+                        </p>
+                    </div>
+                </div>
+            </form>
+        </t>
+    </template>
+    <template id="portal_submit_success">
+        <t t-call="portal.portal_layout">
+            <t t-set="additional_title">Dossier Soumis</t>
+            <form action="/submit/success" method="post">
+                <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                <div id="wrap">
+                    <div class="oe_structure">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <h1 class="text-center">Félicitations!</h1>
+                                    <p class="text-center">
+                                        Votre candidature a été soumis avec succès.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="row" id="o_submit">
+                                <div class="col-lg-12 text-center mt32 mb32">
+                                    <button type="submit" class="btn btn-primary float-center mb32 ">
+                                        Continuer sur notre site Web
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </form>
+        </t>
+    </template>
+</odoo>

@@ -1,0 +1,727 @@
+<odoo>
+<!--    <template id="remove_original_docs_card" inherit_id="portal.portal_my_home" priority="20">-->
+<!--        <xpath expr="//div[hasclass('o_portal_docs')]" position="replace"/>-->
+<!--    </template>-->
+
+<!--    <template id="remove_docs_extension" inherit_id="portal_my_home_documents" priority="30">-->
+<!--        <xpath expr="." position="replace"/>-->
+<!--    </template>-->
+    <template id="portal_my_details_custom" inherit_id="portal.portal_my_details">
+        <xpath expr="//form" position="attributes">
+            <attribute name="enctype">multipart/form-data</attribute>
+        </xpath>
+        <xpath expr="//div[hasclass('col-lg-8')]" position="before">
+            <div class="o_website_calendar col-lg-8">
+                <style>
+                    .o_website_calendar {
+                    /* Overall container styling */
+                    background-color: #f0f0f0; /* Adjust background color as needed */
+                    border: 1px solid #ccc;
+                    border-radius: 5px;
+                    padding: 20px;
+                    }
+
+                    .wizard {
+                    display: flex;
+                    justify-content: space-between;
+                    list-style: none;
+                    padding: 0;
+                    margin: 0;
+                    }
+
+                    .wizard li {
+                    flex: 1;
+                    text-align: center;
+                    padding: 10px;
+                    border-bottom: 2px solid transparent; /* For active step */
+                    }
+
+                    .wizard li.text-primary {
+                    /* Active step styling */
+                    border-bottom-color: #007bff; /* Adjust color as needed */
+                    color: #007bff;
+                    font-weight: bold;
+                    }
+
+                    .chevron {
+                    /* Style the chevron as needed */
+                    display: inline-block;
+                    margin-left: 5px;
+                    /* Add appropriate font-family, font-size, and color */
+                    }
+                </style>
+
+                <div class="oe_structure container mb128 o_website_calendar_appointment">
+                    <ul class="wizard mt32 float-right">
+                        <li t-attf-class="#{partner.status=='draft' and 'text-primary' or 'text-muted'}"
+                            class="text-primary">Dossier en cours
+                            <span class="chevron"/>
+                        </li>
+                        <li t-attf-class="#{partner.status=='submitted' and 'text-primary' or 'text-muted'}">Soumis
+                            <span class="chevron"/>
+                        </li>
+                        <li t-attf-class="#{partner.status=='completed' and 'text-primary' or 'text-muted'}">Dossier
+                            complet
+                            <span class="chevron"/>
+                        </li>
+                        <li t-attf-class="#{partner.status=='incompleted' and 'text-primary' or 'text-muted'}">Dossier
+                            incomplet
+                            <span class="chevron"/>
+                        </li>
+                        <li t-attf-class="#{partner.status=='drop_off' and 'text-primary' or 'text-muted'}">Déposé
+                            <span class="chevron"/>
+                        </li>
+                        <li t-attf-class="#{partner.status=='signed_contract' and 'text-primary' or 'text-muted'}">
+                            Contrat signé
+                            <span class="chevron"/>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </xpath>
+        <xpath expr="//div[hasclass('col-lg-8')]/div[hasclass('clearfix')]" position="inside">
+            <div class="clearfix">
+                <button class="btn btn-primary float-left mb32">Enregistrer</button>
+                <a href="/my/account/submit" class="btn btn-primary float-right mb32 ">Soumettre</a>
+            </div>
+        </xpath>
+        <xpath expr="//div[hasclass('col-lg-8')]/div[hasclass('clearfix')]/button[@type='submit']" position="replace"/>
+        <!--<xpath expr="//a[contains(@class, 'btn btn-secondary me-2') and contains(text(), 'Discard')]"
+               position="replace"/>-->
+        <xpath expr="//a[contains(@class, 'btn btn-light me-2') and contains(text(), 'Discard')]"
+               position="replace"/>
+    </template>
+
+    <!-- Inherit the portal_my_details_fields template to add custom fields and remove unwanted fields -->
+    <template id="portal_my_details_fields_custom" inherit_id="portal.portal_my_details_fields">
+        <xpath expr="//label[@for='company_name']/parent::div" position="replace">
+            <div></div>
+        </xpath>
+        <xpath expr="//div[@t-if='not partner_can_edit_vat' and @class='col-12 d-none d-xl-block']" position="replace">
+            <div></div>
+
+        </xpath>
+        <xpath expr="//div[label[@for='name']]" position="after">
+            <div t-attf-class="form-group #{error.get('second_name') and 'o_has_error' or ''} col-xl-6">
+                <label class="col-form-label" for="second_name">Prénom</label>
+                <input type="text" name="second_name"
+                       t-attf-class="form-control #{error.get('second_name') and 'is-invalid' or ''}"
+                       t-att-value="second_name or partner.second_name"
+                       t-att-readonly="None if partner.status=='draft' else '1'"/>
+            </div>
+            <div t-attf-class="form-group #{error.get('place_of_birth') and 'o_has_error' or ''} col-xl-6">
+                <label class="col-form-label" for="place_of_birth">Lieu de naissance</label>
+                <input type="text" name="place_of_birth"
+                       t-attf-class="form-control #{error.get('place_of_birth') and 'is-invalid' or ''}"
+                       t-att-value="place_of_birth or partner.place_of_birth"
+                       t-att-readonly="None if partner.status=='draft' else '1'"/>
+            </div>
+            <div t-attf-class="form-group #{error.get('birthday') and 'o_has_error' or ''} col-xl-6">
+                <label class="col-form-label" for="birthday">Date de naissance</label>
+                <input type="date" name="birthday"
+                       t-attf-class="form-control #{error.get('birthday') and 'is-invalid' or ''}"
+                       t-att-value="birthday or partner.birthday"
+                       t-att-readonly="None if partner.status=='draft' else '1'"/>
+            </div>
+        </xpath>
+        <xpath expr="//label[@for='state_id']/parent::div" position="after">
+            <div t-attf-class="form-group #{error.get('internship_supervisor_id') and 'o_has_error' or ''} col-xl-6">
+                <label class="col-form-label" for="internship_supervisor_id">Maître de stage</label>
+                <select name="internship_supervisor_id"
+                        t-attf-class="form-control #{error.get('internship_supervisor_id') and 'is-invalid' or ''}"
+                        t-att-readonly="None if partner.status=='draft' else '1'">
+                    <option value="">Maître de stage...</option>
+                    <t t-foreach="supervisors or []" t-as="supervisor">
+                        <option t-att-value="supervisor.id"
+                                t-att-selected="supervisor.id == int(internship_supervisor_id) if internship_supervisor_id else supervisor.id == partner.internship_supervisor_id.id">
+                            <t t-out="supervisor.name"/>
+                        </option>
+                    </t>
+                </select>
+            </div>
+            <div t-attf-class="form-group #{error.get('internship_controler_id') and 'o_has_error' or ''} col-xl-6">
+                <label class="col-form-label" for="internship_controler_id">Contrôleur de stage</label>
+                <select name="internship_controler_id"
+                        t-attf-class="form-control #{error.get('internship_controler_id') and 'is-invalid' or ''} #{partner.status=='draft' and '' or 'o_not_editable'}"
+                        readonly="1">
+                    <option value="">Contrôleur de stage...</option>
+                    <t t-foreach="controlors or []" t-as="controlor">
+                        <option t-att-value="controlor.id"
+                                t-att-selected="controlor.id == int(internship_controler_id) if internship_controler_id else controlor.id == partner.internship_controler_id.id">
+                            <t t-out="controlor.name"/>
+                        </option>
+                    </t>
+                </select>
+            </div>
+            <div t-attf-class="form-group #{error.get('start_date') and 'o_has_error' or ''} col-xl-6">
+                <label class="col-form-label" for="start_date">Date de début de stage</label>
+                <input type="date" name="start_date"
+                       t-attf-class="form-control #{error.get('start_date') and 'is-invalid' or ''}"
+                       t-att-value="start_date or partner.start_date" readonly="1"/>
+            </div>
+            <div t-attf-class="form-group #{error.get('contract_date') and 'o_has_error' or ''} col-xl-6">
+                <label class="col-form-label" for="contract_date">Date de contrat de stage</label>
+                <input type="date" name="contract_date"
+                       t-attf-class="form-control #{error.get('contract_date') and 'is-invalid' or ''}"
+                       t-att-value="contract_date or partner.contract_date" readonly="1"/>
+            </div>
+            <div t-attf-class="form-group #{error.get('depot_date') and 'o_has_error' or ''} col-xl-6">
+                <label class="col-form-label" for="depot_date">Date de dépôt de stage</label>
+                <input type="date" name="depot_date"
+                       t-attf-class="form-control #{error.get('depot_date') and 'is-invalid' or ''}"
+                       t-att-value="depot_date or partner.depot_date" readonly="1"/>
+            </div>
+            <div t-attf-class="form-group col-xl-6" data-type="binary">
+                <label class="col-form-label label-optional" for="iscae_certificate">Attestation originale d'inscription
+                    ISCAE
+                    <span t-if="partner.iscae_certificate" style="color:blue">(Document déjà chargé)</span>
+                </label>
+                <input type="file" name="iscae_certificate" class="file" data-show-upload="true"
+                       data-show-caption="true" data-show-preview="true"
+                       t-att-readonly="None if partner.status=='draft' else '1'"/>
+            </div>
+            <div t-attf-class="form-group col-xl-6" data-type="binary">
+                <label class="col-form-label label-optional" for="work_certificate">Attestation originale de travail
+                    <span t-if="partner.work_certificate" style="color:blue">(Document déjà chargé)</span>
+                </label>
+                <input id="upload" type="file" name="work_certificate" class="file" data-show-upload="true"
+                       data-show-caption="true" data-show-preview="true"
+                       t-att-readonly="None if partner.status=='draft' else '1'"/>
+            </div>
+            <div t-attf-class="form-group col-xl-6" data-type="binary">
+                <label class="col-form-label label-optional" for="anthropometric_profile">Casier judiciaire ou Fiche
+                    anthropométrique
+                    <span t-if="partner.anthropometric_profile" style="color:blue">(Document déjà chargé)</span>
+                </label>
+                <input id="upload" type="file" name="anthropometric_profile" class="file" data-show-upload="true"
+                       data-show-caption="true" data-show-preview="true"
+                       t-att-readonly="None if partner.status=='draft' else '1'"/>
+            </div>
+            <div t-attf-class="form-group col-xl-6" data-type="binary">
+                <label class="col-form-label label-optional" for="inscription_manuscrite">Demande d’inscription
+                    manuscrite
+                    <span t-if="partner.inscription_manuscrite" style="color:blue">(Document déjà chargé)</span>
+                </label>
+                <input id="upload" type="file" name="inscription_manuscrite" class="file" data-show-upload="true"
+                       data-show-caption="true" data-show-preview="true"
+                       t-att-readonly="None if partner.status=='draft' else '1'"/>
+            </div>
+
+            <div t-attf-class="form-group col-xl-6" data-type="binary">
+                <label class="col-form-label label-optional" for="attestation_cnss">Attestation de déclaration des
+                    salaires CNSS
+                    <span t-if="partner.attestation_cnss" style="color:blue">(Document déjà chargé)</span>
+                </label>
+                <input id="upload" type="file" name="attestation_cnss" class="file" data-show-upload="true"
+                       data-show-caption="true" data-show-preview="true"
+                       t-att-readonly="None if partner.status=='draft' else '1'"/>
+            </div>
+
+            <div t-attf-class="form-group col-xl-6" data-type="binary">
+                <label class="col-form-label label-optional" for="attestation_prise_en_charge_maitre">Attestation de
+                    prise en charge par un maître de stage
+                    <span t-if="partner.attestation_prise_en_charge_maitre" style="color:blue">(Document déjà chargé)
+                    </span>
+                </label>
+                <input id="upload" type="file" name="attestation_prise_en_charge_maitre" class="file"
+                       data-show-upload="true" data-show-caption="true" data-show-preview="true"
+                       t-att-readonly="None if partner.status=='draft' else '1'"/>
+            </div>
+
+            <div t-attf-class="form-group col-xl-6" data-type="binary">
+                <label class="col-form-label label-optional" for="attestation_prise_en_charge_commissaire_compte">
+                    Attestation de prise en charge par le commissaire aux comptes
+                    <span t-if="partner.attestation_prise_en_charge_commissaire_compte" style="color:blue">(Document
+                        déjà chargé)
+                    </span>
+                </label>
+                <input id="upload" type="file" name="attestation_prise_en_charge_commissaire_compte" class="file"
+                       data-show-upload="true" data-show-caption="true" data-show-preview="true"
+                       t-att-readonly="None if partner.status=='draft' else '1'"/>
+            </div>
+
+            <div t-attf-class="form-group col-xl-6" data-type="binary">
+                <label class="col-form-label label-optional" for="pv">PV de nomination de Commissaire Aux Comptes
+                    <span t-if="partner.pv" style="color:blue">(Document déjà chargé)</span>
+                </label>
+                <input id="upload" type="file" name="pv" class="file" data-show-upload="true" data-show-caption="true"
+                       data-show-preview="true" t-att-readonly="None if partner.status=='draft' else '1'"/>
+            </div>
+
+            <div t-attf-class="form-group col-xl-6" data-type="binary">
+                <label class="col-form-label label-optional" for="cin">Photocopie légalisée de la CIN
+                    <span t-if="partner.cin" style="color:blue">(Document déjà chargé)</span>
+                </label>
+                <input id="upload" type="file" name="cin" class="file" data-show-upload="true" data-show-caption="true"
+                       data-show-preview="true" t-att-readonly="None if partner.status=='draft' else '1'"/>
+            </div>
+
+            <div t-attf-class="form-group col-xl-6" data-type="binary">
+                <label class="col-form-label label-optional" for="photo">Deux photos
+                    <span t-if="partner.photo" style="color:blue">(Document déjà chargé)</span>
+                </label>
+                <input id="upload" type="file" name="photo" class="file" data-show-upload="true"
+                       data-show-caption="true" data-show-preview="true"
+                       t-att-readonly="None if partner.status=='draft' else '1'"/>
+            </div>
+
+            <div t-attf-class="form-group col-xl-6">
+                <a href="/my/account/cvtheque">CV Theque</a>
+            </div>
+        </xpath>
+    </template>
+
+    <!-- <template id="portal_my_home_custom" inherit_id="portal.portal_my_home">
+        <xpath expr="//t/div[@id='oe_structure_portal_my_home_2']" position="after">
+            <div>
+                <h3 class="text-center">
+                    <font style="color: rgb(57, 123, 33);">Rapports de stage</font>
+                </h3>
+            </div>
+            <section
+                    class="s_cover o_colored_level pt0 pb0 s_parallax_no_overflow_hidden undefined o_cc o_cc2 oe_img_bg"
+                    data-scroll-background-ratio="0" data-snippet="s_cover" data-name="Cover"
+                    style="position: relative; background-image: url(&quot;/my/home&quot;);">
+                <div class="s_allow_columns o_container_small">
+                    <p class="lead" style="text-align: center;">Consulter Vos Rapports</p>
+                    <p style="text-align: center;">
+                        <a href="/my/internships" class="btn btn-primary mb-2" data-original-title="" title=""
+                           aria-describedby="tooltip961187">
+                            <font style="font-size: 18px;">Consulter</font>
+                        </a>
+                    </p>
+                </div>
+            </section>
+        </xpath>
+    </template> -->
+   
+    <template id="portal_my_home_cust">
+        <t t-call="portal.portal_layout">
+
+            <div>
+                <h3 class="text-center">
+                    <font style="color: rgb(57, 123, 33);">Rapports de stage</font>
+                </h3>
+            </div>
+            <section
+                    class="s_cover o_colored_level pt0 pb0 s_parallax_no_overflow_hidden undefined o_cc o_cc2 oe_img_bg"
+                    data-scroll-background-ratio="0" data-snippet="s_cover" data-name="Cover"
+                    style="position: relative; background-image: url(&quot;/my/home&quot;);">
+                <div class="s_allow_columns o_container_small">
+                    <p class="lead" style="text-align: center;">Consulter Vos Rapports</p>
+                    <p style="text-align: center;">
+                        <a href="/my/internships" class="btn btn-primary mb-2" data-original-title="" title=""
+                           aria-describedby="tooltip961187">
+                            <font style="font-size: 18px;">Consulter</font>
+                        </a>
+                    </p>
+                </div>
+            </section>
+        </t>
+    </template>
+
+
+    <template id="portal_my_internships" name="My reports">
+        <t t-call="portal.portal_layout">
+            <t t-set="breadcrumbs_searchbar" t-value="True"/>
+
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">Rapports</t>
+            </t>
+            <t t-if="not reports">
+                <p>There are currently no reports for your account.</p>
+            </t>
+            <t t-if="reports" t-call="portal.portal_table">
+                <thead>
+                    <tr class="active">
+                        <th>#</th>
+                        <th class="text-left">Thème</th>
+                        <th class="text-left">Maître de stage</th>
+                        <th class="text-left">Contrôleur de stage</th>
+                        <th>Etat</th>
+                        <th/>
+                    </tr>
+                </thead>
+                <t t-foreach="reports" t-as="report">
+                    <tr>
+                        <td class="text-left">
+                            <span t-field="report.report_id" class="badge badge-pill badge-success"/>
+                        </td>
+                        <td class="text-left">
+                            <a t-attf-href="/my/report/#{slug(report)}">
+                                <span t-field="report.name"/>
+                            </a>
+                        </td>
+                        <td class="text-left">
+                            <span t-field="report.internship_supervisor_id"/>
+                        </td>
+                        <td class="text-left">
+                            <span t-field="report.internship_controler_id"/>
+                        </td>
+                        <td class="text-left">
+                            <t t-if="report.signature">
+                                <span class="badge badge-pill badge-info">Signé</span>
+                            </t>
+                            <t t-if="report.cs_decision">
+                                <t t-if="report.cs_decision == 'valide'">
+                                    <span class="badge badge-pill badge-success">Rapport validé</span>
+                                </t>
+                                <t t-if="report.cs_decision == 'reserve'">
+                                    <span class="badge badge-pill badge-warning">Validé avec réserves</span>
+                                </t>
+                                <t t-if="report.cs_decision == 'rejet'">
+                                    <span class="badge badge-pill badge-danger">Rapport rejeté</span>
+                                </t>
+                            </t>
+                        </td>
+                        <td class="text-center">
+                            <a t-attf-href="/my/report/#{slug(report)}"
+                               class="mb-2 btn btn-secondary rounded-circle btn-sm">
+                                <t t-if="partner.id == report.internship_id.id">Joindre</t>
+                                <t t-if="partner.id == report.internship_controler_id.id">Consulter</t>
+                                <t t-if="partner.id == report.internship_supervisor_id.id">Consulter</t>
+                            </a>
+                        </td>
+                    </tr>
+                </t>
+            </t>
+        </t>
+    </template>
+   
+    <template id="portal_my_cv">
+        <t t-call="portal.portal_layout">
+            <t t-set="additional_title">CVTheque</t>
+            <form action="/my/account/cvtheque" method="post" enctype="multipart/form-data">
+                <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                <div class="row o_portal_details">
+                    <div class="col-lg-8">
+                        <div class="row">
+                            <!--Formations-->
+                            <div class="col-xl-12 text-center mt32 mb32">
+                                <label class="col-form-label" for="formations">Formations</label>
+                            </div>
+                            <div class="col-xl-12">
+                                <label class="col-form-label" for="description1">Description</label>
+                                <input type="text" name="des1" class="form-control"/>
+                            </div>
+                            <div class="col-xl-6">
+                                <label class="col-form-label" for="date_start1">Du</label>
+                                <input type="date" name="date_start1" class="form-control"/>
+                            </div>
+                            <div class="col-xl-6">
+                                <label class="col-form-label" for="date_end1">Au</label>
+                                <input type="date" name="date_end1" class="form-control"/>
+                            </div>
+                            <div class="col-xl-12">
+                                <label class="col-form-label" for="description2">Description</label>
+                                <input type="text" name="des1" class="form-control"/>
+                            </div>
+                            <div class="col-xl-6">
+                                <label class="col-form-label" for="date_start2">Du</label>
+                                <input type="date" name="date_start1" class="form-control"/>
+                            </div>
+                            <div class="col-xl-6">
+                                <label class="col-form-label" for="date_end2">Au</label>
+                                <input type="date" name="date_end1" class="form-control"/>
+                            </div>
+                            <div class="col-xl-12">
+                                <label class="col-form-label" for="description3">Description</label>
+                                <input type="text" name="des1" class="form-control"/>
+                            </div>
+                            <div class="col-xl-6">
+                                <label class="col-form-label" for="date_start3">Du</label>
+                                <input type="Date" name="date_start1" class="form-control"/>
+                            </div>
+                            <div class="col-xl-6">
+                                <label class="col-form-label" for="date_end3">Au</label>
+                                <input type="date" name="date_end1" class="form-control"/>
+                            </div>
+                            <div class="col-xl-12">
+                                <label class="col-form-label" for="description4">Description</label>
+                                <input type="text" name="des1" class="form-control"/>
+                            </div>
+                            <div class="col-xl-6">
+                                <label class="col-form-label" for="date_start4">Du</label>
+                                <input type="Date" name="date_start1" class="form-control"/>
+                            </div>
+                            <div class="col-xl-6">
+                                <label class="col-form-label" for="date_end4">Au</label>
+                                <input type="date" name="date_end1" class="form-control"/>
+                            </div>
+                            <div class="col-xl-12">
+                                <label class="col-form-label" for="description5">Description</label>
+                                <input type="text" name="des1" class="form-control"/>
+                            </div>
+                            <div class="col-xl-6">
+                                <label class="col-form-label" for="date_start5">Du</label>
+                                <input type="date" name="date_start1" class="form-control"/>
+                            </div>
+                            <div class="col-xl-6">
+                                <label class="col-form-label" for="date_end5">Au</label>
+                                <input type="date" name="date_end1" class="form-control"/>
+                            </div>
+
+                            <!--Experience-->
+                            <div class="col-xl-12 text-center mt32 mb32">
+                                <label class="col-form-label" for="experiences">Experiences</label>
+                            </div>
+                            <div class="col-xl-6">
+                                <label class="col-form-label" for="ex_date_start1">Du</label>
+                                <input type="date" name="ex_date_start1" class="form-control"/>
+                            </div>
+                            <div class="col-xl-6">
+                                <label class="col-form-label" for="ex_date_end1">Au</label>
+                                <input type="date" name="ex_date_end1" class="form-control"/>
+                            </div>
+                            <div class="col-xl-6">
+                                <label class="col-form-label" for="ex_description1">Description</label>
+                                <input type="text" name="ex_description1" class="form-control"/>
+                            </div>
+                            <div class="col-xl-6">
+                                <label class="col-form-label" for="ex_poste1">Poste</label>
+                                <input type="text" name="ex_poste1" class="form-control"/>
+                            </div>
+
+                            <div class="col-xl-6">
+                                <label class="col-form-label" for="ex_date_start2">Du</label>
+                                <input type="date" name="ex_date_start2" class="form-control"/>
+                            </div>
+                            <div class="col-xl-6">
+                                <label class="col-form-label" for="ex_date_end2">Au</label>
+                                <input type="date" name="ex_date_end1" class="form-control"/>
+                            </div>
+                            <div class="col-xl-6">
+                                <label class="col-form-label" for="ex_description2">Description</label>
+                                <input type="text" name="ex_description2" class="form-control"/>
+                            </div>
+                            <div class="col-xl-6">
+                                <label class="col-form-label" for="ex_poste2">Poste</label>
+                                <input type="text" name="ex_poste2" class="form-control"/>
+                            </div>
+
+                            <div class="col-xl-6">
+                                <label class="col-form-label" for="ex_date_start3">Du</label>
+                                <input type="date" name="ex_date_start3" class="form-control"/>
+                            </div>
+                            <div class="col-xl-6">
+                                <label class="col-form-label" for="ex_date_end3">Au</label>
+                                <input type="date" name="ex_date_end3" class="form-control"/>
+                            </div>
+                            <div class="col-xl-6">
+                                <label class="col-form-label" for="ex_description3">Description</label>
+                                <input type="text" name="ex_description3" class="form-control"/>
+                            </div>
+                            <div class="col-xl-6">
+                                <label class="col-form-label" for="ex_poste3">Poste</label>
+                                <input type="text" name="ex_poste3" class="form-control"/>
+                            </div>
+
+                            <div class="col-xl-6">
+                                <label class="col-form-label" for="ex_date_start4">Du</label>
+                                <input type="date" name="ex_date_start4" class="form-control"/>
+                            </div>
+                            <div class="col-xl-6">
+                                <label class="col-form-label" for="ex_date_end4">Au</label>
+                                <input type="date" name="ex_date_end4" class="form-control"/>
+                            </div>
+                            <div class="col-xl-6">
+                                <label class="col-form-label" for="ex_description4">Description</label>
+                                <input type="text" name="ex_description4" class="form-control"/>
+                            </div>
+                            <div class="col-xl-6">
+                                <label class="col-form-label" for="ex_poste4">Poste</label>
+                                <input type="text" name="ex_poste4" class="form-control"/>
+                            </div>
+
+                            <div class="col-xl-6">
+                                <label class="col-form-label" for="ex_date_start5">Du</label>
+                                <input type="date" name="ex_date_start5" class="form-control"/>
+                            </div>
+                            <div class="col-xl-6">
+                                <label class="col-form-label" for="ex_date_end5">Au</label>
+                                <input type="date" name="ex_date_end5" class="form-control"/>
+                            </div>
+                            <div class="col-xl-6">
+                                <label class="col-form-label" for="ex_description5">Description</label>
+                                <input type="text" name="ex_description5" class="form-control"/>
+                            </div>
+                            <div class="col-xl-6">
+                                <label class="col-form-label" for="ex_poste5">Poste</label>
+                                <input type="text" name="ex_poste5" class="form-control"/>
+                            </div>
+
+                            <!--Langues-->
+                            <div class="col-xl-12 text-center mt32 mb32">
+                                <label class="col-form-label" for="langues">Langues</label>
+                            </div>
+                            <div class="col-xl-6">
+                                <label class="col-form-label" for="lang1">Langue</label>
+                                <select name="lang1" t-attf-class="form-control">
+                                    `
+                                    <option value="">Langue...</option>
+                                    <t t-foreach="langs or []" t-as="lang">
+                                        <option t-att-value="lang.id">
+                                            <t t-out="lang.name"/>
+                                        </option>
+                                    </t>
+                                </select>
+                            </div>
+                            <div class="col-xl-6">
+                                <label class="col-form-label" for="niveau1">Niveau</label>
+                                <input type="text" name="niveau1" class="form-control"/>
+                            </div>
+
+                            <div class="col-xl-6">
+                                <label class="col-form-label" for="lang2">Langue</label>
+                                <select name="lang2" t-attf-class="form-control">
+                                    `
+                                    <option value="">Langue...</option>
+                                    <t t-foreach="langs or []" t-as="lang">
+                                        <option t-att-value="lang.id">
+                                            <t t-out="lang.name"/>
+                                        </option>
+                                    </t>
+                                </select>
+                            </div>
+                            <div class="col-xl-6">
+                                <label class="col-form-label" for="niveau2">Niveau</label>
+                                <input type="text" name="niveau2" class="form-control"/>
+                            </div>
+
+                            <div class="col-xl-6">
+                                <label class="col-form-label" for="lang3">Langue</label>
+                                <select name="lang3" t-attf-class="form-control">
+                                    `
+                                    <option value="">Langue...</option>
+                                    <t t-foreach="langs or []" t-as="lang">
+                                        <option t-att-value="lang.id">
+                                            <t t-out="lang.name"/>
+                                        </option>
+                                    </t>
+                                </select>
+                            </div>
+                            <div class="col-xl-6">
+                                <label class="col-form-label" for="niveau3">Niveau</label>
+                                <input type="text" name="niveau3" class="form-control"/>
+                            </div>
+
+                            <div class="col-xl-6">
+                                <label class="col-form-label" for="lang4">Langue</label>
+                                <select name="lang4" t-attf-class="form-control">
+                                    `
+                                    <option value="">Langue...</option>
+                                    <t t-foreach="langs or []" t-as="lang">
+                                        <option t-att-value="lang.id">
+                                            <t t-out="lang.name"/>
+                                        </option>
+                                    </t>
+                                </select>
+                            </div>
+                            <div class="col-xl-6">
+                                <label class="col-form-label" for="niveau4">Niveau</label>
+                                <input type="text" name="niveau4" class="form-control"/>
+                            </div>
+
+                            <div class="col-xl-6">
+                                <label class="col-form-label" for="lang5">Langue</label>
+                                <select name="lang5" t-attf-class="form-control">
+                                    `
+                                    <option value="">Langue...</option>
+                                    <t t-foreach="langs or []" t-as="lang">
+                                        <option t-att-value="lang.id">
+                                            <t t-out="lang.name"/>
+                                        </option>
+                                    </t>
+                                </select>
+                            </div>
+                            <div class="col-xl-6">
+                                <label class="col-form-label" for="niveau5">Niveau</label>
+                                <input type="text" name="niveau5" class="form-control"/>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+                <div class="row" id="report_submit">
+                    <div class="col-lg-12 text-center mt32 mb32">
+                        <button type="submit" class="btn btn-primary float-center mb32 ">
+                            Soumettre
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </t>
+    </template>
+
+    <template id="custom_styled_portal_docs_entry" inherit_id="portal.portal_docs_entry">
+        <xpath expr="//a" position="attributes">
+            <attribute name="style">box-shadow: inset .5rem .5rem rgba(63, 0, 0, .8);</attribute>
+        </xpath>
+    </template>
+
+    <template id="main_portal_my_home" inherit_id="portal.portal_my_home">
+        <!--<xpath expr="//div[hasclass('o_portal_docs')]" position="before">
+                <t t-set="portal_vendor_category_enable" t-value="True"/>
+            </xpath>-->
+        <xpath expr="//div[@id='portal_client_category']" position="attributes">
+                <attribute name="style">display: none !important;</attribute>
+            </xpath>
+        <div id="portal_vendor_category" position="inside">
+            <div class="row g-4">
+                <t t-call="portal.portal_docs_entry">
+                    <t t-set="icon" t-value="'/mandat_cotisation_management/static/src/img/profile.svg'"/>
+                    <t t-set="title">Mon profil</t>
+                    <t t-set="text">Consultez les informations de votre profil.</t>
+                    <t t-set="url" t-value="'/my-profil'"/>
+                    <t t-set="config_card" t-value="True"/>
+                </t>
+
+
+
+                <t t-call="portal.portal_docs_entry">
+                    <t t-set="icon" t-value="'/internship_management_module/static/description/cotisations.svg'"/>
+                    <t t-set="title">Mes cotisations</t>
+                    <t t-set="text">Consultez toutes vos cotisations en un seul endroit.</t>
+                    <t t-set="url" t-value="'/cotisations'"/>
+                    <t t-set="config_card" t-value="True"/>
+                </t>
+
+                <t t-call="portal.portal_docs_entry">
+                    <t t-set="icon" t-value="'/internship_management_module/static/description/declarations.svg'"/>
+                    <t t-set="title">Mes déclarations de mandats</t>
+                    <t t-set="text">Consultez toutes vos déclarations de mandats en un seul endroit.</t>
+                    <t t-set="url" t-value="'/cotisations'"/>
+                    <t t-set="config_card" t-value="True"/>
+                </t>
+
+
+                <t t-call="portal.portal_docs_entry">
+                    <t t-set="icon" t-value="'/internship_management_module/static/description/stag_enc.svg'"/>
+                    <t t-set="title">Mes stagiaires encadrés</t>
+                    <t t-set="text">Consultez tous les dossiers des stagiaires que vous avez encadré.</t>
+                    <t t-set="url" t-value="'/my/internships/ms'"/>
+                    <t t-set="config_card" t-value="True"/>
+                </t>
+
+
+                <t t-call="portal.portal_docs_entry">
+                    <t t-set="icon" t-value="'/internship_management_module/static/description/stag_cont.svg'"/>
+                    <t t-set="title">Mes stagiaires contrôlés</t>
+                    <t t-set="text">Consultez tous les dossiers des stagiaires que vous avez contrôlé.</t>
+                    <t t-set="url" t-value="'/my/internships/cs'"/>
+                    <t t-set="config_card" t-value="True"/>
+                </t>
+
+                <t t-call="portal.portal_docs_entry">
+                <t t-set="icon" t-value="'/portal/static/src/img/portal-connection.svg'"/>
+                <t t-set="title">Connexion &amp; Sécurité</t>
+                <t t-set="text">Configurez vos paramètres de connexion</t>
+                <t t-set="url" t-value="'/my/security'"/>
+                <t t-set="config_card" t-value="True"/>
+                </t>
+            </div>
+        </div>
+        <xpath expr="//div[@id='portal_common_category']" position="replace"/>
+    </template>
+</odoo>

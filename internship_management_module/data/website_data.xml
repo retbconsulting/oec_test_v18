@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+    	<!-- Sequences for stagiare -->
+        <record id="seq_internship" model="ir.sequence">
+            <field name="name">Internship Sequence</field>
+            <field name="code">internship.sequence</field>
+            <field name="prefix">ST/%(y)s/</field>
+            <field name="padding">4</field>
+            <field name="company_id" eval="False"/>
+        </record>
+        
+        <record id="seq_ec" model="ir.sequence">
+            <field name="name">EC Sequence</field>
+            <field name="code">ec.sequence</field>
+            <field name="prefix">EC/%(y)s/</field>
+            <field name="padding">4</field>
+            <field name="company_id" eval="False"/>
+        </record>
+    </data>
+</odoo>

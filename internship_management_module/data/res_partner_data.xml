@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data noupdate="0">
+		<record id="seq_oec_committee" model="ir.sequence">
+			<field name="name">Commités</field>
+			<field name="code">oec.committee</field>
+			<field name="prefix"></field>
+			<field name="padding">5</field>
+			<field name="company_id" eval="False" />
+		</record>
+		<record id="menu_register" model="website.menu">
+			<field name="name">Mon compte</field>
+			<field name="url">/registration</field>
+			<field name="parent_id" ref="website.main_menu" />
+			<field name="sequence" type="int">20</field>
+		</record>
+		<record id="menu_request_register" model="website.menu">
+			<field name="name">S'inscrire</field>
+			<field name="url">/demande-inscription</field>
+			<field name="parent_id" ref="website.main_menu" />
+			<field name="sequence" type="int">20</field>
+		</record>
+		
+		<record id="menu_list_members" model="website.menu">
+			<field name="name">Membres OEC</field>
+			<field name="url">/list-members</field>
+			<field name="parent_id" ref="website.main_menu" />
+			<field name="sequence" type="int">10</field>
+		</record>
+		
+		<record id="menu_stagiaires" model="website.menu">
+			<field name="name">Stagiaires</field>
+			<field name="parent_id" ref="website.main_menu" />
+			<field name="sequence" type="int">20</field>
+		</record>
+		
+		<record id="menu_stagiaires_ms" model="website.menu">
+			<field name="name">Maitre de stage</field>
+			<field name="url">/list-stagiaires-ms</field>
+			<field name="parent_id" ref="internship_management_module.menu_stagiaires" />
+			<field name="sequence" type="int">10</field>
+		</record>
+		
+		<record id="menu_stagiaires_cs" model="website.menu">
+			<field name="name">Contrôlleur de stage</field>
+			<field name="url">/list-stagiaires-cs</field>
+			<field name="parent_id" ref="internship_management_module.menu_stagiaires" />
+			<field name="sequence" type="int">20</field>
+		</record>
+		
+		<record id="menu_cotisations" model="website.menu">
+			<field name="name">Mes cotisations</field>
+			<field name="url">/cotisations</field>
+			<field name="parent_id" ref="website.main_menu" />
+			<field name="sequence" type="int">30</field>
+		</record>
+		
+		<record id="menu_declarations" model="website.menu">
+			<field name="name">Mes déclarations</field>
+			<field name="url">/declarations</field>
+			<field name="parent_id" ref="website.main_menu" />
+			<field name="sequence" type="int">40</field>
+		</record>
+	</data>
+</odoo>

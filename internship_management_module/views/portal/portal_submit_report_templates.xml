@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<template id="portal_report_submit">
+		<t t-call="portal.portal_layout">
+			<t t-set="additional_title">Joindre Rapport</t>
+            <form action="/my/report" method="post" enctype="multipart/form-data">
+				<input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+				<div class="row o_portal_details">
+					<div class="col-lg-8">
+                        <div class="row">
+                            <div class="col-xl-12">
+    							<label class="col-form-label" for="name">Thème</label>
+    							<input type="text" name="name" class="form-control" t-att-value="report.name" t-att-readonly="None if partner.id==report.internship_id.id else '1'"/>
+    						</div>
+                            <div class="col-xl-12">
+                                <label class="col-form-label" for="start_stage_date">Date de démarrage du stage</label>
+                                <input type="date" name="start_stage_date" class="form-control" t-att-value="start_stage_date or report.start_stage_date" t-att-readonly="None if partner.id==report.internship_id.id else '1'"/>
+                            </div>
+    						<div class="col-xl-6">
+    							<label class="col-form-label" for="internship_supervisor_id">Maitre de stage</label>
+    							<input type="text" name="internship_supervisor_id" class="form-control" t-att-value="internship_supervisor_id or report.internship_supervisor_id.name" readonly="1"/>
+    						</div>
+    						<div class="col-xl-6">
+    							<label class="col-form-label" for="internship_controler_id">Contrôleur de stage</label>
+    							<input type="text" name="internship_controler_id" class="form-control" t-att-value="internship_controler_id or report.internship_controler_id.name" readonly="1"/>
+    						</div>
+    						<div class="col-xl-12">
+    						    <label class="col-form-label" style="font-size: 20px;margin-top: 20px;" for="x_studio_selection_field_3oRgb">Déroulement du stage</label>
+                            </div>
+                            <div>
+                            <div class="col-xl-12">
+                                <label class="col-form-label" for="had_difficulties_finding_ms">Avez vous rencontré des difficultés particulières pour trouver un maître de stage?</label>
+                                <select class="form-control" name="had_difficulties_finding_ms" t-att-readonly="None if partner.id==report.internship_id.id else '1'">
+                                    <option t-att-selected="report.had_difficulties_finding_ms == 'yes'" t-attf-value="yes">Oui</option>
+                                    <option t-att-selected="report.had_difficulties_finding_ms == 'no'" t-attf-value="no">Non</option>
+                                </select>
+                            </div>
+                            <div class="col-xl-12">
+                                <input type="hidden" name="id" class="form-control" t-att-value="report.id"/>
+                            </div>
+                            <div class="col-xl-12">
+                                <label class="col-form-label" for="had_change_maitre_stage">Avez-vous changé de maître de stage?</label>
+                                <select class="form-control" name="had_change_maitre_stage" t-att-readonly="None if partner.id==report.internship_id.id else '1'">
+                                    <option t-att-selected="report.had_change_maitre_stage == 'yes'" t-attf-value="yes">Oui</option>
+                                    <option t-att-selected="report.had_change_maitre_stage == 'no'" t-attf-value="no">Non</option>
+                                </select>
+                            </div>
+                            <div class="col-xl-12">
+                                <label class="col-form-label" for="had_difficulties_courses">Avez vous trouvé des difficultés particulières pour suivre les cours à l’ISCAE?</label>
+                                <select class="form-control" name="had_difficulties_courses" id="had_difficulties_courses" t-att-readonly="None if partner.id==report.internship_id.id else '1'">
+                                    <option t-att-selected="report.had_difficulties_courses == 'yes'" value="yes">Oui</option>
+                                    <option t-att-selected="report.had_difficulties_courses == 'no'" value="no">Non</option>
+                                </select>
+                            </div>
+                            <div class="col-xl-12" id="remarks_difficulties_courses">
+                                    <label class="col-form-label" for="remarks_difficulties_courses">De quel ordre?</label>
+                                    <input type="text" name="remarks_difficulties_courses" class="form-control" t-att-value="remarks_difficulties_courses or report.remarks_difficulties_courses" t-att-readonly="None if partner.id==report.internship_id.id else '1'"/>
+                            </div>
+                            <div class="col-xl-12">
+                                <label class="col-form-label" for="had_difficulties_works">Avez vous rencontré des difficultés pour effectuer les travaux confiés par votre maître de stage?</label>
+                                <select class="form-control" name="had_difficulties_works" id="had_difficulties_works" t-att-readonly="None if partner.id==report.internship_id.id else '1'">
+                                    <option t-att-selected="report.had_difficulties_works == 'yes'" value="yes">Oui</option>
+                                    <option t-att-selected="report.had_difficulties_works == 'no'" value="no">Non</option>
+                                </select>
+                            </div>
+                            <div class="col-xl-12" id="remarks_difficulties_works">
+                                <label class="col-form-label" for="remarks_difficulties_works" t-att-readonly="None if partner.id==report.internship_id.id else '1'">De quel ordre?</label>
+                                <input type="text" name="remarks_difficulties_works" class="form-control" t-att-value="remarks_difficulties_works or report.remarks_difficulties_works"/>
+                            </div>
+                            <div class="col-xl-12">
+                                <label class="col-form-label" for="remarks_deroulement_stage">Vos remarques et observations concernant le déroulement de votre stage</label>
+                                <input type="text" name="remarks_deroulement_stage" class="form-control" t-att-value="remarks_deroulement_stage or report.remarks_deroulement_stage" t-att-readonly="None if partner.id==report.internship_id.id else '1'"/>
+                            </div>
+                            <div class="col-xl-12">
+    						    <label class="col-form-label" style="font-size: 20px;margin-top: 20px;" for="realised_works">Travaux réalisés</label>
+                            </div>
+                            <div class="col-xl-12">
+							<table
+								class="form-group col-lg-12 table table-striped table-sm js_cart_lines">
+								<thead>
+									<tr>
+										<th name="nature_label">Nature</th>
+										<th name="charge_horaire_label">Charge horaire</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+								        <td>Audit Comptable et financier</td>
+								        <td>
+											<input type="number" name="charge_horaire_1" class="form-control" t-att-value="charge_horaire_1" t-att-readonly="None if partner.id==report.internship_id.id else '1'"/>
+										</td>
+								    </tr>
+								    <tr>
+								        <td>Evaluation du dispositif de contrôle interne</td>
+								        <td>
+											<input type="number" name="charge_horaire_2" class="form-control" t-att-value="charge_horaire_2" t-att-readonly="None if partner.id==report.internship_id.id else '1'"/>
+										</td>
+								    </tr>
+								    <tr>
+								        <td>Expertise comptable et revision des comptes</td>
+								        <td>
+											<input type="number" name="charge_horaire_3" class="form-control" t-att-value="charge_horaire_3" t-att-readonly="None if partner.id==report.internship_id.id else '1'"/>
+										</td>
+								    </tr>
+								    <tr>
+								        <td>Assistance à l'élaboration des liasses fiscales</td>
+								        <td>
+											<input type="number" name="charge_horaire_4" class="form-control" t-att-value="charge_horaire_4" t-att-readonly="None if partner.id==report.internship_id.id else '1'"/>
+										</td>
+								    </tr>
+								    <tr>
+								        <td>Préparation des etats de synthèse (ETIC)</td>
+								        <td>
+											<input type="number" name="charge_horaire_5" class="form-control" t-att-value="charge_horaire_5" t-att-readonly="None if partner.id==report.internship_id.id else '1'"/>
+										</td>
+								    </tr>
+								    <tr>
+								        <td>Reporting IFRS</td>
+								        <td>
+											<input type="number" name="charge_horaire_6" class="form-control" t-att-value="charge_horaire_6" t-att-readonly="None if partner.id==report.internship_id.id else '1'"/>
+										</td>
+								    </tr>
+								</tbody>
+							</table>
+                            </div>
+                            </div>
+                            <t t-if="partner.id == report.internship_id.id">
+                                <div class="col-xl-12">
+                                    <label class="col-form-label" style="font-size: 20px;margin-top: 20px;" for="join_report">Joindre votre rapport</label>
+                                </div>
+                                <div t-attf-class="form-group col-xl-6" data-type="binary">
+                                    <input type="file" name="report" class="file" data-show-upload="true" data-show-caption="true" data-show-preview="true"/>
+                                </div>
+                            </t>
+                            <t t-if="partner.id != report.internship_id.id">
+                            <div class="col-xl-12">
+                                    <label class="col-form-label" style="font-size: 20px;margin-top: 20px;" for="join_report">Télécharger le rapport</label>
+                            </div>
+                            
+                                <div class="col-xl-12" >
+                                    <a t-att-href="url" class="float-center mb32">
+        							   <i class="fa fa-2x fa-file-pdf-o"></i>
+        							</a>
+    							</div>
+    						</t>
+    						
+    						<div class="col-xl-12" id="apprciation_ms">
+                                    <label class="col-form-label" for="apprciation_ms">Appréciation du maître de stage</label>
+                                    <input type="text" name="apprciation_ms" class="form-control" t-att-value="apprciation_ms or report.apprciation_ms" t-att-readonly="None if partner.id==report.internship_supervisor_id.id else '1'"/>
+                                </div>
+                            <div class="col-xl-12">
+                                <label class="col-form-label" style="font-size: 20px;margin-top: 20px;" for="join_report">Signature du maître de stage</label>
+                            </div>
+                            <img class="o_signature img img-fluid" alt="Fichier binaire" t-att-src="'%s' % (signature_url)"  border="1" name="signature"/>
+                            
+                            
+							<t t-if="partner.id == report.internship_controler_id.id">
+                                <div class="col-xl-12">
+                                    <label class="col-form-label" for="report_content">Teneur du rapport</label>
+                                    <select class="form-control" name="report_content" id="report_content">
+                                        <option t-att-selected="report.report_content == 'conforme'" value="conforme">Conforme</option>
+                                        <option t-att-selected="report.report_content == 'non_conforme'" value="non_conforme">Non Conforme</option>
+                                    </select>
+                                </div>
+                                <div class="col-xl-12">
+                                    <label class="col-form-label" for="internship_progress">Déroulement du stage</label>
+                                    <select class="form-control" name="internship_progress" id="internship_progress">
+                                        <option t-att-selected="report.internship_progress == 'valide'" value="valide">Valide</option>
+                                        <option t-att-selected="report.internship_progress == 'non_valide'" value="non_valide">Non Valide</option>
+                                    </select>
+                                </div>
+                                <div class="col-xl-12">
+                                    <label class="col-form-label" for="respect_internship_condition">Respet des conditions de stage</label>
+                                    <select class="form-control" name="respect_internship_condition" id="respect_internship_condition">
+                                        <option t-att-selected="report.respect_internship_condition == 'yes'" value="yes">Oui</option>
+                                        <option t-att-selected="report.respect_internship_condition == 'no'" value="no">Non</option>
+                                    </select>
+                                </div>
+                                <div class="col-xl-12">
+                                    <label class="col-form-label" for="cs_decision">Décision du CS</label>
+                                    <select class="form-control" name="cs_decision" id="cs_decision">
+                                        <option t-att-selected="report.cs_decision == 'valide'" value="valide">Rapport validé</option>
+                                        <option t-att-selected="report.cs_decision == 'reserve'" value="reserve">Validé avec réserves</option>
+                                        <option t-att-selected="report.cs_decision == 'rejet'" value="rejet">Rapport rejeté</option>
+                                    </select>
+                                </div>
+                                <div class="col-xl-12" id="apprciation_cs">
+                                    <label class="col-form-label" for="apprciation_cs">Appréciation du contrôleur de stage</label>
+                                    <input type="text" name="apprciation_cs" class="form-control" t-att-value="apprciation_cs or report.apprciation_cs" t-att-readonly="None if partner.id==report.internship_controler_id.id else '1'"/>
+                                </div>
+                            </t>
+                            </div>
+                            
+                        
+					</div>
+					
+				</div>
+					<div class="row" id="report_submit">
+						<div class="col-lg-12 text-center mt32 mb32">
+							<button type="submit" class="btn btn-primary float-left mb3">
+							    <t t-if="partner.id == report.internship_id.id">Enregistrer</t>
+			                    <t t-if="partner.id == report.internship_controler_id.id">Confirmer</t>
+			                    <t t-if="partner.id == report.internship_supervisor_id.id">Signer</t>
+							</button>
+							<t t-if="partner.id == report.internship_id.id">
+							    <a href="/report/success" class="btn btn-primary float-center mb32">Soumettre</a>
+							</t>
+						</div>
+					</div>
+
+			</form>
+            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+            <script>
+            $("#had_difficulties_courses").change(function() {
+            if ($(this).val() == "yes") {
+            $('#remarks_difficulties_courses').show();
+            }
+            else{
+            $('#remarks_difficulties_courses').hide();
+            }
+            });
+            $("#had_difficulties_courses").trigger("change");
+                $("#had_difficulties_works").change(function() {
+                if ($(this).val() == "yes") {
+                $('#remarks_difficulties_works').show();
+                }else{
+                $('#remarks_difficulties_works').hide();
+                }
+
+                });
+
+                $("#had_difficulties_works").trigger("change");
+                $("#cs_decision").change(function() {
+                if ($(this).val() == "rejet") {
+                $('#apprciation_cs').text("Motif de rejet");
+                }else{
+                $('#apprciation_cs').text("Appréciation du contrôleur de stage");
+                }
+                });
+                $("#cs_decision").trigger("change");
+
+            </script>
+		</t>
+	</template>
+
+    <template id="portal_report_success">
+        <t t-call="portal.portal_layout">
+            <t t-set="additional_title">FIN</t>
+            <form action="/report/success" method="post">
+                <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                <div id="wrap">
+                    <div class="oe_structure">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <h1 class="text-center">Merci!</h1>
+                                    <p class="text-center">
+                                        Votre rapport a été soumis
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="row" id="o_submit">
+                                <div class="col-lg-12 text-center mt32 mb32">
+                                    <button type="submit" class="btn btn-primary float-center mb32 ">
+                                        Continuer sur notre site Web
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </form>
+        </t>
+    </template>
+</odoo>

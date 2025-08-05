@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+		<record id="survey_survey_form_view_inherit" model="ir.ui.view">
+	        <field name="name">survey.survey.form</field>
+	        <field name="model">survey.survey</field>
+	        <field name="inherit_id" ref="survey.survey_survey_view_form"/>
+	        <field name="arch" type="xml">
+	        	<xpath expr="//sheet/div[hasclass('oe_title')]" position="after">
+	        		<group>
+	        			<field name="survey_type"/>
+	        		</group>
+	        	</xpath>
+	        </field>
+	    </record>
+	</data>
+</odoo>

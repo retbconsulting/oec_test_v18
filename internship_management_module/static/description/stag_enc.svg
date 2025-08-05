@@ -1,0 +1,12 @@
+<svg width="64" height="64" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+  <!-- Framing box -->
+  <rect x="8" y="8" width="48" height="48" rx="6" stroke="#630000" stroke-width="2" fill="none"/>
+
+  <!-- Mentor (larger figure) -->
+  <circle cx="28" cy="26" r="6" fill="#630000"/>
+  <path d="M18 40c0-4.4 4-8 10-8s10 3.6 10 8v2H18v-2z" fill="#630000" opacity="0.9"/>
+
+  <!-- Intern (smaller figure beside) -->
+  <circle cx="44" cy="28" r="4" fill="#630000" opacity="0.8"/>
+  <path d="M38 38c0-2.7 2.5-5 6-5s6 2.3 6 5v1h-12v-1z" fill="#630000" opacity="0.7"/>
+</svg>

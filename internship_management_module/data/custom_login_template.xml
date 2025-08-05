@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="custom_login_template" name="Custom Login Page">
+        <t t-call="web.layout">
+            <t t-set="html_data" t-value="{'style': 'height: 100%;'}"/>
+            <t t-set="body_classname" t-value="'bg-100'"/>
+            <t t-set="no_header" t-value="True"/>
+            <t t-set="no_footer" t-value="True"/>
+
+            <div style="
+                background: linear-gradient(135deg, #2d0b00, #f33f3f, #420042);
+                background-size: 400% 400%;
+                animation: gradientBG 15s ease infinite;
+                height: 100vh;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            ">
+                <style>
+                    @keyframes gradientBG {
+                        0% { background-position: 0% 50%; }
+                        50% { background-position: 100% 50%; }
+                        100% { background-position: 0% 50%; }
+                    }
+                    .custom-login-box {
+                        background: rgba(255, 255, 255, 0.05);
+                        backdrop-filter: blur(10px);
+                        border-radius: 20px;
+                        padding: 30px;
+                        width: 400px;
+                        color: white;
+                    }
+                </style>
+
+                <form class="custom-login-box" action="/web/login" method="post">
+                    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                    <h2 style="text-align: center;">CONNEXION</h2>
+                    <input type="text" name="login" placeholder="Email" required/>
+                    <input type="password" name="password" placeholder="Mot de passe" required/>
+                    <button type="submit" style="width: 100%; background: #c8102e; color: white; border: none; padding: 10px; border-radius: 5px;">
+                        Se connecter
+                    </button>
+                </form>
+            </div>
+        </t>
+    </template>
+</odoo>

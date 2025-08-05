@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="report_internship_livret_document">
+            <t t-call="web.html_container">
+                <t t-call="web.external_layout">
+                <div class="page">
+                    <h3><b>Livret Du stagiare</b></h3>
+                </div>
+            
+                </t>
+            </t>
+        </template>
+        
+        <template id="report_internship_receipt_document">
+            <t t-call="web.html_container">
+                <t t-call="web.external_layout">
+                <div class="page">
+                    <h3><b>Reçu de transmission</b></h3>
+                </div>
+            
+                </t>
+            </t>
+        </template>
+        
+        <template id="report_transmission_letter_document">
+            <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.external_layout">
+                <div class="page">
+                	<div style="margin-left: 600px;">Casablanca, le <t t-out="context_timestamp(datetime.datetime.now()).strftime('%d/%m/%Y')"/></div>
+
+<br />
+<br />
+<div style="margin-left: 500px;">Monsieur Amine BAAKILI
+<br />
+Président
+<br />
+Conseil National de l’Ordre des Experts Comptables 
+<br />
+24, Avenue de France 3ème étage n° 10 Agdal,
+<br /> 
+Rabat 
+</div>
+<br />
+<br />
+<div style="margin-left: 20px;"><h5>Objet : Transmission du dossier de demande d’inscription à l’Ordre de la société « <t t-out="o.raison_sociale"/> »</h5></div>
+<br /><br />
+
+<div style="margin-left: 40px;">Monsieur le Président et Cher Confrère,<br />  </div><br /><br />
+<div style="margin-left: 40px;">Nous vous prions de trouver, ci joint, le dossier de demande d’inscription au Tableau de l’Ordre des Experts Comptables de</div> Monsieur <t t-out="o.name"/> <t t-out="o.second_name"/> et sa société « <t t-out="o.raison_sociale"/> ».<br /><br />
+<t t-if="o.reserve_president_conseil">
+Après son examen, il nous paraît que sa demande ne remplit pas les conditions prévues par la loi 15/89 compte tenu de la remarque suivante :<br />
+<t t-out="o.reserve_president_conseil"/>
+</t>
+<t t-else="">
+Après son examen, il nous paraît que sa demande remplit les conditions prévues par la loi 15/89.<br /> 
+</t>
+<br />
+<br />
+<div style="margin-left: 40px;">Nous vous prions d’agréer, Monsieur le Président et Cher Confrère, l’expression de nos salutations confraternelles.<br /></div>
+<br /><br /><br />
+<div style="margin-left: 600px;">Yassine EL MAGUIRI
+<br /><br /><br />
+
+Président
+</div>
+                	
+                </div>
+            
+                </t>
+            </t>
+            </t>
+        </template>
+        
+        <template id="report_recu_depot_physique">
+			<t t-call="web.html_container">
+				<t t-foreach="docs" t-as="o">
+					<t t-call="web.external_layout">
+						<div class="page">
+						<div style="margin-left: 600px;">Casablanca,
+le <t t-out="context_timestamp(datetime.datetime.now()).strftime('%d/%m/%Y')"/>
+</div><br /><br /><br /><br /><br />
+
+<div style="margin-left: 40px;">Suite à votre demande d’inscription auprès du Conseil Régionale de l’Ordre des Experts-
+Comptables de Casablanca et Sud,</div> nous accusons bien la réception des documents
+suivants :<br /><br />
+<div style="margin-left: 80px;">
+<ul>
+<li> CIN </li>
+<li> Statut de la société</li>
+<li> Copie certifiée conforme du diplôme</li>
+<li> Fiche anthropométrique</li>
+<li> Trois photos professionnelles</li>
+</ul><br /><br />
+</div>
+<div style="margin-left: 40px;">Nous portons à votre connaissance que les instances habilitées à l’inscription de votre
+dossier sont en cours de traitement.</div>
+<br /><br />
+<div style="margin-left: 40px;">NB : Ce reçu ne vaut en aucun cas une acceptation du dossier ou une inscription à l’Ordre
+des Experts-Comptables.</div>
+		<br /><br />
+		<div style="margin-left: 600px;">
+		Signature
+		</div>
+						</div>
+		
+					</t>
+				</t>
+			</t>
+		</template>
+		
+		
+		<template id="report_notification_felicitation">
+			<t t-call="web.html_container">
+				<t t-foreach="docs" t-as="o">
+					<t t-call="web.external_layout">
+						<div class="page">
+						<div style="margin-left: 600px;">Casablanca, le <t t-out="context_timestamp(datetime.datetime.now()).strftime('%d/%m/%Y')"/><br /><br />
+
+
+
+Monsieur <t t-out="o.name"/> <t t-out="o.second_name"/><br /><br />
+
+ADRESSE : <t t-out="o.street"/>.<br /><br />
+CASABLANCA<br /><br /></div>
+<br />
+<br />
+<div style="margin-left: 20px;"><h5>Objet : Inscription au Tableau de l’Ordre des Experts Comptables     <br /><br /></h5></div>
+
+<div style="margin-left: 20px;">Monsieur et Cher Confrère,  <br /><br /></div>
+<div style="margin-left: 20px;">C’est avec un grand plaisir que je vous informe que le Conseil National, lors de sa réunion tenue le <t t-out="o.date_final_conseil_national"/>, a procédé </div>
+<t t-if="o.mode_registration != 'pm'">
+à votre inscription en tant que salarié de la société « <t t-out="o.raison_sociale"/> » 
+</t>
+
+<t t-else="">
+<br />
+<div style="margin-left: 40px;">
+-	L’inscription de votre société « <t t-out="o.raison_sociale"/> »
+<br />
+-	Votre inscription en tant qu’Associé Unique dudit cabinet
+<br />
+</div>
+</t>
+<br />
+au Tableau de l’Ordre des Experts Comptables, Conseil Régional de <t t-out="o.conseil_regional.name"/>. <br /><br />  
+
+<div style="margin-left: 20px;">Je saisis cette occasion pour vous transmettre les félicitations des membres du Conseil Régional de Casablanca et Sud </div>et vous souhaiter la bienvenue parmi vos pairs.<br /><br />
+
+<div style="margin-left: 20px;">Tous les membres élus de notre Conseil sont à votre disposition pour répondre à toutes questions touchant à l’exercice</div> de notre profession et pour éventuellement vous apporter aide et conseils.<br /><br />
+
+<div style="margin-left: 20px;">Dans l’attente du plaisir de vous rencontrer, je vous prie d’agréer, Monsieur et Cher Confrère, l'assurance de mes </div>salutations confraternelles.    <br /><br />
+<br /><br />
+
+<div style="margin-left: 600px;">
+Yassine EL MAGUIRI
+<br />
+Président
+</div>
+
+						</div>
+		
+					</t>
+				</t>
+			</t>
+		</template>
+        
+    </data>
+</odoo>

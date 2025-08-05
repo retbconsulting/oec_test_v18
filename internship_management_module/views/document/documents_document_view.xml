@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_documents_document_form_inherit" model="ir.ui.view">
+            <field name="name">documents.document.form</field>
+            <field name="model">documents.document</field>
+            <field name="inherit_id" ref="documents.document_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='mimetype']" position="replace"/>
+                <xpath expr="//field[@name='file_size']" position="replace"/>
+                <!--<xpath expr="//field[@name='group_ids']" position="replace"/>-->
+                <xpath expr="//field[@name='tag_ids']" position="replace"/>
+                <xpath expr="//field[@name='partner_id']" position="replace"/>
+                <xpath expr="//field[@name='create_date']" position="replace"/>
+                <xpath expr="//sheet/div[2]" position="after">
+                    <group>
+                        <group>
+                            <field name="report_id"/>
+                        </group>
+                        <!-- <group>
+                            <field name="create_date" string="Créé le"/>
+                        </group> -->
+                        <group>
+                            <field name="internship_id"/>
+                        </group>
+                    </group>
+                </xpath>
+                <xpath expr="//field[@name='folder_id']" position="attributes">
+                    <attribute name="column_invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='owner_id']" position="attributes">
+                    <attribute name="column_invisible">1</attribute>
+                </xpath>
+                <xpath expr="//sheet/group/group[2]/field[@name='type']" position="attributes">
+                    <attribute name="column_invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='lock_uid']" position="after">
+                    <xpath expr="//field[@name='create_uid']" position="move"/>
+                </xpath>
+                <xpath expr="//sheet/group" position="after">
+                    <group>
+                        <group string="Section  MS">
+                            <field name="internship_supervisor_id"/>
+                        </group>
+                        <group>
+                            <field name="signature" force_save="True" column_invisible="1" widget="signature"/>
+                            <!-- <field name="signed"/> -->
+                        </group>
+                    </group>
+                    <group string="Section CS">
+                        <field name="internship_controler_id"/>
+                    </group>
+                    <group string="Examen du rapport de stage">
+                        <field name="report_content" style="margin-right:10px;" widget="radio" options="{'horizontal':true}"/>
+                        <field name="internship_progress" style="margin-right:10px;" widget="radio" options="{'horizontal':true}"/>
+                        <field name="respect_internship_condition" style="margin-right:10px;" widget="radio" options="{'horizontal':true}"/>
+                        <field name="cs_decision" widget="radio" options="{'horizontal':true}"/>
+                    </group>
+                    <group string="Déroulement de stage">
+                    	<field name="start_stage_date"/>
+                    	<field name="had_difficulties_finding_ms"/>
+                    	<field name="had_change_maitre_stage"/>
+                    	<field name="had_difficulties_courses"/>
+                    	<field name="remarks_difficulties_courses"/>
+                    	<field name="had_difficulties_works"/>
+                    	<field name="remarks_difficulties_courses"/>
+                    	<field name="remarks_deroulement_stage"/>
+                    </group>
+                     <group string="Travaux réalisés">
+                    	<field name="realised_works_ids">
+                    		<list>
+                    			<field name="name"/>
+                    			<field name="charge_horaire"/>
+                    		</list>
+                    	</field>
+                    </group>
+                    <group string="Traçabilité">
+                    	<field name="depot_date"/>
+                    	<field name="validation_date"/>
+                    	<field name="controle_date"/>
+                    </group>
+                    <group name="group_rapport" string="Rapport"/>
+                </xpath>
+                <xpath expr="//group[@name='group_rapport']" position="inside">
+                    <xpath expr="//field[@name='datas']" position="move"/>
+                </xpath>
+                <xpath expr="//field[@name='datas']" position="attributes">
+                    <attribute name="column_invisible">{}</attribute>
+                    <attribute name="nolabel">1</attribute>
+                    <attribute name="string">Rapport</attribute>
+                    <attribute name="widget">pdf_viewer</attribute>
+                </xpath>
+                <xpath expr="//field[@name='create_uid']" position="attributes">
+                    <attribute name="column_invisible">1</attribute>
+                </xpath>
+            </field>
+        </record>
+
+        <!-- <record id="view_documents_document_tree_inherit" model="ir.ui.view">
+            <field name="name">documents.document.tree</field>
+            <field name="model">documents.document</field>
+            <field name="inherit_id" ref="documents.documents_view_list"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='type']" position="replace"/>
+                <xpath expr="//field[@name='owner_id']" position="replace"/>
+                <xpath expr="//field[@name='partner_id']" position="replace"/>
+                <xpath expr="//field[@name='tag_ids']" position="replace"/>
+                <xpath expr="//list" position="attributes">
+                    <attribute name="create">true</attribute>
+                    <attribute name="edit">true</attribute>
+                </xpath>
+                <xpath expr="//list/field[@name='name']" position="attributes">
+                    <attribute name="string">Theme</attribute>
+                </xpath>
+                <xpath expr="//list/field[@name='name']" position="after">
+                    <field name="internship_id"/>
+                    <field name="internship_supervisor_id"/>
+                    <field name="signed" widget="badge"/>
+                    <field name="internship_controler_id"/>
+                </xpath>
+                <xpath expr="//field[@name='create_date']" position="after">
+                    <field name="cs_decision" widget="badge" optional="show" decoration-success="cs_decision == 'valide'" decoration-danger="cs_decision == 'rejet'" decoration-warning="cs_decision == 'reserve'"/>
+                </xpath>
+            </field>
+        </record> -->
+
+        <record id="action_documents_document_internship" model="ir.actions.act_window">
+            <field name="name">Rapports de stages</field>
+            <field name="res_model">documents.document</field>
+            <field name="view_mode">list,form</field>
+            <field name="domain">[('folder_id.name', '=', 'Rapports de stages')]</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Add a new internship report
+                </p>
+            </field>
+        </record>
+
+        <menuitem 
+            name="Rapports de stages"
+            id="menu_documents_document_internship"
+            action="action_documents_document_internship"
+            parent="contacts.menu_contacts"
+            sequence="1"
+        />
+    </data>
+</odoo>

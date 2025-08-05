@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_mail_mass_mailing_form_inherit" model="ir.ui.view">
+        <field name="name">oec.mass.mailing.form.view</field>
+        <field name="model">mailing.mailing</field>
+        <field name="inherit_id" ref="mass_mailing.view_mail_mass_mailing_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='mailing_model_id_container']" position="after">
+                <field name="oec_mailing_type"/>
+                <field name="year" invisible="oec_mailing_type != 'cotisation'"/>
+                <field name="open_date" invisible="oec_mailing_type != 'cotisation'"/>
+                <field name="open_date" string="Date début" invisible="oec_mailing_type != 'declaration'"/>
+                <field name="due_date" invisible="oec_mailing_type != 'cotisation'"/>
+                <field name="due_date" string="Date fin" invisible="oec_mailing_type != 'declaration'"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

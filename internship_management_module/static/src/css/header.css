@@ -1,0 +1,79 @@
+/* Header styles */
+.i-header {
+    background-image: url('/internship_management_module/static/description/red-layer.png');
+    width: 100%;
+    height: 190px;
+    background-repeat: no-repeat;
+    background-size: 100vw;
+    background-position-x: center;
+    display: flex;
+    /* position: static;
+    z-index: 1000;
+    
+    justify-content: center;
+    gap: 0; 
+    padding: 0;
+    margin: 0; */
+}
+
+/* Nav container inside header */
+.nav-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 80%;
+    margin: 0;
+}
+
+ul#header_opts {
+    width: 80%;
+    display: flex;
+    list-style: none;
+    color: white;
+    align-items: center;
+    transform: translateY(-30%);
+}
+
+.nav-item {
+    list-style: none;
+    width: calc(100% / var(--item-count));
+    text-align: center;
+    margin: 25px 0; 
+}
+
+.h-divider-header {
+    width: 2px;
+    height: 28px;
+    background: white;
+    margin: 0 .8rem;
+}
+
+.i-header .buttons {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    right: 33px;
+    top: 14px;
+}
+
+.i-header .buttons .button {
+    background: #b6a9a8ad;
+    padding: 8px 30px;
+    margin: 5px;
+    border: none;
+    border-radius: 40px;
+    color: white;
+    backdrop-filter: blur(0px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.o_portal_icon {
+    width: 4rem !important;
+}
+
+body {
+    overflow-x: hidden;
+}

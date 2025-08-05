@@ -1,0 +1,1061 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+
+    <template id="portal_re_registration">
+        <t t-call="portal.portal_layout">
+            <t t-set="additional_title">Inscription</t>
+            <style>
+                .steps-form {
+                display: table;
+                width: 100%;
+                position: relative;
+                }
+                .steps-form .steps-row {
+                display: table-row;
+                }
+                .steps-form .steps-row:before {
+                top: 14px;
+                bottom: 0;
+                position: absolute;
+                content: " ";
+                width: 100%;
+                height: 1px;
+                background-color: #ccc;
+                }
+                .steps-form .steps-row .steps-step {
+                display: table-cell;
+                text-align: center;
+                position: relative;
+                }
+                .steps-form .steps-row .steps-step p {
+                margin-top: 0.5rem;
+                }
+                .steps-form .steps-row .steps-step button[disabled] {
+                opacity: 1 !important;
+                filter: alpha(opacity=100) !important;
+                }
+                .steps-form .steps-row .steps-step .btn-circle {
+                width: 30px;
+                height: 30px;
+                text-align: center;
+                padding: 6px 0;
+                font-size: 12px;
+                line-height: 1.428571429;
+                border-radius: 15px;
+                margin-top: 0;
+                }
+                select[disabled] {
+                -webkit-appearance: none;
+                -moz-appearance: none;
+                text-indent: 0.01px;
+                text-overflow: '';
+                }
+            </style>
+            <form action="/registration" method="post" enctype="multipart/form-data">
+                <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+
+
+                <div class="row">
+                    <div class="form-group col-lg-12">
+                        <div class="o_website_calendar">
+                            <ul class="wizard mt32 float-right">
+                                <li
+                                        t-attf-class="#{partner.status_register=='draft' and 'text-primary' or 'text-muted'}"
+                                        class="text-primary">
+                                    Inscription
+                                    <span class="chevron"/>
+                                </li>
+                                <li
+                                        t-attf-class="#{partner.status_register=='in_progress' and 'text-primary' or 'text-muted'}">
+                                    En cours de traitement
+                                    <span class="chevron"/>
+                                </li>
+                                <li
+                                        t-attf-class="#{partner.status_register=='registred' and 'text-primary' or 'text-muted'}">
+                                    Inscrit
+                                    <span class="chevron"/>
+                                </li>
+                                <li
+                                        t-attf-class="#{partner.status_register=='rejected' and 'text-primary' or 'text-muted'}">
+                                    Rejeté
+                                    <span class="chevron"/>
+                                </li>
+                            </ul>
+                            <div class="col-lg-12">
+                                <div t-if="error_message" class="alert alert-danger" role="alert">
+                                    <t t-foreach="error_message" t-as="err">
+                                        <t t-out="err"/>
+                                        <br/>
+                                    </t>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-lg-12">
+                        <label for="mode_registration">Mode d'inscription</label>
+                        <select class="form-control" id="mode_registration" name="mode_registration" disabled="true">
+                            <t t-foreach="register_types" t-as="register_type">
+                                <option t-att-selected="register_type[0] == partner.mode_registration"
+                                        t-att-value="register_type[0]">
+                                    <t t-out="register_type[1]"/>
+                                </option>
+                            </t>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div
+                            t-attf-class="form-group #{error.get('name') and 'o_has_error' or ''} col-xl-6">
+                        <label class="col-form-label" for="name">Nom</label>
+                        <input type="text" t-att-value="name or partner.name" name="name"
+                               t-attf-class="form-control #{error.get('name') and 'is-invalid' or ''}"/>
+                    </div>
+                    <div
+                            t-attf-class="form-group #{error.get('second_name') and 'o_has_error' or ''} col-xl-6">
+                        <label class="col-form-label" for="second_name">Prénom</label>
+                        <input type="text" t-att-value="second_name or partner.second_name"
+                               name="second_name"
+                               t-attf-class="form-control #{error.get('second_name') and 'is-invalid' or ''}"/>
+                    </div>
+                    <!-- 					<div id="adresse_professionnelle" -->
+                    <!-- 						t-attf-class="form-group #{error.get('adresse_professionnelle') and 'o_has_error' or ''} col-xl-6"> -->
+                    <!-- 						<label class="col-form-label" for="adresse_professionnelle">Adresse professionnelle -->
+                    <!-- 						</label> -->
+                    <!-- 						<input type="text" t-att-value="street or partner.street" -->
+                    <!-- 							name="adresse_professionnelle" -->
+                    <!-- 							t-attf-class="form-control #{error.get('adresse_professionnelle') and 'is-invalid' or ''}" /> -->
+                    <!-- 					</div> -->
+                    <div id="sexe"
+                         t-attf-class="form-group #{error.get('sexe') and 'o_has_error' or ''} col-xl-6">
+                        <label class="col-form-label" for="sexe">Sexe</label>
+                        <select class="form-control" name="sexe">
+                            <option value="male" t-att-selected="partner.sexe == 'male'">Homme</option>
+                            <option value="female" t-att-selected="partner.sexe == 'female'">Femme</option>
+                        </select>
+                    </div>
+                    <div
+                            t-attf-class="form-group #{error.get('cin_number') and 'o_has_error' or ''} col-xl-6">
+                        <label class="col-form-label" for="cin_number" id="cin_maroc">CIN</label>
+                        <label class="col-form-label" for="cin_number" id="cin_autre">Carte de résidence</label>
+                        <input type="text" name="cin_number"
+                               t-attf-class="form-control #{error.get('cin_number') and 'is-invalid' or ''}"
+                               t-att-value="cin_number or partner.cin_number"/>
+                    </div>
+                    <div
+                            t-attf-class="form-group #{error.get('phone') and 'o_has_error' or ''} col-xl-6">
+                        <label class="col-form-label" for="phone">Téléphone fix</label>
+                        <input type="phone" name="phone"
+                               t-attf-class="form-control #{error.get('phone') and 'is-invalid' or ''}"
+                               t-att-value="phone or partner.phone"/>
+                        <small>Format: +212 06-XXXXXXXX</small>
+                    </div>
+                    <div
+                            t-attf-class="form-group #{error.get('fax') and 'o_has_error' or ''} col-xl-6">
+                        <label class="col-form-label" for="fax">Fax</label>
+                        <input type="text" name="fax"
+                               t-attf-class="form-control #{error.get('fax') and 'is-invalid' or ''}"
+                               t-att-value="fax or partner.phone"/>
+                    </div>
+                    <div
+                            t-attf-class="form-group #{error.get('gsm') and 'o_has_error' or ''} col-xl-6">
+                        <label class="col-form-label" for="gsm">Téléphone mobile</label>
+                        <input type="phone" name="gsm"
+                               t-attf-class="form-control #{error.get('gsm') and 'is-invalid' or ''}"
+                               t-att-value="gsm or partner.gsm"/>
+                        <small>Format: +212 06-XXXXXXXX</small>
+                    </div>
+                    <div
+                            t-attf-class="form-group #{error.get('email') and 'o_has_error' or ''} col-xl-6">
+                        <label class="col-form-label" for="email">Adresse E-mail</label>
+                        <input type="email" name="email"
+                               t-attf-class="form-control #{error.get('email') and 'is-invalid' or ''}"
+                               t-att-value="email or partner.email"/>
+                    </div>
+                    <div id="diplome_tab"
+                         t-attf-class="form-group #{error.get('diplome') and 'o_has_error' or ''} col-xl-6">
+                        <label class="col-form-label" for="diplome">Diplôme</label>
+                        <select class="form-control" name="diplome" id="diplome">
+                            <option t-att-selected="partner.diplome == 'marocain'"
+                                    value="marocain">Marocain
+                            </option>
+                            <option t-att-selected="partner.diplome == 'francais'"
+                                    value="francais">Français
+                            </option>
+                            <option t-att-selected="partner.diplome == 'autre'"
+                                    value="autre">Autre
+                            </option>
+                        </select>
+                    </div>
+                    <!--<div id="country"
+                        t-attf-class="form-group #{error.get('country') and 'o_has_error' or ''} col-xl-6">
+                        <label class="col-form-label" for="country">Pays
+                        </label>
+                        <select name="country"
+                            t-attf-class="form-control #{error.get('country') and 'is-invalid' or ''}">
+                            <option value="">Pays...</option>
+                            <t t-foreach="payss or []" t-as="pays">
+                                <option t-att-value="pays.id"
+                                    t-att-selected="pays.id == int(pays) if pays else pays.id == partner.country.id">
+                                    <t t-out="pays.name" />
+                                </option>
+                            </t>
+                        </select>
+                    </div>-->
+                </div>
+                <br/>
+                <br/>
+
+                <div class="row">
+                    <t t-if="partner.mode_registration not in ['pp1']">
+                        <div id="raison_sociale"
+                             t-attf-class="form-group #{error.get('raison_sociale') and 'o_has_error' or ''} col-xl-6">
+                            <label class="col-form-label" for="raison_sociale">Raison sociale</label>
+                            <input type="text" name="raison_sociale"
+                                   t-attf-class="form-control #{error.get('raison_sociale') and 'is-invalid' or ''}"
+                                   t-att-value="raison_sociale or partner.raison_sociale"/>
+                        </div>
+                    </t>
+                    <t t-if="partner.mode_registration not in ['pp1']">
+                        <div id="forme_juridique"
+                             t-attf-class="form-group #{error.get('forme_juridique') and 'o_has_error' or ''} col-xl-6">
+                            <label class="col-form-label" for="forme_juridique">Forme juridique</label>
+                            <select class="form-control" name="forme_juridique">
+                                <option t-att-selected="partner.forme_juridique == 'sa'"
+                                        value="sa">SA
+                                </option>
+                                <option t-att-selected="partner.forme_juridique == 'sarl'"
+                                        value="sarl">SARL
+                                </option>
+                                <option t-att-selected="partner.forme_juridique == 'sas'"
+                                        value="sa">SAS
+                                </option>
+                                <option t-att-selected="partner.forme_juridique == 'sarlau'"
+                                        value="sarl">SARLAU
+                                </option>
+                            </select>
+                        </div>
+                    </t>
+                    <t t-if="partner.mode_registration not in ['pp1']">
+                        <div id="siege_social"
+                             t-attf-class="form-group #{error.get('siege_social') and 'o_has_error' or ''} col-xl-6">
+                            <label class="col-form-label" for="siege_social">Siège social</label>
+                            <input type="text" name="siege_social"
+                                   t-attf-class="form-control #{error.get('siege_social') and 'is-invalid' or ''}"
+                                   t-att-value="siege_social or partner.siege_social"/>
+                        </div>
+                    </t>
+                    <t t-if="partner.mode_registration not in ['pp1']">
+                        <div id="effectif"
+                             t-attf-class="form-group #{error.get('effectif') and 'o_has_error' or ''} col-xl-6">
+                            <label class="col-form-label" for="effectif">Effectif employé par le
+                                cabinet
+                            </label>
+                            <input type="number" name="effectif"
+                                   t-attf-class="form-control #{error.get('effectif') and 'is-invalid' or ''}"
+                                   t-att-value="effectif or partner.effectif"/>
+                        </div>
+                    </t>
+                    <div id="identifiant_fiscal"
+                         t-attf-class="form-group #{error.get('identifiant_fiscal') and 'o_has_error' or ''} col-xl-6">
+                        <label class="col-form-label" for="identifiant_fiscal">Identifiant fiscal</label>
+                        <input type="text" name="identifiant_fiscal"
+                               t-attf-class="form-control #{error.get('identifiant_fiscal') and 'is-invalid' or ''}"
+                               t-att-value="identifiant_fiscal or partner.identifiant_fiscal"/>
+                    </div>
+                    <div id="taxe_professionnelle"
+                         t-attf-class="form-group #{error.get('taxe_professionnelle') and 'o_has_error' or ''} col-xl-6">
+                        <label class="col-form-label" for="taxe_professionnelle">Taxe professionnelle
+                        </label>
+                        <input type="text" name="taxe_professionnelle"
+                               t-attf-class="form-control #{error.get('taxe_professionnelle') and 'is-invalid' or ''}"
+                               t-att-value="taxe_professionnelle or partner.taxe_professionnelle"/>
+                    </div>
+                    <div id="conseil_regional"
+                         t-attf-class="form-group #{error.get('conseil_regional') and 'o_has_error' or ''} col-lg-12">
+                        <label class="col-form-label" for="conseil_regional">Conseil Régional de
+                            l’Ordre auquel vous souhaitez appartenir
+                        </label>
+                        <select name="conseil_regional"
+                                t-attf-class="form-control #{error.get('conseil_regional') and 'is-invalid' or ''}">
+                            <option value="">Conseil régional...</option>
+                            <t t-foreach="centers or []" t-as="center">
+                                <option t-att-value="center.id"
+                                        t-att-selected="center.id == int(conseil_regional) if conseil_regional else center.id == partner.conseil_regional.id">
+                                    <t t-out="center.name"/>
+                                </option>
+                            </t>
+                        </select>
+                    </div>
+                    <t t-if="partner.mode_registration not in ['pp1']">
+                        <label class="col-form-label" for="conseil_regional">Etat de répartition du capital social
+                        </label>
+                        <table
+                                class="form-group col-lg-12 table table-striped table-sm js_cart_lines">
+                            <thead>
+                                <tr>
+                                    <th name="associe_label" colspan="2" style="text-align:center">Associé</th>
+                                    <th name="percentage_label">Pourcentage</th>
+                                    <th name="associe_qualite_label">Qualité de l'associé</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>#1</td>
+                                    <td>
+                                        <input type="text" name="name1" class="form-control" t-att-value="name1"/>
+                                    </td>
+                                    <td>
+                                        <input type="number" name="percentage1" class="form-control"
+                                               t-att-value="percentage1"/>
+                                    </td>
+                                    <td>
+                                        <select class="form-control" name="status1">
+                                            <option t-att-selected="status1 == 'associe_expert_comptable'"
+                                                    value="associe_expert_comptable">Associé Expert comptable inscrit
+                                            </option>
+                                            <option t-att-selected="status1 == 'associe_salarie'"
+                                                    value="associe_salarie">Associé Salarié
+                                            </option>
+                                            <option t-att-selected="status1 == 'associe_non_salarie'"
+                                                    value="associe_non_salarie">Associé Non Salarié
+                                            </option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>#2</td>
+                                    <td>
+                                        <input type="text" name="name2" class="form-control" t-att-value="name2"/>
+                                    </td>
+                                    <td>
+                                        <input type="number" name="percentage2" class="form-control"
+                                               t-att-value="percentage2"/>
+                                    </td>
+                                    <td>
+                                        <select class="form-control" name="status2">
+                                            <option t-att-selected="status2 == 'associe_expert_comptable'"
+                                                    value="associe_expert_comptable">Associé Expert comptable inscrit
+                                            </option>
+                                            <option t-att-selected="status2 == 'associe_salarie'"
+                                                    value="associe_salarie">Associé Salarié
+                                            </option>
+                                            <option t-att-selected="status2 == 'associe_non_salarie'"
+                                                    value="associe_non_salarie">Associé Non Salarié
+                                            </option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>#3</td>
+                                    <td>
+                                        <input type="text" name="name3" class="form-control" t-att-value="name3"/>
+                                    </td>
+                                    <td>
+                                        <input type="number" name="percentage3" class="form-control"
+                                               t-att-value="percentage3"/>
+                                    </td>
+                                    <td>
+                                        <select class="form-control" name="status3">
+                                            <option t-att-selected="status3 == 'associe_expert_comptable'"
+                                                    value="associe_expert_comptable">Associé Expert comptable inscrit
+                                            </option>
+                                            <option t-att-selected="status3 == 'associe_salarie'"
+                                                    value="associe_salarie">Associé Salarié
+                                            </option>
+                                            <option t-att-selected="status3 == 'associe_non_salarie'"
+                                                    value="associe_non_salarie">Associé Non Salarié
+                                            </option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>#4</td>
+                                    <td>
+                                        <input type="text" name="name4" class="form-control" t-att-value="name4"/>
+                                    </td>
+                                    <td>
+                                        <input type="number" name="percentage4" class="form-control"
+                                               t-att-value="percentage4"/>
+                                    </td>
+                                    <td>
+                                        <select class="form-control" name="status4">
+                                            <option t-att-selected="status4 == 'associe_expert_comptable'"
+                                                    value="associe_expert_comptable">Associé Expert comptable inscrit
+                                            </option>
+                                            <option t-att-selected="status4 == 'associe_salarie'"
+                                                    value="associe_salarie">Associé Salarié
+                                            </option>
+                                            <option t-att-selected="status4 == 'associe_non_salarie'"
+                                                    value="associe_non_salarie">Associé Non Salarié
+                                            </option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>#5</td>
+                                    <td>
+                                        <input type="text" name="name5" class="form-control" t-att-value="name5"/>
+                                    </td>
+                                    <td>
+                                        <input type="number" name="percentage5" class="form-control"
+                                               t-att-value="percentage5"/>
+                                    </td>
+                                    <td>
+                                        <select class="form-control" name="status5">
+                                            <option t-att-selected="status5 == 'associe_expert_comptable'"
+                                                    value="associe_expert_comptable">Associé Expert comptable inscrit
+                                            </option>
+                                            <option t-att-selected="status5 == 'associe_salarie'"
+                                                    value="associe_salarie">Associé Salarié
+                                            </option>
+                                            <option t-att-selected="status5 == 'associe_non_salarie'"
+                                                    value="associe_non_salarie">Associé Non Salarié
+                                            </option>
+                                        </select>
+                                    </td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+                    </t>
+
+                    <t t-if="partner.mode_registration in ['pm','pp4','pp1','pp2'] and partner._check_document('lettre_demande_inscription')">
+                        <div t-attf-class="form-group col-xl-6" data-type="binary">
+                            <label class="col-form-label" for="lettre_demande_inscription">
+                                Lettre de demande d’inscription à l'ordre
+                                <span t-if="partner.lettre_demande_inscription" style="color:blue">(Document
+                                    déjà chargé)
+                                </span>
+                            </label>
+                            <br/>
+                            <input id="upload" type="file" name="lettre_demande_inscription"
+                                   class="file" data-show-upload="true" data-show-caption="true"
+                                   data-show-preview="true"
+                                   t-att-readonly="None if partner.status_register=='draft' else '1'"/>
+                        </div>
+                    </t>
+
+                    <div t-attf-class="form-group col-xl-6" data-type="binary">
+    <label class="col-form-label" for="declaration_sur_honneur">
+        Déclaration sur l’honneur
+        <span t-if="partner.declaration_sur_honneur" style="color:blue">
+            (Document déjà chargé)
+        </span>
+    </label>
+
+    <!-- ✅ Lien de téléchargement si le fichier existe -->
+    <t t-if="partner.declaration_sur_honneur">
+        <a t-att-href="'/web/content/res.partner/%s/declaration_sur_honneur?download=true' % partner.id"
+           target="_blank"
+           class="btn btn-outline-primary btn-sm mt-1">
+            📥 Télécharger le document
+        </a>
+    </t>
+
+    <br/>
+
+    <!-- Champ de chargement -->
+    <input t-att-disabled="partner.status_register == 'in_progress'"
+           id="upload"
+           type="file"
+           name="declaration_sur_honneur"
+           class="file"
+           data-show-upload="true"
+           data-show-caption="true"
+           data-show-preview="true"
+           t-att-readonly="None if partner.status_register=='draft' else '1'"/>
+</div>
+
+
+                    <t t-if="partner.mode_registration in ['pm'] and partner._check_document('actes_modificatifs')">
+                        <div t-attf-class="form-group col-xl-6" data-type="binary">
+                            <label class="col-form-label" for="actes_modificatifs">
+                                Actes modificatifs des statuts (certifiés conformes aux originaux)
+                                <span t-if="partner.actes_modificatifs" style="color:blue">(Document déjà
+                                    chargé)
+                                </span>
+                            </label>
+                            <br/>
+                            <input id="upload" type="file" name="actes_modificatifs"
+                                   class="file" data-show-upload="true" data-show-caption="true"
+                                   data-show-preview="true"
+                                   t-att-readonly="None if partner.status_register=='draft' else '1'"/>
+                        </div>
+                    </t>
+
+                    <t t-if="partner.mode_registration in ['pm'] and partner._check_document('copie_bo_jal')">
+                        <div t-attf-class="form-group col-xl-6" data-type="binary">
+                            <label class="col-form-label" for="copie_bo_jal">
+                                Copie du BO et du JAL
+                                <span t-if="partner.copie_bo_jal" style="color:blue">(Document déjà
+                                    chargé)
+                                </span>
+                            </label>
+                            <br/>
+                            <input id="upload" type="file" name="copie_bo_jal" class="file"
+                                   data-show-upload="true" data-show-caption="true"
+                                   data-show-preview="true"
+                                   t-att-readonly="None if partner.status_register=='draft' else '1'"/>
+                        </div>
+                    </t>
+
+                    <t t-if="partner.mode_registration in ['pm'] and partner._check_document('actes_cession')">
+                        <div t-attf-class="form-group col-xl-6" data-type="binary">
+                            <label class="col-form-label" for="actes_cession">
+                                Actes de cession de parts sociales ou de transferts d’actions, le cas échéant (certifiés
+                                conformes aux originaux)
+                                <span t-if="partner.actes_cession" style="color:blue">(Document déjà
+                                    chargé)
+                                </span>
+                            </label>
+                            <br/>
+                            <input id="upload" type="file" name="actes_cession" class="file"
+                                   data-show-upload="true" data-show-caption="true"
+                                   data-show-preview="true"
+                                   t-att-readonly="None if partner.status_register=='draft' else '1'"/>
+                        </div>
+                    </t>
+
+                    <t t-if="partner.mode_registration in ['pm'] and partner._check_document('statuts')">
+                        <div t-attf-class="form-group col-xl-6" data-type="binary">
+                            <label class="col-form-label" for="statuts">
+                                Statuts ou Status mis à jour intervenues (certifiés conformes aux originaux)
+                                <span t-if="partner.statuts" style="color:blue">(Document déjà chargé)
+                                </span>
+                            </label>
+                            <br/>
+                            <input id="upload" type="file" name="statuts" class="file"
+                                   data-show-upload="true" data-show-caption="true"
+                                   data-show-preview="true"
+                                   t-att-readonly="None if partner.status_register=='draft' else '1'"/>
+                        </div>
+                    </t>
+
+                    <t t-if="partner.mode_registration in ['pm', 'pp2'] and partner._check_document('copie_conforme_contrat')">
+                        <div t-attf-class="form-group col-xl-6" data-type="binary">
+                            <label class="col-form-label" for="copie_conforme_contrat">
+                                Contrat de bail ou certificat de propriété du siège social (Copie certifiée conforme)
+                                <span t-if="partner.copie_conforme_contrat" style="color:blue">(Document
+                                    déjà chargé)
+                                </span>
+                            </label>
+                            <br/>
+                            <input id="upload" type="file" name="copie_conforme_contrat"
+                                   class="file" data-show-upload="true" data-show-caption="true"
+                                   data-show-preview="true"
+                                   t-att-readonly="None if partner.status_register=='draft' else '1'"/>
+                        </div>
+                    </t>
+
+                    <t t-if="partner.mode_registration in ['pm', 'pp4', 'pp3'] and partner._check_document('modele_7')">
+                        <div t-attf-class="form-group col-xl-6" data-type="binary">
+                            <label class="col-form-label" for="modele_7">
+                                Registre du Commerce (Modèle 7) "Datant de moins de trois mois"
+                                <span t-if="partner.modele_7" style="color:blue">(Document déjà chargé)
+                                </span>
+                            </label>
+                            <br/>
+                            <input id="upload" type="file" name="modele_7" class="file"
+                                   data-show-upload="true" data-show-caption="true"
+                                   data-show-preview="true"
+                                   t-att-readonly="None if partner.status_register=='draft' else '1'"/>
+                        </div>
+                    </t>
+
+                    <t t-if="partner.mode_registration in ['pm'] and partner._check_document('attestation_radiation')">
+                        <div t-attf-class="form-group col-xl-6" data-type="binary">
+                            <label class="col-form-label" for="attestation_radiation">
+                                Attestation de radiation de la personne physique
+                                <span t-if="partner.attestation_radiation" style="color:blue">(Document
+                                    déjà chargé)
+                                </span>
+                            </label>
+                            <br/>
+                            <input id="upload" type="file" name="attestation_radiation"
+                                   class="file" data-show-upload="true" data-show-caption="true"
+                                   data-show-preview="true"
+                                   t-att-readonly="None if partner.status_register=='draft' else '1'"/>
+                        </div>
+                    </t>
+
+                    <t t-if="partner.mode_registration in ['pm','pp1','pp3','pp4'] and partner._check_document('attestation_assurance')">
+                        <div t-attf-class="form-group col-xl-6" data-type="binary">
+                            <label class="col-form-label" for="attestation_assurance">
+                                <t t-if="partner.mode_registration in ['pm']">
+                                    Attestation d’assurance Responsabilité Civile Professionnelle au nom de la société
+                                </t>
+                                <t t-if="partner.mode_registration in ['pp1','pp3','pp4']">
+                                    Attestation d’assurance Responsabilité Civile Professionnelle (avec mention
+                                    d’expert-comptable)
+                                </t>
+                                <span t-if="partner.attestation_assurance" style="color:blue">(Document
+                                    déjà chargé)
+                                </span>
+                            </label>
+                            <br/>
+                            <input id="upload" type="file" name="attestation_assurance"
+                                   class="file" data-show-upload="true" data-show-caption="true"
+                                   data-show-preview="true"
+                                   t-att-readonly="None if partner.status_register=='draft' else '1'"/>
+                        </div>
+                    </t>
+
+                    <t t-if="partner.mode_registration in ['pm','pp1','pp3','pp4'] and partner._check_document('attestation_inscription')">
+                        <div t-attf-class="form-group col-xl-6" data-type="binary">
+                            <label class="col-form-label" for="attestation_inscription">
+                                Attestation d'inscription à la Taxe Professionnelle
+                                <span t-if="partner.attestation_inscription" style="color:blue">(Document
+                                    déjà chargé)
+                                </span>
+                            </label>
+                            <br/>
+                            <input id="upload" type="file" name="attestation_inscription"
+                                   class="file" data-show-upload="true" data-show-caption="true"
+                                   data-show-preview="true"
+                                   t-att-readonly="None if partner.status_register=='draft' else '1'"/>
+                        </div>
+                    </t>
+
+                    <t t-if="partner.mode_registration in ['pm','pp1','pp3','pp4'] and partner._check_document('bulletin_notification')">
+                        <div t-attf-class="form-group col-xl-6" data-type="binary">
+                            <label class="col-form-label" for="bulletin_notification">
+                                Bulletin de notification de l’Identifiant Fiscal
+                                <span t-if="partner.bulletin_notification" style="color:blue">(Document
+                                    déjà chargé)
+                                </span>
+                            </label>
+                            <br/>
+                            <input id="upload" type="file" name="bulletin_notification"
+                                   class="file" data-show-upload="true" data-show-caption="true"
+                                   data-show-preview="true"
+                                   t-att-readonly="None if partner.status_register=='draft' else '1'"/>
+                        </div>
+                    </t>
+
+                    <!-- <div t-attf-class="form-group col-xl-6" data-type="binary">
+                        <label class="col-form-label" for="copie_cheque">
+                            Chèque correspond au droit d'entrée
+                            <span t-if="partner.copie_cheque" style="color:blue">(Document déjà
+                                chargé)
+                            </span>
+                        </label>
+                        <br />
+                        <input id="upload" type="file" name="copie_cheque" class="file"
+                            data-show-upload="true" data-show-caption="true"
+                            data-show-preview="true"
+                            t-att-readonly="None if partner.status_register=='draft' else '1'" />
+                    </div> -->
+
+                    <t t-if="partner.mode_registration in ['pm'] and partner._check_document('contrat_travail')">
+                        <div t-attf-class="form-group col-xl-6" data-type="binary">
+                            <label class="col-form-label" for="contrat_travail">
+                                Contrat de travail pour le ou les associés non membre de l'ordre
+                                <span t-if="partner.contrat_travail" style="color:blue">(Document déjà
+                                    chargé)
+                                </span>
+                            </label>
+                            <br/>
+                            <input id="upload" type="file" name="contrat_travail" class="file"
+                                   data-show-upload="true" data-show-caption="true"
+                                   data-show-preview="true"
+                                   t-att-readonly="None if partner.status_register=='draft' else '1'"/>
+                        </div>
+                    </t>
+
+
+                    <div t-attf-class="form-group col-xl-6" data-type="binary">
+                        <label class="col-form-label" for="copie_cin">
+                            Copie CIN pour le ou les associés (Certifié conforme aux originaux)
+                            <span t-if="partner.copie_cin" style="color:blue">(Document déjà chargé)
+                            </span>
+                        </label>
+                        <br/>
+                        <input id="upload" type="file" name="copie_cin" class="file"
+                               data-show-upload="true" data-show-caption="true"
+                               data-show-preview="true"
+                               t-att-readonly="None if partner.status_register=='draft' else '1'"/>
+                    </div>
+
+                    <t t-if="partner.mode_registration not in ['pp1', 'pp2'] and partner._check_document('engagement')">
+                        <div t-attf-class="form-group col-xl-6" data-type="binary">
+                            <label class="col-form-label" for="engagement">
+                                Engagement de prendre en charge tout membre de l'ordre salarié de société
+                                <span t-if="partner.engagement" style="color:blue">(Document déjà chargé)
+                                </span>
+                            </label>
+                            <br/>
+                            <input id="upload" type="file" name="engagement" class="file"
+                                   data-show-upload="true" data-show-caption="true"
+                                   data-show-preview="true"
+                                   t-att-readonly="None if partner.status_register=='draft' else '1'"/>
+                        </div>
+                    </t>
+
+                    <t t-if="partner.mode_registration in ['pm'] and partner._check_document('attestation_inscription_membre')">
+                        <div t-attf-class="form-group col-xl-6" data-type="binary">
+                            <label class="col-form-label" for="attestation_inscription_membre">
+                                Attestation d’inscription du membre de l'ordre personne physique
+                                <span t-if="partner.attestation_inscription_membre" style="color:blue">(Document
+                                    déjà chargé)
+                                </span>
+                            </label>
+                            <br/>
+                            <input id="upload" type="file" name="attestation_inscription_membre"
+                                   class="file" data-show-upload="true" data-show-caption="true"
+                                   data-show-preview="true"
+                                   t-att-readonly="None if partner.status_register=='draft' else '1'"/>
+                        </div>
+                    </t>
+                    <t t-if="partner.mode_registration in ['pm']">
+                        <div t-attf-class="form-group col-xl-6" data-type="binary">
+                            <label class="col-form-label" for="autres_fichiers">
+                                Autres fichiers (PDF ou JPG uniquement)
+                                <!-- Supprimer la vérification t-if sur partner.autres_fichiers -->
+                            </label>
+                            <br/>
+                            <input id="autres_fichiers" type="file" name="autres_fichiers"
+                                   class="file" multiple="multiple" accept=".pdf,.jpg,.jpeg"
+                                   data-show-upload="true" data-show-caption="true"/>
+                        </div>
+                    </t>
+
+                    <!-- PP -->
+                    <t t-if="partner.mode_registration not in ['pm'] and partner._check_document('extrait_casier_judiciaire')">
+                        <div t-attf-class="form-group col-xl-6" data-type="binary"
+                             t-att-style="'visibility:hidden;' if partner.mode_registration in ['pm'] else ''">
+                            <label class="col-form-label" for="extrait_casier_judiciaire">
+                                Un extrait du casier judiciaire ou une fiche anthropométrique datant de moins de trois
+                                mois
+                                <span t-if="partner.extrait_casier_judiciaire" style="color:blue">(Document
+                                    déjà chargé)
+                                </span>
+                            </label>
+                            <br/>
+                            <input id="upload" type="file" name="extrait_casier_judiciaire"
+                                   class="file" data-show-upload="true" data-show-caption="true"
+                                   data-show-preview="true"
+                                   t-att-readonly="None if partner.status_register=='draft' else '1'"/>
+                        </div>
+                    </t>
+
+                    <t t-if="partner.mode_registration not in ['pm'] and partner._check_document('extrait_acte_naissance')">
+                        <div t-attf-class="form-group col-xl-6" data-type="binary">
+                            <label class="col-form-label" for="extrait_acte_naissance">
+                                Un extrait d’acte de naissance datant de moins de trois mois
+                                <span t-if="partner.extrait_acte_naissance" style="color:blue">(Document
+                                    déjà chargé)
+                                </span>
+                            </label>
+                            <br/>
+                            <input id="upload" type="file" name="extrait_acte_naissance"
+                                   class="file" data-show-upload="true" data-show-caption="true"
+                                   data-show-preview="true"
+                                   t-att-readonly="None if partner.status_register=='draft' else '1'"/>
+                        </div>
+                    </t>
+
+                    <t t-if="partner.mode_registration not in ['pm'] and partner._check_document('photographies_recentes')">
+                        <div t-attf-class="form-group col-xl-6" data-type="binary">
+                            <label class="col-form-label" for="photographies_recentes">
+                                Photo récente du candidat
+                                <span t-if="partner.photographies_recentes" style="color:blue">(Document
+                                    déjà chargé)
+                                </span>
+                            </label>
+                            <br/>
+                            <input id="upload" type="file" name="photographies_recentes"
+                                   class="file" data-show-upload="true" data-show-caption="true"
+                                   data-show-preview="true"
+                                   t-att-readonly="None if partner.status_register=='draft' else '1'"/>
+                        </div>
+                    </t>
+
+                    <t t-if="partner.mode_registration not in ['pm'] and partner._check_document('photocopie_diplome')">
+                        <div t-attf-class="form-group col-xl-6" data-type="binary">
+                            <label class="col-form-label" for="photocopie_diplome">
+                                Une photocopie du diplôme national d’Expert-Comptable ou d’un diplôme reconnu
+                                équivalent, signé et cacheté (certifiée conforme à l’original)
+                                <span t-if="partner.photocopie_diplome" style="color:blue">(Document
+                                    déjà chargé)
+                                </span>
+                            </label>
+                            <br/>
+                            <input id="upload" type="file" name="photocopie_diplome"
+                                   class="file" data-show-upload="true" data-show-caption="true"
+                                   data-show-preview="true"
+                                   t-att-readonly="None if partner.status_register=='draft' else '1'"/>
+                        </div>
+                    </t>
+
+                    <t t-if="partner.mode_registration not in ['pm'] and partner._check_document('attestation_equivalence')">
+                        <div t-attf-class="form-group col-xl-6" data-type="binary">
+                            <label class="col-form-label" for="attestation_equivalence">
+                                Une attestation d’équivalence au diplôme national d’expertise comptable, délivrée par le
+                                ministère d’enseignement supérieur, pour tous les diplômes étrangers
+                                <span t-if="partner.attestation_equivalence" style="color:blue">(Document
+                                    déjà chargé)
+                                </span>
+                            </label>
+                            <br/>
+                            <input id="upload" type="file" name="attestation_equivalence"
+                                   class="file" data-show-upload="true" data-show-caption="true"
+                                   data-show-preview="true"
+                                   t-att-readonly="None if partner.status_register=='draft' else '1'"/>
+                        </div>
+                    </t>
+
+                    <t t-if="partner.mode_registration not in ['pm'] and partner._check_document('fiches_annuelles')">
+                        <div t-attf-class="form-group col-xl-6" data-type="binary">
+                            <label class="col-form-label" for="fiches_annuelles">
+                                Trois Fiches annuelles de stage, pour le diplôme français
+                                <span t-if="partner.fiches_annuelles" style="color:blue">(Document
+                                    déjà chargé)
+                                </span>
+                            </label>
+                            <br/>
+                            <input id="upload" type="file" name="fiches_annuelles"
+                                   class="file" data-show-upload="true" data-show-caption="true"
+                                   data-show-preview="true"
+                                   t-att-readonly="None if partner.status_register=='draft' else '1'"/>
+                        </div>
+                    </t>
+
+                    <t t-if="partner.mode_registration not in ['pm'] and partner._check_document('attestation_fin_stage')">
+                        <div t-attf-class="form-group col-xl-6" data-type="binary">
+                            <label class="col-form-label" for="attestation_fin_stage">
+                                L'attestation de fin de stage, pour le diplôme français
+                                <span t-if="partner.attestation_fin_stage" style="color:blue">(Document
+                                    déjà chargé)
+                                </span>
+                            </label>
+                            <br/>
+                            <input id="upload" type="file" name="attestation_fin_stage"
+                                   class="file" data-show-upload="true" data-show-caption="true"
+                                   data-show-preview="true"
+                                   t-att-readonly="None if partner.status_register=='draft' else '1'"/>
+                        </div>
+                    </t>
+
+                    <t t-if="partner.mode_registration not in ['pm'] and partner._check_document('fiche_generale_synthese')">
+                        <div t-attf-class="form-group col-xl-6" data-type="binary">
+                            <label class="col-form-label" for="fiche_generale_synthese">
+                                La fiche générale de synthèse, pour le diplôme français
+                                <span t-if="partner.fiche_generale_synthese" style="color:blue">(Document
+                                    déjà chargé)
+                                </span>
+                            </label>
+                            <br/>
+                            <input id="upload" type="file" name="fiche_generale_synthese"
+                                   class="file" data-show-upload="true" data-show-caption="true"
+                                   data-show-preview="true"
+                                   t-att-readonly="None if partner.status_register=='draft' else '1'"/>
+                        </div>
+                    </t>
+
+                    <t t-if="partner.mode_registration not in ['pm'] and partner._check_document('fiche_annuelle')">
+                        <div t-attf-class="form-group col-xl-6" data-type="binary">
+                            <label class="col-form-label" for="fiche_annuelle">
+                                La fiche annuelle de 200 heures d’audit pour les diplômes étrangers
+                                <span t-if="partner.fiche_annuelle" style="color:blue">(Document
+                                    déjà chargé)
+                                </span>
+                            </label>
+                            <br/>
+                            <input id="upload" type="file" name="fiche_annuelle"
+                                   class="file" data-show-upload="true" data-show-caption="true"
+                                   data-show-preview="true"
+                                   t-att-readonly="None if partner.status_register=='draft' else '1'"/>
+                        </div>
+                    </t>
+
+                    <t t-if="partner.mode_registration not in ['pm'] and partner._check_document('copie_convention')">
+                        <div t-attf-class="form-group col-xl-6" data-type="binary">
+                            <label class="col-form-label" for="copie_convention">
+                                Une copie de la convention de réciprocité prévue à l’article 20 de la loi 15/89 pour les
+                                étrangers
+                                <span t-if="partner.copie_convention" style="color:blue">(Document
+                                    déjà chargé)
+                                </span>
+                            </label>
+                            <br/>
+                            <input id="upload" type="file" name="copie_convention"
+                                   class="file" data-show-upload="true" data-show-caption="true"
+                                   data-show-preview="true"
+                                   t-att-readonly="None if partner.status_register=='draft' else '1'"/>
+                        </div>
+                    </t>
+
+                    <t t-if="partner.mode_registration not in ['pm'] and partner._check_document('certificat_residence')">
+                        <div t-attf-class="form-group col-xl-6" data-type="binary">
+                            <label class="col-form-label" for="certificat_residence">
+                                Un certificat de résidence et éventuellement les justificatifs de paiement d’impôts au
+                                Maroc, pour les candidats étrangers
+                                <span t-if="partner.certificat_residence" style="color:blue">(Document
+                                    déjà chargé)
+                                </span>
+                            </label>
+                            <br/>
+                            <input id="upload" type="file" name="certificat_residence"
+                                   class="file" data-show-upload="true" data-show-caption="true"
+                                   data-show-preview="true"
+                                   t-att-readonly="None if partner.status_register=='draft' else '1'"/>
+                        </div>
+                    </t>
+
+                    <t t-if="partner.mode_registration in ['pp3'] and partner._check_document('demande_inscription_societe')">
+                        <div t-attf-class="form-group col-xl-6" data-type="binary">
+                            <label class="col-form-label" for="demande_inscription_societe">
+                                Lettre de demande d’inscription à l’Ordre, cachetée et signée par la société
+                                <span t-if="partner.demande_inscription_societe" style="color:blue">(Document
+                                    déjà chargé)
+                                </span>
+                            </label>
+                            <br/>
+                            <input id="upload" type="file" name="demande_inscription_societe"
+                                   class="file" data-show-upload="true" data-show-caption="true"
+                                   data-show-preview="true"
+                                   t-att-readonly="None if partner.status_register=='draft' else '1'"/>
+                        </div>
+                    </t>
+
+                    <t t-if="partner.mode_registration in ['pp3'] and partner._check_document('demande_inscription_salarie')">
+                        <div t-attf-class="form-group col-xl-6" data-type="binary">
+                            <label class="col-form-label" for="demande_inscription_salarie">
+                                Lettre de demande d’inscription à l’Ordre, daté et signée par le salarié
+                                <span t-if="partner.demande_inscription_salarie" style="color:blue">(Document
+                                    déjà chargé)
+                                </span>
+                            </label>
+                            <br/>
+                            <input id="upload" type="file" name="demande_inscription_salarie"
+                                   class="file" data-show-upload="true" data-show-caption="true"
+                                   data-show-preview="true"
+                                   t-att-readonly="None if partner.status_register=='draft' else '1'"/>
+                        </div>
+                    </t>
+
+                    <t t-if="partner.mode_registration in ['pp3'] and partner._check_document('avenant_contrat_travail')">
+                        <div t-attf-class="form-group col-xl-6" data-type="binary">
+                            <label class="col-form-label" for="avenant_contrat_travail">
+                                Avenant au contrat de travail visé par le Président du Conseil National
+                                <span t-if="partner.avenant_contrat_travail" style="color:blue">(Document
+                                    déjà chargé)
+                                </span>
+                            </label>
+                            <br/>
+                            <input id="upload" type="file" name="avenant_contrat_travail"
+                                   class="file" data-show-upload="true" data-show-caption="true"
+                                   data-show-preview="true"
+                                   t-att-readonly="None if partner.status_register=='draft' else '1'"/>
+                        </div>
+                    </t>
+
+                    <t t-if="partner.mode_registration in ['pp4', 'pp1'] and partner._check_document('copie_contrat_bail')">
+                        <div t-attf-class="form-group col-xl-6" data-type="binary">
+                            <label class="col-form-label" for="copie_contrat_bail">
+                                Copie du Contrat de bail du cabinet (certifié conforme à l’original)
+                                <span t-if="partner.copie_contrat_bail" style="color:blue">(Document
+                                    déjà chargé)
+                                </span>
+                            </label>
+                            <br/>
+                            <input id="upload" type="file" name="copie_contrat_bail"
+                                   class="file" data-show-upload="true" data-show-caption="true"
+                                   data-show-preview="true"
+                                   t-att-readonly="None if partner.status_register=='draft' else '1'"/>
+                        </div>
+                    </t>
+                    <input type="hidden" name="redirect" t-att-value="redirect"/>
+                </div>
+                <div class="clearfix">
+                    <br/>
+                    <br/>
+                    <div class="row o_portal_details col-lg-12 alert alert-danger">
+                        <h6 class="alert-heading">NB:</h6>
+                        <t t-if="partner.mode_registration == 'pm'">
+                            <ul>
+                                <li>L’activité « Expert-comptable » doit être mentionnée sur l’ensemble des documents
+                                    fournis
+                                </li>
+                                <li>La domiciliation n’est pas acceptée, le demandeur doit justifier l’existence d’une
+                                    adresse réelle pour l’exercice de son activité d’expertise comptable
+                                </li>
+                                <li>L’inscription préalable de la personne physique est obligatoire pour toute
+                                    inscription de la personne morale
+                                </li>
+                                <li>Les statuts de la société doivent être conformes aux dispositions des lois et
+                                    règlements régissant notre Profession, notamment les clauses relatives à l’objet
+                                    social, à la gérance et aux cessions de titres
+                                </li>
+                                <li>Toutes les pièces constitutives du dossier doivent être certifiées conformes à
+                                    l’original
+                                </li>
+                            </ul>
+                        </t>
+                        <t t-else="">
+                            <ul>
+                                <li>L’activité « Expert-comptable » doit être mentionnée sur l’ensemble des documents
+                                    fournis
+                                </li>
+                                <li>La domiciliation n’est pas acceptée, le demandeur doit justifier l’existence d’une
+                                    adresse réelle pour l’exercice de son activité d’expertise comptable
+                                </li>
+
+                                <li>Toutes les pièces constitutives du dossier doivent être certifiées conformes à
+                                    l’original
+                                </li>
+                            </ul>
+                        </t>
+                    </div>
+                    <br/>
+                    <br/>
+
+                    <t t-if="partner.status_register == 'account_created'">
+                        <button class="btn btn-primary float-left mb32">Enregistrer</button>
+                        <a href="/registration/submit" class="btn btn-primary float-right mb32">Soumettre</a>
+                    </t>
+                </div>
+            </form>
+            <script type="text/javascript">
+                function validateForm() {
+                var total = 0;
+                var atLeastOneFilled = false;
+                for (var i = 1; i &lt;= 5; i++) {
+                var name = document.querySelector('input[name=&quot;name' + i + '&quot;]').value.trim();
+                var percentageStr = document.querySelector('input[name=&quot;percentage' + i + '&quot;]').value.trim();
+
+                if (name != '' &amp;&amp; percentageStr != '') {
+                atLeastOneFilled = true;
+                var percentage = parseFloat(percentageStr);
+                if (isNaN(percentage) || percentage &lt; 0) {
+                alert('Le pourcentage à la ligne #' + i + ' doit être un nombre positif.');
+                return false;
+                }
+                total += percentage;
+                }
+                }
+
+                if (!atLeastOneFilled) {
+                alert('Veuillez remplir au moins une ligne avec un nom et un pourcentage.');
+                return false;
+                }
+
+                if (total != 100) {
+                alert('La somme des pourcentages doit être exactement égale à 100%.\nSomme actuelle : ' + total + '%');
+                return false;
+                }
+
+                return true;
+                }
+
+                document.querySelector('form').onsubmit = validateForm;
+            </script>
+
+
+        </t>
+    </template>
+</odoo>

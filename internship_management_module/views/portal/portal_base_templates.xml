@@ -1,0 +1,298 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <!-- Header Template -->
+    <template id="oec_header" name="OEC Portal Header">
+        <style>/* Header styles */
+.i-header {
+    background: #FFFFFF !important; /* Même couleur que le footer */
+    width: 100%;
+    height: 190px;
+    display: flex;
+    border-bottom: 1px solid white; /* Bordure comme le footer */
+    position: relative;
+}
+
+/* Nav container inside header */
+.nav-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 80%;
+    margin: 0 auto;
+    height: 100%;
+}
+
+ul#header_opts {
+    width: 80%;
+    display: flex;
+    list-style: none;
+    color: white;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.nav-item {
+    list-style: none;
+    width: calc(100% / var(--item-count));
+    text-align: center;
+}
+
+.nav-link {
+    color: #4C0000 !important;
+    text-decoration: none;
+    font-weight: 400;
+    font-size: 15px;
+    padding: 0 10px;
+}
+
+.h-divider-header {
+    width: 2px;
+    height: 28px;
+    background: white;
+    margin: 0 .8rem;
+}
+
+.oec-btn-primary {
+    background: linear-gradient(135deg, #4C0000, #a52a2a); /* Dégradé bordeaux */
+    color: white;
+    border: none;
+    border-radius: 25px;
+    padding: 10px 25px;
+    font-size: 14px;
+    font-weight: 600;
+    text-align: center;
+    text-decoration: none;
+    transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 8px rgba(128, 0, 0, 0.3);
+}
+
+.oec-btn-primary:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 12px rgba(128, 0, 0, 0.4);
+    background: linear-gradient(135deg, #a52a2a, #800000); /* Inverse le dégradé au hover */
+}
+
+.oec-btn-secondary {
+    background: transparent;
+    color: #4C0000;
+    border: 2px solid #4C0000;
+    border-radius: 25px;
+    padding: 10px 25px;
+    font-size: 14px;
+    font-weight: 600;
+    text-align: center;
+    text-decoration: none;
+    transition: background 0.3s ease, color 0.3s ease, transform 0.2s ease;
+}
+
+.oec-btn-secondary:hover {
+    background: #4C0000;
+    color: white;
+    transform: scale(1.05);
+}
+
+
+
+/* Suppression de l'image de fond et harmonisation avec le footer */ </style>
+      <header class="i-header">
+          <div style="width: 23rem;">
+                <img src="/mandat_cotisation_management/static/src/img/logo-oec.png" style="transform: scale(0.25);position: absolute;top: -55px;left: -400px;filter: contrast(0.3);"/>
+            </div>
+          
+        <nav class="nav-wrapper">
+          <ul id="header_opts" class="nav-links">
+              <t t-set="oec_header_options" t-value="request.env['website.config'].get_config().header_options"/>
+              <t t-set="partner_status" t-value="request.session.get('partner_status')"/>
+              <t t-set="oec_header_list" t-value="request.env['website.config'].get_filtered_menus(partner_status)"/>
+
+              <!-- <span style="color: #000000" t-esc="oec_header_list or 'NOT FOUND'"/> -->
+              <t t-foreach="oec_header_list" t-as="oec_option">
+              <li class="nav-item">
+                  <t t-if="oec_option and len(oec_option) &gt;= 2">
+                      <a t-att-href="oec_option[1]" t-esc="oec_option[0]" class="nav-link"/>
+                  </t>
+
+              </li>
+              <li class="h-divider-header" t-if="not oec_option_last"></li>
+            </t>
+          </ul>
+          <div class="buttons oec-header-buttons">
+              <a href="/my-profil" class="btn oec-btn-primary">Mon profil</a>
+              <a t-if="request.session.uid" t-attf-href="/web/session/logout?redirect=/my" class="btn oec-btn-secondary">Se déconnecter</a>
+          </div>
+
+        </nav>
+      </header>
+        <script>
+  const header = document.querySelector('.i-header');
+  const count = header.querySelectorAll('li.nav-item').length;
+  header.style.setProperty('--item-count', count);
+</script>
+    </template>
+
+
+    
+    <template id="oec_header1222" name="OEC Portal Header">
+        <div class="i-header">
+            <ul id="header_opts">
+                <t t-set="oec_header_options" t-value="request.env['website.config'].get_config().header_options"/>
+                <t t-foreach="oec_header_options.values()" t-as="oec_option">
+                    <li>
+                        <a t-att-href="oec_option['href']" t-esc="oec_option['name']"/>
+                    </li>
+                    <div class="h-divider" t-if="not oec_option_last"/>
+                </t>
+            </ul>
+            <div class="buttons">
+                <a href="/my-profil" class="button">Mon profil</a>
+                <a t-attf-href="/web/session/logout?redirect=/" class="button">Se déconnecter</a>
+            </div>
+        </div>
+    </template>
+    <template id="oec_custom_header" inherit_id="website.layout">
+        <xpath expr="//header" position="replace">
+            <t t-call="internship_management_module.oec_header"/>
+        </xpath>
+    </template>
+
+    <!-- Footer Template -->
+    <template id="oec_footer" name="OEC Portal Footer">
+        <style>
+        .o_footer {
+            background: transparent !important;
+            box-shadow: none !important;
+        }
+
+        .custom-footer {
+            position: relative;
+            background: #4C0000 !important;
+            color: white;
+            text-align: center;
+            padding-top: 8.2rem;
+            padding-bottom: 8.2rem;
+            min-height: 250px;
+            display: flex;
+            align-items: flex-end !important;
+            border-top: 1px solid white;
+        }
+
+        .footer-content {
+            position: absolute;
+            width: 100%;
+            font-size: 15px;
+            font-weight: 400;
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            bottom: 10%;
+            left: 12%;
+        }
+
+        .footer-content i {
+            margin-right: 5px;
+            color: white;
+        }
+
+        .footer-row {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            width: 75% !important;
+            flex-wrap: wrap;
+        }
+
+        .footer-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            white-space: nowrap;
+        }
+
+        .footer-item:first-child {
+            flex: 1;
+            max-width: 50%;
+            white-space: normal;
+            text-align: left;
+            line-height: 1.5;
+        }
+
+        .footer-item a {
+            color: white;
+            text-decoration: none;
+        }
+
+        .footer-item i {
+            color: white;
+            font-size: 18px;
+        }
+
+        .h-divider {
+            width: 2px;
+            height: 28px;
+            background: white;
+            margin: 0 1rem;
+        }
+    </style>
+        <div class="footer-content">
+    <div class="footer-row">
+        <div class="footer-item">
+            <i class="fa fa-map-marker"></i>
+            <span>
+                <strong>Siège social :</strong><br/>
+                Tour Les Jardins d'Anfa, <br/>
+                Étage 1, Bur 101 Imm D, CFC - Casablanca
+            </span>
+        </div>
+        <div class="h-divider"/>
+        <div class="footer-item">
+            <i class="fa fa-envelope"></i>
+            <span>Contactez-nous : <a href="mailto:oeccrc@oec-casablanca.ma">oeccrc@oec-casablanca.ma</a></span>
+        </div>
+        <div class="h-divider"/>
+        <div class="footer-item">
+            <i class="fa fa-phone"></i>
+            <div>
+                <div>+212 (0) 5 22 20 18 16</div>
+                <div>+212 (0) 5 22 26 33 65</div>
+            </div>
+        </div>
+        <div class="h-divider"/>
+        <div class="footer-item">
+            <i class="fa fa-globe"></i>
+            <a href="https://www.oec-casablanca.ma" target="_blank">www.oec-casablanca.ma</a>
+        </div>
+        <div class="h-divider"/>
+        <div class="footer-item">
+            <i class="fa fa-share-alt"></i>
+            <span>Suivez-nous</span>
+            <!-- Tu peux ajouter ici des icônes de réseaux sociaux si tu veux -->
+        </div>
+        <div class="h-divider"/>
+        <div class="footer-item">
+            <i class="fa fa-list"></i>
+            <span>
+                <strong>Nos pages :</strong><br/>
+                <a href="/my">Mon compte</a> |
+                <a href="/mes-cotisations">Mes cotisations</a> |
+                <a href="/mes-stagiaires-encadres">Mes stagiaires encadrés</a> |
+                <a href="/mes-stagiaires-controles">Mes stagiaires contrôlés</a>
+            </span>
+        </div>
+    </div>
+</div>
+
+    </template>
+<!--    <template id="oec_custom_footer" inherit_id="website.layout">-->
+<!--        <xpath expr="//div[@id='footer']" position="replace">-->
+<!--            <t t-call="internship_management_module.oec_footer"/>-->
+<!--        </xpath>-->
+<!--        <xpath expr="//footer/div[@t-if='not no_copyright']" position="replace">-->
+
+<!--        </xpath>-->
+<!--    </template>-->
+
+
+</odoo>

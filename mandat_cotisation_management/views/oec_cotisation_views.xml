@@ -1,0 +1,407 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+    
+        <record id="view_oec_cotisation_motif_tree" model="ir.ui.view">
+            <field name="name">oec.cotisation.motif.tree</field>
+            <field name="model">oec.cotisation.motif</field>
+            <field name="arch" type="xml">
+                <list string="Cotisation" editable="bottom">
+                    <field name="name"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="view_oec_cotisation_reject_form" model="ir.ui.view">
+            <field name="name">oec.cotisation.reject.form</field>
+            <field name="model">oec.cotisation.reject</field>
+            <field name="arch" type="xml">
+                <form string="Rejet">
+                    <sheet>
+                        <group>
+                            <field name="reject_motif"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_oec_cotisation_tree" model="ir.ui.view">
+            <field name="name">oec.cotisation.tree</field>
+            <field name="model">oec.cotisation</field>
+            <field name="arch" type="xml">
+                <list string="Cotisation">
+                    <field name="year"/>
+                    <field name="name"/>
+                    <field name="total" string="Cotisation"/>
+                    <field name="state"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="view_oec_cotisation_form" model="ir.ui.view">
+            <field name="name">oec.cotisation.form</field>
+            <field name="model">oec.cotisation</field>
+            <field name="arch" type="xml">
+                <form string="Cotisation">
+                    <header>
+                        <button name="button_validate" string="Valider" type="object" class="btn btn-success" invisible=" state != 'waiting_validation'"/>
+                        <button name="button_reject" string="Rejeter" type="object" class="btn btn-danger"  invisible="  state != 'waiting_validation' "/>
+                        <button name="button_payment_validate" string="Valider" type="object" class="btn btn-success"  invisible =" state != 'payment_submitted'"/>
+                        <button name="button_payment_reject" string="Rejeter" type="object" class="btn btn-danger"  invisible=" state != 'waiting_payment_validation' "/>
+                        <button name="button_accounting_submit" string="Comptabiliser" type="object" class="btn btn-success"  invisible=" state != 'payment_validated' "/>
+                        <field name="state" widget="statusbar" options="{'clickable': '1'}" statusbar_visible="draft,waiting_validation,validated,waiting_payment_validation,payment_submitted,payment_validated,comptabilise"/>
+                    </header>
+                    <sheet>
+                        <group string="ANNEE">
+                            <field name="year" groups="internship_management_module.group_president_croec" readonly="state != 'draft'"/>
+                            <field name="year" groups="!internship_management_module.group_president_croec" readonly="0"/>
+                        </group>
+                        <group string="IDENTIFICATION DU CABINET">
+                            <group>
+                                <field name="partner_id" groups="internship_management_module.group_president_croec" readonly="state != 'draft'"/>
+                                <field name="partner_id" groups="!internship_management_module.group_president_croec" readonly="0"/>
+                                <field name="mode_registration" invisible="1"/>
+                            </group>
+                            <group>
+	                			<field name="date_open"/>
+                                <field name="due_date" groups="internship_management_module.group_president_croec" readonly="state != 'draft'"/>
+                                <field name="due_date" groups="!internship_management_module.group_president_croec" readonly="0"/>
+	                		</group>
+                        </group>
+                        <group string="1- COTISATION FIXE" groups="internship_management_module.group_president_croec" readonly="1">
+                            <field name="discount" groups="internship_management_module.group_president_croec" readonly="1"/>
+                            <br/>
+                            <field name="amount_member_c"  invisible="  mode_registration != 'pm' " groups="internship_management_module.group_president_croec" readonly="1"/>
+                            <br/>
+                            <field name="number_members_2"  invisible="  mode_registration != 'pm' " groups="internship_management_module.group_president_croec" readonly="1"/>
+                            <br/>
+                            <field name="amount_member_2"  invisible="  mode_registration != 'pm' " groups="internship_management_module.group_president_croec" readonly="1"/>
+                            <br/>
+                            <field name="total_f"  invisible=" mode_registration != 'pm' " groups="internship_management_module.group_president_croec" readonly="1"/>
+                            <br/>
+                            <field name="total_g_2"  invisible=" mode_registration != 'pm' " groups="internship_management_module.group_president_croec" readonly="1"/>
+                            <br/>
+                            <field name="number_members"  invisible=  "mode_registration == 'pm' " groups="internship_management_module.group_president_croec" readonly="1"/>
+                            <br/>
+                            <field name="amount_member"  invisible= "mode_registration == 'pm' " groups="internship_management_module.group_president_croec" readonly="1"/>
+                            <br/>
+                            <field name="total_g"  invisible="  mode_registration == 'pm' " groups="internship_management_module.group_president_croec" readonly="1"/>
+                        </group>
+                        <group string="1- COTISATION FIXE" groups="!internship_management_module.group_president_croec" readonly="0">
+                            <field name="discount" groups="!internship_management_module.group_president_croec" readonly="0"/>
+                            <br/>
+                            <field name="amount_member_c"  invisible="  mode_registration != 'pm' " groups="!internship_management_module.group_president_croec" readonly="0"/>
+                            <br/>
+                            <field name="number_members_2"  invisible="  mode_registration != 'pm' " groups="!internship_management_module.group_president_croec" readonly="0"/>
+                            <br/>
+                            <field name="amount_member_2"  invisible="  mode_registration != 'pm' " groups="!internship_management_module.group_president_croec" readonly="0"/>
+                            <br/>
+                            <field name="total_f"  invisible=" mode_registration != 'pm' " groups="!internship_management_module.group_president_croec" readonly="0"/>
+                            <br/>
+                            <field name="total_g_2"  invisible=" mode_registration != 'pm' " groups="!internship_management_module.group_president_croec" readonly="0"/>
+                            <br/>
+                            <field name="number_members"  invisible=  "mode_registration == 'pm' " groups="!internship_management_module.group_president_croec" readonly="0"/>
+                            <br/>
+                            <field name="amount_member"  invisible= "mode_registration == 'pm' " groups="!internship_management_module.group_president_croec" readonly="0"/>
+                            <br/>
+                            <field name="total_g"  invisible="  mode_registration == 'pm' " groups="!internship_management_module.group_president_croec" readonly="0"/>
+                        </group>
+                        
+                        <group string="2- COTISATION VARIABLE" groups="internship_management_module.group_president_croec" readonly="1">
+                            <field name="ca" groups="internship_management_module.group_president_croec" readonly="1"/>
+                            <br/>
+                            <field name="total_h" groups="internship_management_module.group_president_croec" readonly="1"/>
+                        </group>
+                        <group string="2- COTISATION VARIABLE" groups="!internship_management_module.group_president_croec" readonly="0">
+                            <field name="ca" groups="!internship_management_module.group_president_croec" readonly="0"/>
+                            <br/>
+                            <field name="total_h" groups="!internship_management_module.group_president_croec" readonly="0"/>
+                        </group>
+                        
+                        <group string="3- COTISATION FIXE DE 200 DH PAR MANDAT DE CAC ET/OU D'AUDIT" groups="internship_management_module.group_president_croec" readonly="1">
+                            <field name="mandat_number_real" groups="internship_management_module.group_president_croec" readonly="1"/>
+                            <br/>
+                            <field name="mandat_number" groups="internship_management_module.group_president_croec" readonly="1"/>
+                            <br/>
+                            <field name="total_i" groups="internship_management_module.group_president_croec" readonly="1"/>
+                            <br/>
+                        </group>
+                        <group string="3- COTISATION FIXE DE 200 DH PAR MANDAT DE CAC ET/OU D'AUDIT" groups="!internship_management_module.group_president_croec" readonly="0">
+                            <field name="mandat_number_real" groups="!internship_management_module.group_president_croec" readonly="0"/>
+                            <br/>
+                            <field name="mandat_number" groups="!internship_management_module.group_president_croec" readonly="0"/>
+                            <br/>
+                            <field name="total_i" groups="!internship_management_module.group_president_croec" readonly="0"/>
+                            <br/>
+                        </group>
+                        
+                        <group string="4- COTISATION IFOEC" groups="internship_management_module.group_president_croec" readonly="1">
+                            <br/>
+                            <field name="total_j" groups="internship_management_module.group_president_croec" readonly="1"/>
+                            <br/>
+                        </group>
+                        <group string="4- COTISATION IFOEC" groups="!internship_management_module.group_president_croec" readonly="0">
+                            <br/>
+                            <field name="total_j" groups="!internship_management_module.group_president_croec" readonly="0"/>
+                            <br/>
+                        </group>
+                        
+                        <group string="5- TOTAL A PAYER" groups="internship_management_module.group_president_croec" readonly="1">
+                            <br/>
+                            <field name="total" groups="internship_management_module.group_president_croec" readonly="1"/>
+                            <br/>
+                        </group>
+                        <group string="5- TOTAL A PAYER" groups="!internship_management_module.group_president_croec" readonly="0">
+                            <br/>
+                            <field name="total" groups="!internship_management_module.group_president_croec" readonly="0"/>
+                            <br/>
+                        </group>
+                        
+                        <group>
+                            <field name="justif_ca_filename" invisible="1"/>
+                            <field name="justif_ca_file" widget="pdf_viewer" filename="justif_ca_filename" readonly="1"/>
+                        </group>
+                        
+                        <group groups="internship_management_module.group_president_croec" readonly="1">
+                            <field name="modalite_payment" string="Modalité de paiement" groups="internship_management_module.group_president_croec" readonly="1"/>
+                            <field name="numero_cheque" groups="internship_management_module.group_president_croec" readonly="1"/>
+                            <field name="amount_cheque" groups="internship_management_module.group_president_croec" readonly="1"/>
+                        </group>
+                        <group groups="!internship_management_module.group_president_croec" readonly="0">
+                            <field name="modalite_payment" string="Modalité de paiement"
+                                   groups="!internship_management_module.group_president_croec" readonly="0"/>
+                            <field name="numero_cheque" groups="!internship_management_module.group_president_croec"
+                                   readonly="0"/>
+                            <field name="amount_cheque" groups="!internship_management_module.group_president_croec"
+                                   readonly="0"/>
+                        </group>
+                        <group>
+                            <p style="font-size: 13px; color: #555; margin-top: -10px;">
+                                Ce traitement est déclaré à la CNDP sous le numéro XXXXX, conformément à la loi 09-08.
+                            </p>
+                        </group>
+                        <group>
+                            <field name="declaration_veracite" widget="checkbox"/>
+                        </group>
+                        <notebook>
+                            <page string="Historique">
+                                <field name="history_ids" context="{'tree_view_ref': 'mandat_cotisation_management.view_oec_cotisation_history_tree'}">
+                                    <list>
+                                        <field name="date"/>
+                                        <field name="user_id"/>
+                                        <field name="action_type"/>
+                                        <field name="old_state"/>
+                                        <field name="new_state"/>
+                                        <field name="description"/>
+                                    </list>
+                                </field>
+                            </page>
+                        </notebook>
+
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="oec_cotisation_pivot" model="ir.ui.view">
+            <field name="name">oec.cotisation.pivot</field>
+            <field name="model">oec.cotisation</field>
+            <field name="arch" type="xml">
+                <pivot string="Cotisations" sample="1">
+                    <field name="partner_id" type="row" />
+                    <field name="total" type="measure" string="Total"/>
+                </pivot>
+            </field>
+        </record>
+
+        <record id="action_oec_cotisation" model="ir.actions.act_window">
+            <field name="name">Cotisation</field>
+            <field name="res_model">oec.cotisation</field>
+            <field name="view_mode">list,pivot,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Add a new cotisation
+                </p>
+            </field>
+        </record>
+
+        <record id="action_oec_cotisation_motif" model="ir.actions.act_window">
+            <field name="name">Motif de rejet</field>
+            <field name="res_model">oec.cotisation.motif</field>
+            <field name="view_mode">list</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Add a new cotisation
+                </p>
+            </field>
+        </record>
+
+        <menuitem
+            name="Cotisations"
+            id="menu_oec_cotisation_mandat_root"
+            sequence="2"
+        />
+
+        <menuitem
+            name="Cotisations"
+            id="menu_oec_cotisation_root"
+            parent="menu_oec_cotisation_mandat_root"
+            sequence="1"
+        />
+
+        <menuitem
+            name="Cotisations"
+            id="menu_oec_cotisation"
+            action="action_oec_cotisation"
+            parent="menu_oec_cotisation_root"
+            sequence="1"
+        />
+
+        <record id="view_oec_configuration_tree" model="ir.ui.view">
+            <field name="name">oec.configuration.tree</field>
+            <field name="model">oec.configuration</field>
+            <field name="arch" type="xml">
+                <list string="Configuration" editable="bottom" create="False">
+                    <field name="amount_member"/>
+                    <field name="cotisation_morale"/>
+                    <field name="amount_member_ifoec"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="action_oec_configuration_cotisation" model="ir.actions.act_window">
+            <field name="name">Configuration</field>
+            <field name="res_model">oec.configuration</field>
+            <field name="view_mode">list</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Add a
+                </p>
+            </field>
+        </record>
+
+        <record id="view_oec_cotisation_history_tree" model="ir.ui.view">
+            <field name="name">oec.cotisation.history.tree</field>
+            <field name="model">oec.cotisation.history</field>
+            <field name="arch" type="xml">
+                <list string="Historique des cotisations" create="false" edit="false" delete="false">
+                    <field name="date"/>
+                    <field name="user_id"/>
+                    <field name="action_type"/>
+                    <field name="old_state"/>
+                    <field name="new_state"/>
+                    <field name="description"/>
+                    <field name="reject_motif"/>
+                </list>
+            </field>
+        </record>
+
+
+        <record id="view_oec_cotisation_history_form" model="ir.ui.view">
+            <field name="name">oec.cotisation.history.form</field>
+            <field name="model">oec.cotisation.history</field>
+            <field name="arch" type="xml">
+                <form string="Détail de l'historique" create="false" edit="false" delete="false">
+                    <sheet>
+                        <group col="2">
+                            <group string="Informations générales">
+                                <field name="date" readonly="1"/>
+                                <field name="user_id" readonly="1"/>
+                                <field name="action_type" readonly="1"/>
+                                <field name="cotisation_id" readonly="1"/>
+                            </group>
+                            <group string="Changements d'état">
+                                <field name="old_state" readonly="1"/>
+                                <field name="new_state" readonly="1"/>
+                                <field name="old_total" readonly="1"/>
+                                <field name="new_total" readonly="1"/>
+                            </group>
+                        </group>
+                        <group string="Détails">
+                            <field name="description" readonly="1"/>
+                            <field name="reject_motif" readonly="1" invisible="action_type not in ['rejected', 'payment_rejected']"/>
+                        </group>
+                        <group string="Modifications de champs" invisible="action_type != 'modified'">
+                            <field name="field_changed" readonly="1"/>
+                            <field name="old_value" readonly="1"/>
+                            <field name="new_value" readonly="1"/>
+                        </group>
+                        <group string="Informations techniques">
+                            <field name="ip_address" readonly="1"/>
+                            <field name="user_agent" readonly="1"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+
+        <record id="view_oec_cotisation_history_search" model="ir.ui.view">
+            <field name="name">oec.cotisation.history.search</field>
+            <field name="model">oec.cotisation.history</field>
+            <field name="arch" type="xml">
+                <search string="Recherche dans l'historique">
+                    <field name="cotisation_id"/>
+                    <field name="user_id"/>
+                    <field name="action_type"/>
+                    <field name="description"/>
+                    <filter name="today" string="Aujourd'hui"
+                            domain="[('date','&gt;=', datetime.datetime.now().strftime('%Y-%m-%d 00:00:00')),
+                                     ('date','&lt;=', datetime.datetime.now().strftime('%Y-%m-%d 23:59:59'))]"/>
+                    <filter name="this_week" string="Cette semaine"
+                            domain="[('date','&gt;=', (datetime.datetime.now() - datetime.timedelta(days=7)).strftime('%Y-%m-%d 00:00:00'))]"/>
+                    <filter name="this_month" string="Ce mois"
+                            domain="[('date','&gt;=', datetime.datetime.now().strftime('%Y-%m-01 00:00:00'))]"/>
+                    <separator/>
+                    <filter name="created" string="Créations" domain="[('action_type','=','created')]"/>
+                    <filter name="validated" string="Validations" domain="[('action_type','=','validated')]"/>
+                    <filter name="rejected" string="Rejets" domain="[('action_type','in',['rejected','payment_rejected'])]"/>
+                    <filter name="state_changed" string="Changements d'état" domain="[('action_type','=','state_changed')]"/>
+                    <group expand="0" string="Grouper par">
+                        <filter name="group_by_cotisation" string="Cotisation" domain="[]" context="{'group_by':'cotisation_id'}"/>
+                        <filter name="group_by_user" string="Utilisateur" domain="[]" context="{'group_by':'user_id'}"/>
+                        <filter name="group_by_action" string="Type d'action" domain="[]" context="{'group_by':'action_type'}"/>
+                        <filter name="group_by_date" string="Date" domain="[]" context="{'group_by':'date:day'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <!-- Action pour l'historique
+        <record id="action_oec_cotisation_history" model="ir.actions.act_window">
+            <field name="name">Historique des cotisations</field>
+            <field name="res_model">oec.cotisation.history</field>
+            <field name="view_mode">tree,form</field>
+            <field name="search_view_id" ref="view_oec_cotisation_history_search"/>
+            <field name="help" type="html">
+            </field>
+        </record>-->
+
+
+
+        <menuitem
+                name="Configuration"
+                id="action_oec_configuration_root"
+                parent="menu_oec_cotisation_mandat_root"
+                sequence="4"
+        />
+
+        <menuitem
+                name="Configuration"
+                id="action_oec_configuration"
+                action="action_oec_configuration_cotisation"
+                parent="action_oec_configuration_root"
+                sequence="1"
+        />
+
+        <menuitem
+                name="Motifs de rejet"
+                id="action_oec_cotisation_motif_id"
+                action="action_oec_cotisation_motif"
+                parent="action_oec_configuration_root"
+                sequence="2"
+        />
+
+    </data>
+</odoo>

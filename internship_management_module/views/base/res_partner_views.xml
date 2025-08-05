@@ -1,0 +1,1107 @@
+<odoo>
+    <data>
+        <record id="action_res_partner_registered" model="ir.actions.act_window">
+            <field name="name">Inscrits</field>
+            <field name="res_model">res.partner</field>
+            <field name="view_mode">list,form,activity</field>
+            <field name="domain">[('contact_type','=','EC')]</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                </p>
+            </field>
+        </record>
+
+        <record id="action_res_partner_in_progress_register" model="ir.actions.act_window">
+            <field name="name">En cours d'inscription</field>
+            <field name="res_model">res.partner</field>
+            <field name="view_mode">list,form,activity</field>
+            <field name="domain">[('contact_type','=','TEC')]</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                </p>
+            </field>
+        </record>
+        <record id="view_res_partner_registration_reserve_form" model="ir.ui.view">
+            <field name="name">Réserve</field>
+            <field name="model">res.partner.registration.reserve</field>
+            <field name="arch" type="xml">
+                <form string="Réserves" version="7.0">
+                    <group>
+                        <field name="motif"/>
+                    </group>
+                    <footer>
+                        <button name="confirm" string="Confirmer"
+                                type="object" class="oe_highlight"/>
+                        or
+                        <button string="Cancel" class="oe_link" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_res_partner_registration_unfavorable_form" model="ir.ui.view">
+            <field name="name">Retour</field>
+            <field name="model">res.partner.registration.unfavorable</field>
+            <field name="arch" type="xml">
+                <form string="Retour" version="7.0">
+                    <group>
+                        <field name="motif"/>
+                    </group>
+                    <footer>
+                        <button name="confirm" string="Confirmer"
+                                type="object" class="oe_highlight"/>
+                        or
+                        <button string="Cancel" class="oe_link" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_res_partner_reject" model="ir.ui.view">
+            <field name="name">Rejet</field>
+            <field name="model">res.partner.reject</field>
+            <field name="arch" type="xml">
+                <form string="Rejet" version="7.0">
+                    <group>
+                        <field name="type"/>
+                    </group>
+                    <group invisible="type == 'definitif'">
+                        <field name="reject_line_ids" nolabel="1">
+                            <list editable="bottom">
+                                <field name="document"/>
+                                <field name="reserve"/>
+                            </list>
+                        </field>
+                    </group>
+                    <footer>
+                        <button name="confirm" string="Confirmer"
+                                type="object" class="oe_highlight"/>
+                        or
+                        <button string="Cancel" class="oe_link" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <!-- Top menu item -->
+        <menuitem id="oec_register_menu_root" name="Inscriptions"
+                  web_icon="internship_management_module,static/description/icon.png"
+                  sequence="2"/>
+
+        <menuitem id="partner_registered_menu" name="Inscrits"
+                  parent="oec_register_menu_root" sequence="2"/>
+
+        <menuitem id="partner_registered_submenu" name="Inscrits"
+                  parent="partner_registered_menu" action="action_res_partner_registered"
+                  sequence="1"/>
+
+        <menuitem id="partner_unregistered_submenu" name="En cours d'inscription"
+                  parent="partner_registered_menu" action="action_res_partner_in_progress_register"
+                  sequence="2"/>
+
+        <record model="ir.ui.view" id="view_partner_tree_croec">
+            <field name="name">res.partner.tree.form.inherit</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_tree"/>
+            <field name="arch" type="xml">
+                <!--<xpath expr="//field[@name='display_name']" position="after">
+                    <field name="second_name"/>
+                </xpath>-->
+                <xpath expr="//field[@name='complete_name']" position="after">
+                    <field name="second_name"/>
+                    <field name="date_inscription" optional="show"/>
+                </xpath>
+                <xpath expr="//field[@name='user_id']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='city']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='country_id']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="view_partner_tree_disable_activities">
+            <field name="name">res.partner.tree.form.inherit</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='activity_ids']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+            </field>
+        </record>
+        <record id="res_partner_form_view_inherit" model="ir.ui.view">
+            <field name="name">res.partner.form</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//sheet" position="before">
+                    <header>
+                        <button name="button_completed" string="Valider" type="object"
+                                class="btn btn-success" invisible="status != 'submitted'"
+                                groups="internship_management_module.group_gestionnaire"/>
+                        <button name="button_reserve" string="Réserves" type="object"
+                                class="btn btn-danger" invisible="status != 'submitted'"
+                                groups="internship_management_module.group_gestionnaire"/>
+                        <button name="button_submit" string="Soumettre" type="object"
+                                class="btn-primary" invisible="status not in ('draft', 'incompleted')"
+                                groups="internship_management_module.group_internship"/>
+
+                        <button name="button_drop_off" string="Déposer" type="object"
+                                class="btn-primary" invisible="status != 'submitted'"
+                                groups="internship_management_module.group_gestionnaire"/>
+
+                        <button name="button_print" string="Imprimer Livret" type="object"
+                                class="btn-primary" invisible="status != 'submitted'"/>
+
+                        <button name="print_notification_felicitation" string="Lettre de notification (félicitation)"
+                                type="object"
+                                class="btn-primary" invisible="status_register != 'registred'"
+                                groups="internship_management_module.group_gestionnaire"/>
+
+                        <button name="button_signed_contract" string="Contrat signé"
+                                type="object" class="btn-primary" invisible="status != 'drop_off'"/>
+
+                        <field name="status" widget="statusbar"
+                               statusbar_visible="draft,submitted,completed,drop_off" invisible="contact_type != 'ST'"/>
+
+                        <button name="button_create_portal_access" string="Créer un compte"
+                                type="object" class="btn btn-success"
+                                invisible="status_register != 'draft'"
+                                groups="internship_management_module.group_gestionnaire"/>
+
+                        <button name="button_deposed_croec" string="Déposé" type="object"
+                                class="btn btn-success" invisible="status_register != 'in_progress_to_depose'"
+                                groups="internship_management_module.group_gestionnaire"/>
+
+                        <button name="button_validate_croec" string="Valider" type="object"
+                                class="btn btn-success" invisible="status_register != 'in_progress'"
+                                groups="internship_management_module.group_gestionnaire"
+                                confirm="Vous êtes sur le point de valider le dossier. Continuez?"/>
+
+                        <button name="button_validate_member_elu" string="Valider" type="object"
+                                class="btn btn-success" invisible="status_register != 'in_progress_member_elu'"
+                                groups="internship_management_module.group_member_elu"
+                                confirm="Vous êtes sur le point de valider le dossier. Continuez?"/>
+
+                        <button name="button_validate_secretaire_general" string="Valider" type="object"
+                                class="btn btn-success" invisible="status_register != 'in_progress_secretaire_general'"
+                                groups="internship_management_module.group_secretaire_general"
+                                confirm="Vous êtes sur le point de valider le dossier. Continuez?"/>
+
+                        <button name="button_validate_president_conseil" string="Valider" type="object"
+                                class="btn btn-success" invisible="status_register != 'in_progress_president_conseil'"
+                                groups="internship_management_module.group_president_croec"
+                                confirm="Vous êtes sur le point de valider le dossier. Continuez?"/>
+
+                        <button name="button_confirm" string="Confirmer" type="object"
+                                class="btn btn-success" invisible="status_register != 'in_progress_conseil_national'"
+                                groups="internship_management_module.group_conseil_national"/>
+
+                        <button name="button_reject" string="Rejeter" type="object"
+                                class="btn btn-success" invisible="status_register != 'in_progress_conseil_national'"
+                                groups="internship_management_module.group_conseil_national"/>
+
+                        <button name="button_reject" string="Rejeter" type="object"
+                                class="btn btn-success" invisible="status_register != 'draft'"
+                                groups="internship_management_module.group_gestionnaire"/>
+
+                        <button name="button_reserve_registration" string="Réserves" type="object"
+                                class="btn btn-warning" invisible="status_register != 'in_progress'"
+                                groups="internship_management_module.group_gestionnaire"/>
+
+                        <button name="button_reserve_registration" string="Réserves" type="object"
+                                class="btn btn-warning" invisible="status_register != 'in_progress_member_elu'"
+                                groups="internship_management_module.group_member_elu"/>
+
+                        <button name="button_reserve_registration" string="Transférer au CN avec réserves" type="object"
+                                class="btn btn-warning" invisible="status_register != 'in_progress_secretaire_general'"
+                                groups="internship_management_module.group_secretaire_general"/>
+
+                        <button name="button_reserve_registration" string="Transférer au CN avec réserves" type="object"
+                                class="btn btn-warning" invisible="status_register != 'in_progress_president_conseil'"
+                                groups="internship_management_module.group_president_croec"/>
+
+                        <button name="button_unfavorable_registration" string="Retour" type="object"
+                                class="btn btn-danger" invisible="status_register != 'in_progress_member_elu'"
+                                groups="internship_management_module.group_member_elu"/>
+
+                        <button name="button_unfavorable_registration" string="Retour" type="object"
+                                class="btn btn-danger" invisible="status_register != 'in_progress_secretaire_general'"
+                                groups="internship_management_module.group_secretaire_general"/>
+
+                        <button name="button_unfavorable_registration" string="Retour" type="object"
+                                class="btn btn-danger" invisible="status_register != 'in_progress_president_conseil'"
+                                groups="internship_management_module.group_president_croec"/>
+
+                        <button name="print_transmission_letter" string="Lettre de transmission" type="object"
+                                class="btn btn-success" invisible="status_register != 'in_progress_conseil_national'"
+                                groups="internship_management_module.group_gestionnaire"/>
+
+                        <button name="print_recu_depot_physique" string="Accusé de réception" type="object"
+                                class="btn btn-success" invisible="status_register != 'in_progress_member_elu'"
+                                groups="internship_management_module.group_gestionnaire"/>
+                        <field name="status_register" widget="statusbar" options="{'clickable': '1'}"
+                               statusbar_visible="draft,account_created,in_progress,in_progress_to_depose,in_progress_member_elu,in_progress_secretaire_general,in_progress_president_conseil,in_progress_conseil_national,registred,rejected"/>
+                    </header>
+                </xpath>
+                <xpath expr="//h1" position="inside">
+                    <br/>
+                    <field name="second_name" default_focus="1" placeholder="Prénom"/>
+                </xpath>
+                <xpath expr="//h1" position="before">
+                    <group>
+                        <field name="code" invisible=" contact_type == 'TEC'"/>
+                    </group>
+                </xpath>
+                <xpath expr="//field[@name='function']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='category_id']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='website']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='parent_id']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//notebook" position="inside">
+                    <page string="Contrat de stage" invisible="contact_type != 'ST'">
+                        <group>
+                            <field name="contract_filename" column_invisible="1"/>
+                            <field name="contract" required="status == 'drop_off'"
+                                   widget="binary" filename="contract_filename"/>
+                            <field name="contract_date" invisible="contract == None"/>
+                        </group>
+                    </page>
+                    <page string="Informations d'inscription" invisible="contact_type != 'TEC'">
+                        <group string="Informations générales">
+                            <group>
+                                <field name="mode_registration"/>
+                                <field name="related_pp_id" invisible="mode_registration != 'pm'"/>
+                                <field name="sexe"/>
+                                <field name="gsm"/>
+                                <field name="cin_number"/>
+                                <field name="diplome"/>
+                                <field name="raison_sociale"/>
+                            </group>
+                            <group>
+                                <field name="legal_form"/>
+                                <field name="siege_social"/>
+                                <field name="capital_social"/>
+                                <field name="effectif"/>
+                                <field name="identifiant_fiscal"/>
+                                <field name="taxe_professionnelle"/>
+                                <field name="conseil_regional"/>
+                            </group>
+                        </group>
+                        <group string="Etat de répartition du capital social" invisible="mode_registration != 'pm'">
+                            <field name="repartition_ids" nolabel="1">
+                                <list>
+                                    <field name="name"/>
+                                    <field name="percentage"/>
+                                    <field name="status"/>
+                                </list>
+                            </field>
+                        </group>
+
+                        <!-- Documents organisés en blocs distincts -->
+                        <group string="Documents">
+                            <!-- Bloc Documents d'identité -->
+                            <group string="📋 Documents d'identité" class="oe_subtab_tab">
+                                <separator string="Documents d'identité" colspan="4"/>
+                                <group>
+                                    <field name="copie_cin_filename" column_invisible="1"/>
+                                    <field name="copie_cin" widget="binary" filename="copie_cin_filename" readonly="1"/>
+                                </group>
+                                <group>
+                                    <field name="valid_copie_cin" readonly="status_register != 'in_progress'"
+                                           widget="radio" options="{'horizontal': true}" nolabel="1"/>
+                                    <field name="motif_copie_cin"
+                                           invisible="valid_copie_cin != 'no'"
+                                           required="valid_copie_cin == 'no'"
+                                           readonly="status_register != 'in_progress'" nolabel="1"/>
+                                </group>
+                                <group invisible="mode_registration == 'pm'">
+                                    <field name="extrait_acte_naissance_filename" column_invisible="1"/>
+                                    <field name="extrait_acte_naissance" widget="binary"
+                                           filename="extrait_acte_naissance_filename" readonly="1"/>
+                                </group>
+                                <group invisible="mode_registration == 'pm'">
+                                    <field name="valid_extrait_acte_naissance"
+                                           readonly="status_register != 'in_progress'"
+                                           widget="radio" options="{'horizontal': true}" nolabel="1"/>
+                                    <field name="motif_extrait_acte_naissance"
+                                           invisible="valid_extrait_acte_naissance != 'no'"
+                                           required="valid_extrait_acte_naissance == 'no'"
+                                           readonly="status_register != 'in_progress'" nolabel="1"/>
+                                </group>
+                                <group invisible="mode_registration == 'pm'">
+                                    <field name="photographies_recentes_filename" column_invisible="1"/>
+                                    <field name="photographies_recentes" widget="binary"
+                                           filename="photographies_recentes_filename" readonly="1"/>
+                                </group>
+                                <group invisible="mode_registration == 'pm'">
+                                    <field name="valid_photographies_recentes"
+                                           readonly="status_register != 'in_progress'"
+                                           widget="radio" options="{'horizontal': true}" nolabel="1"/>
+                                    <field name="motif_photographies_recentes"
+                                           invisible="valid_photographies_recentes != 'no'"
+                                           required="valid_photographies_recentes == 'no'"
+                                           readonly="status_register != 'in_progress'" nolabel="1"/>
+                                </group>
+                            </group>
+
+                            <!-- Bloc Déclarations -->
+                            <group string="Déclarations">
+                                <group>
+                                    <field name="declaration_sur_honneur_filename" column_invisible="1"/>
+                                    <field name="declaration_sur_honneur" widget="pdf_viewer"
+                                           filename="declaration_sur_honneur_filename" readonly="1"/>
+                                </group>
+                                <group>
+                                    <field name="valid_declaration_sur_honneur"
+                                           readonly="status_register != 'in_progress'"
+                                           widget="radio" options="{'horizontal': true}" nolabel="1"/>
+                                    <field name="motif_declaration_sur_honneur"
+                                           invisible="valid_declaration_sur_honneur != 'no'"
+                                           required="valid_declaration_sur_honneur == 'no'"
+                                           readonly="status_register != 'in_progress'" nolabel="1"/>
+                                </group>
+                                <group>
+                                    <field name="engagement_filename" column_invisible="1"/>
+                                    <field name="engagement" widget="binary" filename="engagement_filename"
+                                           readonly="1"/>
+                                </group>
+                                <group>
+                                    <field name="valid_engagement" readonly="status_register != 'in_progress'"
+                                           widget="radio" options="{'horizontal': true}" nolabel="1"/>
+                                    <field name="motif_engagement"
+                                           invisible="valid_engagement != 'no'"
+                                           required="valid_engagement == 'no'"
+                                           readonly="status_register != 'in_progress'" nolabel="1"/>
+                                </group>
+                            </group>
+
+                            <!-- Bloc Diplômes -->
+                            <group string="Diplômes">
+                                <group>
+                                    <field name="diplome_document_filename" column_invisible="1"/>
+                                    <field name="diplome_document" widget="pdf_viewer"
+                                           filename="diplome_document_filename" readonly="1"/>
+                                </group>
+                                <group>
+                                    <field name="valid_diplome_document" readonly="status_register != 'in_progress'"
+                                           widget="radio" options="{'horizontal': true}" nolabel="1"/>
+                                    <field name="motif_diplome_document"
+                                           invisible="valid_diplome_document != 'no'"
+                                           required="valid_diplome_document == 'no'"
+                                           readonly="status_register != 'in_progress'" nolabel="1"/>
+                                </group>
+                                <group invisible="mode_registration == 'pm'">
+                                    <field name="photocopie_diplome_filename" column_invisible="1"/>
+                                    <field name="photocopie_diplome" widget="binary"
+                                           filename="photocopie_diplome_filename" readonly="1"/>
+                                </group>
+                                <group invisible="mode_registration == 'pm'">
+                                    <field name="valid_photocopie_diplome" readonly="status_register != 'in_progress'"
+                                           widget="radio" options="{'horizontal': true}" nolabel="1"/>
+                                    <field name="motif_photocopie_diplome"
+                                           invisible="valid_photocopie_diplome != 'no'"
+                                           required="valid_photocopie_diplome == 'no'"
+                                           readonly="status_register != 'in_progress'" nolabel="1"/>
+                                </group>
+                                <group invisible="mode_registration == 'pm'">
+                                    <field name="attestation_equivalence_filename" column_invisible="1"/>
+                                    <field name="attestation_equivalence" widget="binary"
+                                           filename="attestation_equivalence_filename" readonly="1"/>
+                                </group>
+                                <group invisible="mode_registration == 'pm'">
+                                    <field name="valid_attestation_equivalence"
+                                           readonly="status_register != 'in_progress'"
+                                           widget="radio" options="{'horizontal': true}" nolabel="1"/>
+                                    <field name="motif_attestation_equivalence"
+                                           invisible="valid_attestation_equivalence != 'no'"
+                                           required="valid_attestation_equivalence == 'no'"
+                                           readonly="status_register != 'in_progress'" nolabel="1"/>
+                                </group>
+                            </group>
+
+                            <!-- Bloc Documents juridiques -->
+                            <group string="Documents juridiques" invisible="mode_registration != 'pm'">
+                                <group>
+                                    <field name="actes_modificatifs_filename" column_invisible="1"/>
+                                    <field name="actes_modificatifs" widget="pdf_viewer"
+                                           filename="actes_modificatifs_filename" readonly="1"/>
+                                </group>
+                                <group>
+                                    <field name="valid_actes_modificatifs" readonly="status_register != 'in_progress'"
+                                           widget="radio" options="{'horizontal': true}" nolabel="1"/>
+                                    <field name="motif_actes_modificatifs"
+                                           invisible="valid_actes_modificatifs != 'no'"
+                                           required="valid_actes_modificatifs == 'no'"
+                                           readonly="status_register != 'in_progress'" nolabel="1"/>
+                                </group>
+                                <group>
+                                    <field name="copie_bo_jal_filename" column_invisible="1"/>
+                                    <field name="copie_bo_jal" widget="binary" filename="copie_bo_jal_filename"
+                                           readonly="1"/>
+                                </group>
+                                <group>
+                                    <field name="valid_copie_bo_jal" readonly="status_register != 'in_progress'"
+                                           widget="radio" options="{'horizontal': true}" nolabel="1"/>
+                                    <field name="motif_copie_bo_jal"
+                                           invisible="valid_copie_bo_jal != 'no'"
+                                           required="valid_copie_bo_jal == 'no'"
+                                           readonly="status_register != 'in_progress'" nolabel="1"/>
+                                </group>
+                                <group>
+                                    <field name="statuts_filename" column_invisible="1"/>
+                                    <field name="statuts" widget="binary" filename="statuts_filename" readonly="1"/>
+                                </group>
+                                <group>
+                                    <field name="valid_statuts" readonly="status_register != 'in_progress'"
+                                           widget="radio" options="{'horizontal': true}" nolabel="1"/>
+                                    <field name="motif_statuts"
+                                           invisible="valid_statuts != 'no'"
+                                           required="valid_statuts == 'no'"
+                                           readonly="status_register != 'in_progress'" nolabel="1"/>
+                                </group>
+                                <group>
+                                    <field name="attestation_radiation_filename" column_invisible="1"/>
+                                    <field name="attestation_radiation" widget="binary"
+                                           filename="attestation_radiation_filename" readonly="1"/>
+                                </group>
+                                <group>
+                                    <field name="valid_attestation_radiation"
+                                           readonly="status_register != 'in_progress'"
+                                           widget="radio" options="{'horizontal': true}" nolabel="1"/>
+                                    <field name="motif_attestation_radiation"
+                                           invisible="valid_attestation_radiation != 'no'"
+                                           required="valid_attestation_radiation == 'no'"
+                                           readonly="status_register != 'in_progress'" nolabel="1"/>
+                                </group>
+                            </group>
+
+                            <!-- Autres documents -->
+                            <group string="Autres documents">
+                                <group invisible="mode_registration not in ['pm', 'pp1', 'pp2']">
+                                    <field name="copie_conforme_contrat_filename" column_invisible="1"/>
+                                    <field name="copie_conforme_contrat" widget="binary"
+                                           filename="copie_conforme_contrat_filename" readonly="1"/>
+                                </group>
+                                <group invisible="mode_registration not in ['pm', 'pp1', 'pp2']">
+                                    <field name="valid_copie_conforme_contrat"
+                                           readonly="status_register != 'in_progress'"
+                                           widget="radio" options="{'horizontal': true}" nolabel="1"/>
+                                    <field name="motif_copie_conforme_contrat"
+                                           invisible="valid_copie_conforme_contrat != 'no'"
+                                           required="valid_copie_conforme_contrat == 'no'"
+                                           readonly="status_register != 'in_progress'" nolabel="1"/>
+                                </group>
+                                <group invisible="mode_registration not in ['pm', 'pp3', 'pp4']">
+                                    <field name="modele_7_filename" column_invisible="1"/>
+                                    <field name="modele_7" widget="binary" filename="modele_7_filename" readonly="1"/>
+                                </group>
+                                <group invisible="mode_registration not in ['pm', 'pp3', 'pp4']">
+                                    <field name="valid_modele_7" readonly="status_register != 'in_progress'"
+                                           widget="radio" options="{'horizontal': true}" nolabel="1"/>
+                                    <field name="motif_modele_7"
+                                           invisible="valid_modele_7 != 'no'"
+                                           required="valid_modele_7 == 'no'"
+                                           readonly="status_register != 'in_progress'" nolabel="1"/>
+                                </group>
+                                <group invisible="mode_registration not in ['pm', 'pp1', 'pp3', 'pp4']">
+                                    <field name="attestation_assurance_filename" column_invisible="1"/>
+                                    <field name="attestation_assurance" widget="binary"
+                                           filename="attestation_assurance_filename" readonly="1"/>
+                                </group>
+                                <group invisible="mode_registration not in ['pm', 'pp1', 'pp3', 'pp4']">
+                                    <field name="valid_attestation_assurance"
+                                           readonly="status_register != 'in_progress'"
+                                           widget="radio" options="{'horizontal': true}" nolabel="1"/>
+                                    <field name="motif_attestation_assurance"
+                                           invisible="valid_attestation_assurance != 'no'"
+                                           required="valid_attestation_assurance == 'no'"
+                                           readonly="status_register != 'in_progress'" nolabel="1"/>
+                                </group>
+                            </group>
+                        </group>
+                    </page>
+                    <page string="Historique des opérations" invisible="contact_type != 'TEC'">
+                        <group string="Chargé CROEC">
+                            <group>
+                                <field name="date_initial_croec"/>
+                            </group>
+                            <group>
+                                <field name="date_final_croec"/>
+                            </group>
+                        </group>
+                        <group string="Membre élu">
+                            <group>
+                                <field name="date_initial_member_elu"/>
+                            </group>
+                            <group>
+                                <field name="date_final_member_elu"/>
+                            </group>
+                        </group>
+                        <group string="Secrétaire général">
+                            <group>
+                                <field name="date_initial_secretaire_general"/>
+                            </group>
+                            <group>
+                                <field name="date_final_secretaire_general"/>
+                            </group>
+                        </group>
+                        <group string="Président du conseil régional">
+                            <group>
+                                <field name="date_initial_president_conseil"/>
+                            </group>
+                            <group>
+                                <field name="date_final_president_conseil"/>
+                            </group>
+                        </group>
+                        <group string="Conseil national">
+                            <group>
+                                <field name="date_initial_conseil_national"/>
+                            </group>
+                            <group>
+                                <field name="date_final_conseil_national"/>
+                            </group>
+                        </group>
+                        <group>
+                            <field name="is_first_rejected"/>
+                            <field name="reject_line_ids">
+                                <list>
+                                    <field name="document"/>
+                                    <field name="reserve"/>
+                                </list>
+                            </field>
+                        </group>
+                    </page>
+                    <page string="Commentaires" invisible="contact_type != 'TEC'">
+                        <group string="Chargé CROEC">
+                            <field name="reserve_croec" nolabel="1"/>
+                        </group>
+                        <group string="Commission réglementation et déontologie">
+                            <field name="reserve_member_elu" nolabel="1"/>
+                        </group>
+                        <group string="Secrétaire général">
+                            <field name="reserve_secretaire_general" nolabel="1"/>
+                        </group>
+                        <group string="Président du conseil régional">
+                            <field name="reserve_president_conseil" nolabel="1"/>
+                        </group>
+                        <group string="Conseil national">
+                            <field name="reserve_conseil_national" nolabel="1"/>
+                        </group>
+                    </page>
+                </xpath>
+
+                <xpath expr="//sheet/group[1]" position="after">
+                    <group>
+                        <group>
+                            <field name="copie_cin_filename" column_invisible="1"/>
+                            <field name="copie_cin" widget="pdf_viewer" filename="copie_cin_filename" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="diplome_document_filename" column_invisible="1"/>
+                            <field name="diplome_document" widget="pdf_viewer"
+                                   filename="diplome_document_filename" readonly="1"/>
+                        </group>
+                    </group>
+                </xpath>
+                <field name="vat" position="after">
+                    <field name="res_school_year_id" invisible="contact_type != 'ST'"/>
+                    <field name="contact_type" invisible="True"/>
+                    <field name="contact_type_id" options="{'no_open': True, 'no_create': True}" invisible="True"/>
+                    <field name="contact_level_id" options="{'no_open': True, 'no_create': True}"
+                           invisible="contact_type != 'ST'"/>
+                    <field name="cregionalp_id" options="{'no_open': True, 'no_create': True}"
+                           invisible="contact_type != 'ST'"/>
+                    <field name="cregionalcourant_id" options="{'no_open': True, 'no_create': True}"
+                           invisible="contact_type != 'ST'"/>*
+                    <field name="conseil_regional_id" options="{'no_open': True, 'no_create': True}"
+                           invisible="contact_type != 'ST'"/>
+                    <field name="department_id" invisible="contact_type != 'ST'"/>
+                    <field name="depot_date" invisible="contact_type != 'ST'"/>
+                    <field name="date_integration" invisible="contact_type != 'ST'"/>
+                    <field name="start_date" invisible="contact_type != 'ST'"/>
+                    <field name="derogation" invisible="contact_type != 'ST'"/>
+                    <field name="decision_commission_filename" invisible="True"/>
+                    <field name="decision_commission" widget="binary" filename="decision_commission_filename"
+                           invisible="not derogation"/>
+                </field>
+                <field name="vat" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </field>
+                <page name="sales_purchases" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </page>
+                <page name="internal_notes" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </page>
+                <page name="contact_addresses" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </page>
+                <page name="contact_addresses" position="after">
+                    <page name="inscription" string="Inscription">
+                        <group>
+                            <field name="birthday"/>
+                            <field name="place_of_birth"/>
+                        </group>
+                        <group>
+                            <field name="internship_supervisor_id"
+                                   domain="[('contact_type_id.code', '=', 'EC')]"
+                                   readonly="has_no_internship"/>
+                            <field name="has_no_internship" column_invisible="1"/>
+                            <field name="resume"
+                                   invisible="has_no_internship"
+                                   required="has_no_internship"/>
+                            <field name="session_link" invisible="resume" widget="url"/>
+                            <field name="survey_input_id" invisible="resume"/>
+                            <field name="internship_controler_id"
+                                   domain="[('contact_type_id.code', '=', 'EC')]"/>
+                            <field name="office_id"/>
+                        </group>
+
+
+                        <group string="Documents d'identité">
+
+                            <group>
+
+                                    <field name="cin_filename" column_invisible="1"/>
+                                    <field name="cin" widget="binary" filename="cin_filename" colspan="2"/>
+
+
+                                    <field name="valid_cin"
+                                           readonly="status != 'submitted'"
+                                           widget="radio" options="{'horizontal': true}" nolabel="1"/>
+                                    <field name="motif_cin"
+                                           invisible="valid_cin != 'no' and status != 'submitted'"
+                                           nolabel="1"/>
+
+                            </group>
+
+
+                            <group>
+
+                                    <field name="photo_filename" column_invisible="1"/>
+                                    <field name="photo" widget="binary" filename="photo_filename"/>
+
+
+                                    <field name="valid_photo"
+                                           readonly="status != 'submitted'"
+                                           widget="radio" options="{'horizontal': true}"
+                                           nolabel="1"/>
+                                    <field name="motif_photo"
+                                           invisible="valid_photo != 'no' and status != 'submitted'"
+                                           nolabel="1"/>
+
+                            </group>
+
+
+                            <group>
+
+                                    <field name="anthropometric_profile_filename" column_invisible="1"/>
+                                    <field name="anthropometric_profile" widget="binary"
+                                           filename="anthropometric_profile_filename"/>
+
+                                    <field name="valid_anthropometric_profile"
+                                           readonly="status != 'submitted'"
+                                           widget="radio" options="{'horizontal': true}" nolabel="1"/>
+                                    <field name="motif_anthropometric_profile"
+                                           invisible="valid_anthropometric_profile != 'no' and status != 'submitted'"
+                                           nolabel="1"/>
+
+                        </group>
+                        </group>
+
+
+                        <group string="Déclarations">
+
+                            <group>
+
+                                    <field name="inscription_manuscrite_filename" column_invisible="1"/>
+                                    <field name="inscription_manuscrite" widget="binary"
+                                           filename="inscription_manuscrite_filename"/>
+
+                                    <field name="valid_inscription_manuscrite"
+                                           readonly="status != 'submitted'"
+                                           invisible="valid_inscription_manuscrite != 'no' and status != 'submitted'"
+                                           widget="radio" options="{'horizontal': true}" nolabel="1"/>
+                                    <field name="motif_inscription_manuscrite"
+                                           invisible="valid_inscription_manuscrite != 'no'"
+                                           readonly="status != 'submitted'"
+                                           nolabel="1"/>
+
+                            </group>
+                        </group>
+
+
+                        <group string="Diplômes et certifications">
+
+                            <group>
+
+                                    <field name="iscae_certificate_filename" column_invisible="1"/>
+                                    <field name="iscae_certificate" widget="binary"
+                                           filename="iscae_certificate_filename"/>
+
+
+                                    <field name="valid_iscae_certificate"
+                                           readonly="status != 'submitted'"
+                                           invisible="valid_iscae_certificate != 'no' and status != 'submitted'"
+                                           widget="radio" options="{'horizontal': true}" nolabel="1"/>
+                                    <field name="motif_iscae_certificate"
+                                           invisible="valid_iscae_certificate != 'no'"
+                                           readonly="status != 'submitted'"
+                                           nolabel="1"/>
+
+                            </group>
+
+                            <!-- Certificat de travail -->
+                            <group>
+
+                                    <field name="work_certificate_filename" column_invisible="1"/>
+                                    <field name="work_certificate" widget="binary"
+                                           filename="work_certificate_filename"/>
+
+
+                                    <field name="valid_work_certificate"
+                                           readonly="status != 'submitted'"
+                                           invisible="valid_work_certificate != 'no' and status != 'submitted'"
+                                           widget="radio" options="{'horizontal': true}" nolabel="1"/>
+                                    <field name="motif_work_certificate"
+                                           invisible="valid_work_certificate != 'no'"
+                                           readonly="status != 'submitted'"
+                                           nolabel="1"/>
+
+                            </group>
+                        </group>
+
+
+                        <group string="Documents juridiques et administratifs">
+
+                            <group>
+
+                                    <field name="attestation_cnss_filename" column_invisible="1"/>
+                                    <field name="attestation_cnss" widget="binary"
+                                           filename="attestation_cnss_filename"/>
+
+
+                                    <field name="valid_attestation_cnss"
+                                           readonly="status != 'submitted'"
+                                           widget="radio" options="{'horizontal': true}" nolabel="1"/>
+                                    <field name="motif_attestation_cnss"
+                                           invisible="valid_attestation_cnss != 'no'"
+                                           readonly="status != 'submitted'" nolabel="1"/>
+
+                            </group>
+
+
+                            <group>
+
+                                    <field name="attestation_prise_en_charge_maitre_filename" column_invisible="1"/>
+                                    <field name="attestation_prise_en_charge_maitre" widget="binary"
+                                           filename="attestation_prise_en_charge_maitre_filename"/>
+
+
+                                    <field name="valid_attestation_prise_en_charge_maitre"
+                                           readonly="status != 'submitted'" widget="radio"
+                                           options="{'horizontal': true}" nolabel="1"/>
+                                    <field name="motif_attestation_prise_en_charge_maitre"
+                                           invisible="valid_attestation_prise_en_charge_maitre != 'no'"
+                                           readonly="status != 'submitted'" nolabel="1"/>
+
+                            </group>
+
+
+                            <group>
+
+                                    <field name="attestation_prise_en_charge_commissaire_compte_filename"
+                                           column_invisible="1"/>
+                                    <field name="attestation_prise_en_charge_commissaire_compte" widget="binary"
+                                           filename="attestation_prise_en_charge_commissaire_compte_filename"/>
+
+                                    <field name="valid_attestation_prise_en_charge_commissaire_compte"
+                                           readonly="status != 'submitted'" widget="radio"
+                                           options="{'horizontal': true}" nolabel="1"/>
+                                    <field name="motif_attestation_prise_en_charge_commissaire_compte"
+                                           invisible="valid_attestation_prise_en_charge_commissaire_compte != 'no'"
+                                           readonly="status != 'submitted'" nolabel="1"/>
+
+                            </group>
+
+
+                            <group>
+
+                                    <field name="pv_filename" column_invisible="1"/>
+                                    <field name="pv" widget="binary" filename="pv_filename"/>
+
+
+                                    <field name="valid_pv"
+                                           readonly="status != 'submitted'"
+                                           widget="radio" options="{'horizontal': true}" nolabel="1"/>
+                                    <field name="motif_pv"
+                                           invisible="valid_pv != 'no' and status != 'submitted'"
+                                           nolabel="1"/>
+
+                            </group>
+                        </group>
+                        <group invisible="status_register != 'in_progress_conseil_national'"
+                               string="PV Conseil National">
+                            <group>
+                                <field name="pv_cn_filename" column_invisible="1"/>
+                                <field name="pv_cn" widget="binary" filename="pv_cn_filename"
+                                       string="PV du Conseil National"
+                                       help="Document obligatoire pour confirmer l'inscription"
+                                       required="status_register == 'in_progress_conseil_national'"/>
+                            </group>
+                            <group>
+                                <field name="valid_pv_cn"
+                                       readonly="status != 'submitted'"
+                                       widget="radio" options="{'horizontal': true}" nolabel="1"/>
+                                <field name="motif_pv_cn"
+                                       invisible="valid_pv_cn != 'no'"
+                                       readonly="status != 'submitted'"
+                                       nolabel="1"/>
+                            </group>
+                        </group>
+
+
+                        <group>
+                            <field name="other_information"/>
+                        </group>
+                    </page>
+                </page>
+            </field>
+        </record>
+        <record id="res_partner_form_internship_view_inherit" model="ir.ui.view">
+            <field name="name">res.partner.internship.form</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+                <data>
+                    <field name="contact_type_id" position="attributes">
+                        <attribute name="readonly">1</attribute>
+                        <attribute name="groups">internship_management_module.group_internship</attribute>
+                    </field>
+                    <field name="contact_level_id" position="attributes">
+                        <attribute name="readonly">1</attribute>
+                        <attribute name="groups">internship_management_module.group_internship</attribute>
+                    </field>
+                    <field name="internship_controler_id" position="attributes">
+                        <attribute name="readonly">1</attribute>
+                        <attribute name="groups">internship_management_module.group_internship</attribute>
+                    </field>
+                    <field name="company_type" position="attributes">
+                        <!--                 <attribute name="invisible">1</attribute> -->
+                        <attribute name="groups">internship_management_module.group_internship</attribute>
+                    </field>
+                </data>
+            </field>
+        </record>
+        <record id="res_partner_accounting_form_view_inherit" model="ir.ui.view">
+            <field name="name">res.partner.accounting.form</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="account.view_partner_property_form"/>
+            <field name="arch" type="xml">
+                <page name="accounting" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </page>
+            </field>
+        </record>
+
+        <record id="res_partner_crm_form_view_inherit" model="ir.ui.view">
+            <field name="name">res.partner.crm.form</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="crm.view_partners_form_crm1"/>
+            <field name="arch" type="xml">
+                <button name="action_view_opportunity" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </button>
+                <button name="schedule_meeting" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </button>
+            </field>
+        </record>
+
+        <record id="res_partner_internship_pivot" model="ir.ui.view">
+            <field name="name">res.partner.internship.pivot</field>
+            <field name="model">res.partner</field>
+            <field name="arch" type="xml">
+                <pivot string="Stagiares" sample="1">
+                    <field name="start_date" type="row"/>
+                </pivot>
+            </field>
+        </record>
+
+        <record id="res_partner_sale_form_view_inherit" model="ir.ui.view">
+            <field name="name">res.partner.sale.form</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="sale.res_partner_view_buttons"/>
+            <field name="arch" type="xml">
+                <button name="action_view_sale_order" position="attributes">
+
+                    <attribute name="invisible">1</attribute>
+                </button>
+
+            </field>
+        </record>
+
+        <record id="res_partner_purchase_form_view_inherit" model="ir.ui.view">
+            <field name="name">res.partner.purchase.form</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="purchase.res_partner_view_purchase_buttons"/>
+            <field name="arch" type="xml">
+                <button name="%(purchase.act_res_partner_2_purchase_order)d"
+                        position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </button>
+            </field>
+        </record>
+
+        <record id="res_partner_account_button_form_view_inherit"
+                model="ir.ui.view">
+            <field name="name">res.partner.account.button.form</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="account.partner_view_buttons"/>
+            <field name="arch" type="xml">
+                <button name="action_view_partner_invoices" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </button>
+            </field>
+        </record>
+
+        <record id="res_partner_purchase_button_form_view_inherit"
+                model="ir.ui.view">
+            <field name="name">res.partner.purchase.button.form</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id"
+                   ref="purchase.res_partner_view_purchase_account_buttons"/>
+            <field name="arch" type="xml">
+                <div name="button_box" position="inside">
+                    <button class="oe_stat_button" name="%(purchase.act_res_partner_2_supplier_invoices)d" type="action"
+                            groups="account.group_account_invoice"
+                            icon="fa-pencil-square-o" help="Vendor Bills" invisible="1">
+                        <field string="Vendor Bills" name="supplier_invoice_count" widget="statinfo"/>
+                    </button>
+                </div>
+                <!-- 				<button name="%(purchase.act_res_partner_2_supplier_invoices)d"
+                                    position="attributes">
+                                    <attribute name="invisible">1</attribute>
+                                </button> -->
+            </field>
+        </record>
+
+        <record id="res_partner_form_cvtheque_view" model="ir.ui.view">
+            <field name="name">res.partner.cvtheque.form</field>
+            <field name="model">res.partner</field>
+            <field name="arch" type="xml">
+                <form string="CVTheque">
+                    <sheet>
+                        <h1>
+                            <field name="type" column_invisible="1"/>
+                            <field name="name" default_focus="1" placeholder="Name"
+                                   required="type == 'contact'"/>
+                        </h1>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record id="res_partner_tree_cvtheque_view" model="ir.ui.view">
+            <field name="name">res.partner.cvtheque.tree</field>
+            <field name="model">res.partner</field>
+            <field name="arch" type="xml">
+                <list string="CVTheque">
+                    <field name="name"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="action_res_partner_cvtheque" model="ir.actions.act_window">
+            <field name="name">CVTHEQUE</field>
+            <field name="res_model">res.partner</field>
+            <field name="view_mode">list,form</field>
+            <field name="domain">[('resume','!=',False)]</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Add a new CVTHEQUE
+                </p>
+            </field>
+        </record>
+
+        <record id="contacts.action_contacts" model="ir.actions.act_window">
+            <field name="view_mode">kanban,list,form,activity,pivot</field>
+        </record>
+
+        <record id="action_cvtheque_view_tree" model="ir.actions.act_window.view">
+            <field name="sequence" eval="1"/>
+            <field name="view_mode">list</field>
+            <field name="view_id" ref="res_partner_tree_cvtheque_view"/>
+            <field name="act_window_id" ref="action_res_partner_cvtheque"/>
+        </record>
+        <record id="action_cvtheque_view_form" model="ir.actions.act_window.view">
+            <field name="sequence" eval="2"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="res_partner_form_cvtheque_view"/>
+            <field name="act_window_id" ref="action_res_partner_cvtheque"/>
+        </record>
+
+        <record id="action_res_partner_internship" model="ir.actions.act_window">
+            <field name="name">Mon profil</field>
+            <field name="res_model">res.partner</field>
+            <field name="view_mode">kanban,list,form,activity</field>
+            <field name="domain">[('user_ids','=',uid)]</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Add a new stagiare
+                </p>
+            </field>
+        </record>
+
+        <menuitem name="Mon profil" id="menu_partner_internship"
+                  action="action_res_partner_internship" parent="contacts.menu_contacts"
+                  sequence="0" groups="internship_management_module.group_internship"/>
+
+        <menuitem name="CVTHEQUE" id="menu_partner_resume" action="action_res_partner_cvtheque"
+                  parent="contacts.menu_contacts" sequence="0"/>
+
+        <menuitem name="Gestion Stagiaires" id="contacts_res_partner_menu_contacts"
+                  parent="contacts.menu_contacts" groups="internship_management_module.group_gestionnaire"/>
+
+
+        <record id="contacts.menu_contacts" model="ir.ui.menu">
+            <field name="name">Gestion Stagiaires</field>
+        </record>
+
+        <record id="res_partner_form_view_membership_hide" model="ir.ui.view">
+            <field name="name">res.partner.form</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="membership.view_partner_form"/>
+            <field name="arch" type="xml">
+                <page name="membership" position="attributes">
+                    <attribute name="invisible">contact_type != False</attribute>
+
+                </page>
+            </field>
+        </record>
+        <record id="res_partner_form_view_geolocalize_hide" model="ir.ui.view">
+            <field name="name">res.partner.form</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base_geolocalize.view_crm_partner_geo_form"/>
+            <field name="arch" type="xml">
+                <page name="geo_location" position="attributes">
+                    <attribute name="invisible">contact_type != False</attribute>
+                </page>
+            </field>
+        </record>
+
+    </data>
+</odoo>
+
+

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_profil_change_tree" model="ir.ui.view">
+            <field name="name">profil.change.tree</field>
+            <field name="model">profil.change</field>
+            <field name="arch" type="xml">
+                <list string="Changements des profils" editable="bottom" create="false" edit="false">
+                	<field name ="user_id"/>
+                	<field name ="date"/>
+                	<field name ="profil"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="action_profil_change" model="ir.actions.act_window">
+            <field name="name">Changements des profils</field>
+            <field name="res_model">profil.change</field>
+            <field name="view_mode">list,form</field>
+            <field name="help" type="html">
+              <p class="o_view_nocontent_smiling_face">
+                Add a new niveau
+              </p>
+            </field>
+        </record>
+
+        <menuitem 
+        	name="Historiques des profils"
+        	id="menu_profil_change"
+        	action="action_profil_change"
+        	parent="contacts.res_partner_menu_config"
+        	sequence="2"
+        />
+    </data>
+</odoo>
