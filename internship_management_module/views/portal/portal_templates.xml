@@ -1,14 +1,14 @@
 <odoo>
-    
+
     <template id="oec_custom_signup" inherit_id="auth_signup.signup">
         <xpath expr="//form" position="attributes">
             <attribute name="action">/demande-inscription</attribute>
         </xpath>
     </template>
 
-<!--    <template id="remove_docs_extension" inherit_id="portal_my_home_documents" priority="30">-->
-<!--        <xpath expr="." position="replace"/>-->
-<!--    </template>-->
+    <!--    <template id="remove_docs_extension" inherit_id="portal_my_home_documents" priority="30">-->
+    <!--        <xpath expr="." position="replace"/>-->
+    <!--    </template>-->
     <template id="portal_my_details_custom" inherit_id="portal.portal_my_details">
         <xpath expr="//form" position="attributes">
             <attribute name="enctype">multipart/form-data</attribute>
@@ -297,7 +297,7 @@
             </section>
         </xpath>
     </template> -->
-   
+
     <template id="portal_my_home_cust">
         <t t-call="portal.portal_layout">
 
@@ -390,7 +390,7 @@
             </t>
         </t>
     </template>
-   
+
     <template id="portal_my_cv">
         <t t-call="portal.portal_layout">
             <t t-set="additional_title">CVTheque</t>
@@ -664,13 +664,15 @@
     </template>
 
     <template id="main_portal_my_home" inherit_id="portal.portal_my_home">
-        <t t-set="partner" t-value="request.env.user.partner_id"/>
+        <xpath expr="//div[@id='portal_client_category']" position="before">
+            <t t-set="partner" t-value="request.env.user.partner_id"/>
+        </xpath>
         <!--<xpath expr="//div[hasclass('o_portal_docs')]" position="before">
                 <t t-set="portal_vendor_category_enable" t-value="True"/>
             </xpath>-->
         <xpath expr="//div[@id='portal_client_category']" position="attributes">
-                <attribute name="style">display: none !important;</attribute>
-            </xpath>
+            <attribute name="style">display: none !important;</attribute>
+        </xpath>
         <div id="portal_vendor_category" position="inside">
             <div class="row g-4">
                 <t t-call="portal.portal_docs_entry">
@@ -682,47 +684,47 @@
                 </t>
 
 
-            <t t-if="partner.status_register in ['registered']">
-                <t t-call="portal.portal_docs_entry">
-                    <t t-set="icon" t-value="'/internship_management_module/static/description/cotisations.svg'"/>
-                    <t t-set="title">Mes cotisations</t>
-                    <t t-set="text">Consultez toutes vos cotisations en un seul endroit.</t>
-                    <t t-set="url" t-value="'/cotisations'"/>
-                    <t t-set="config_card" t-value="True"/>
+                <t t-if="partner.status_register in ['registered']">
+                    <t t-call="portal.portal_docs_entry">
+                        <t t-set="icon" t-value="'/internship_management_module/static/description/cotisations.svg'"/>
+                        <t t-set="title">Mes cotisations</t>
+                        <t t-set="text">Consultez toutes vos cotisations en un seul endroit.</t>
+                        <t t-set="url" t-value="'/cotisations'"/>
+                        <t t-set="config_card" t-value="True"/>
+                    </t>
+
+                    <t t-call="portal.portal_docs_entry">
+                        <t t-set="icon" t-value="'/internship_management_module/static/description/declarations.svg'"/>
+                        <t t-set="title">Mes déclarations de mandats</t>
+                        <t t-set="text">Consultez toutes vos déclarations de mandats en un seul endroit.</t>
+                        <t t-set="url" t-value="'/cotisations'"/>
+                        <t t-set="config_card" t-value="True"/>
+                    </t>
+
+
+                    <t t-call="portal.portal_docs_entry">
+                        <t t-set="icon" t-value="'/internship_management_module/static/description/stag_enc.svg'"/>
+                        <t t-set="title">Mes stagiaires encadrés</t>
+                        <t t-set="text">Consultez tous les dossiers des stagiaires que vous avez encadré.</t>
+                        <t t-set="url" t-value="'/my/internships/ms'"/>
+                        <t t-set="config_card" t-value="True"/>
+                    </t>
+
+
+                    <t t-call="portal.portal_docs_entry">
+                        <t t-set="icon" t-value="'/internship_management_module/static/description/stag_cont.svg'"/>
+                        <t t-set="title">Mes stagiaires contrôlés</t>
+                        <t t-set="text">Consultez tous les dossiers des stagiaires que vous avez contrôlé.</t>
+                        <t t-set="url" t-value="'/my/internships/cs'"/>
+                        <t t-set="config_card" t-value="True"/>
+                    </t>
                 </t>
-
                 <t t-call="portal.portal_docs_entry">
-                    <t t-set="icon" t-value="'/internship_management_module/static/description/declarations.svg'"/>
-                    <t t-set="title">Mes déclarations de mandats</t>
-                    <t t-set="text">Consultez toutes vos déclarations de mandats en un seul endroit.</t>
-                    <t t-set="url" t-value="'/cotisations'"/>
+                    <t t-set="icon" t-value="'/portal/static/src/img/portal-connection.svg'"/>
+                    <t t-set="title">Connexion &amp; Sécurité</t>
+                    <t t-set="text">Configurez vos paramètres de connexion</t>
+                    <t t-set="url" t-value="'/my/security'"/>
                     <t t-set="config_card" t-value="True"/>
-                </t>
-
-
-                <t t-call="portal.portal_docs_entry">
-                    <t t-set="icon" t-value="'/internship_management_module/static/description/stag_enc.svg'"/>
-                    <t t-set="title">Mes stagiaires encadrés</t>
-                    <t t-set="text">Consultez tous les dossiers des stagiaires que vous avez encadré.</t>
-                    <t t-set="url" t-value="'/my/internships/ms'"/>
-                    <t t-set="config_card" t-value="True"/>
-                </t>
-
-
-                <t t-call="portal.portal_docs_entry">
-                    <t t-set="icon" t-value="'/internship_management_module/static/description/stag_cont.svg'"/>
-                    <t t-set="title">Mes stagiaires contrôlés</t>
-                    <t t-set="text">Consultez tous les dossiers des stagiaires que vous avez contrôlé.</t>
-                    <t t-set="url" t-value="'/my/internships/cs'"/>
-                    <t t-set="config_card" t-value="True"/>
-                </t>
-            </t>
-                <t t-call="portal.portal_docs_entry">
-                <t t-set="icon" t-value="'/portal/static/src/img/portal-connection.svg'"/>
-                <t t-set="title">Connexion &amp; Sécurité</t>
-                <t t-set="text">Configurez vos paramètres de connexion</t>
-                <t t-set="url" t-value="'/my/security'"/>
-                <t t-set="config_card" t-value="True"/>
                 </t>
             </div>
         </div>
