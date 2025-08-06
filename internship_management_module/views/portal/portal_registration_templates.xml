@@ -1439,7 +1439,7 @@
                 <div class="form-group col-xl-6" data-type="binary">
                     <label class="col-form-label" for="fiche_annuelle_audit">
                         Fiche annuelle de 200 heures d’audit
-                        <span t-if="partner.fiche_annuelle_audit" style="color:blue">(Document déjà chargé)</span>
+                        <span t-if="partner.fiche_annuelle" style="color:blue">(Document déjà chargé)</span>
                     </label>
                     <input t-att-disabled="partner.status_register == 'in_progress'" type="file"
                            name="fiche_annuelle_audit"
