@@ -22,8 +22,14 @@ from odoo.addons.portal.controllers.portal import CustomerPortal, pager as porta
 import werkzeug.exceptions
 import werkzeug.urls
 import werkzeug.wrappers
+import logging
+import traceback
+from werkzeug.exceptions import NotFound
+
 
 _logger = logging.getLogger(__name__)
+
+
 
 
 

@@ -571,15 +571,16 @@
                 </div>
                 <div class="row">
                     <div class="form-group col-lg-12">
-                        <label for="mode_registration">Type d'inscription</label>
+                        <label for="type_selection">Type d'inscription</label>
                         <select class="form-control" id="type_selection" name="type_selection" disabled="true">
-                            <t t-foreach="type_selection" t-as="type_selection">
-                                <option t-att-selected="type_selection[0] == partner.type_selection"
-                                        t-att-value="type_selection[0]">
-                                    <t t-out="type_selection[1]"/>
+                            <t t-foreach="type_selection" t-as="item">
+                                <option t-att-value="item[0]"
+                                        t-att-selected="item[0] == partner.contact_registration_type">
+                                    <t t-esc="item[1]"/>
                                 </option>
                             </t>
                         </select>
+
                     </div>
                 </div>
 
