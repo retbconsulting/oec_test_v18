@@ -2822,62 +2822,78 @@
             </form>
             <script type="text/javascript">
                 function validateForm() {
-                var total = 0;
-                var atLeastOneFilled = false;
-                for (var i = 1; i &lt;= 5; i++) {
-                var name = document.querySelector('input[name=&quot;name' + i + '&quot;]').value.trim();
-                var percentageStr = document.querySelector('input[name=&quot;percentage' + i + '&quot;]').value.trim();
+                    var total = 0;
+                    var atLeastOneFilled = false;
+                    for (var i = 1; i &lt;= 5; i++) {
+                        var nameInput = document.querySelector('input[name=&quot;name' + i + '&quot;]');
+                        var percentageInput = document.querySelector('input[name=&quot;percentage' + i + '&quot;]');
 
-                if (name != '' &amp;&amp; percentageStr != '') {
-                atLeastOneFilled = true;
-                var percentage = parseFloat(percentageStr);
-                if (isNaN(percentage) || percentage &lt; 0) {
-                alert('Le pourcentage à la ligne #' + i + ' doit être un nombre positif.');
-                return false;
-                }
-                total += percentage;
-                }
+                        if (nameInput &amp;&amp; percentageInput) {
+                            var name = nameInput.value.trim();
+                            var percentageStr = percentageInput.value.trim();
+
+                            if (name != '' &amp;&amp; percentageStr != '') {
+                                atLeastOneFilled = true;
+                                var percentage = parseFloat(percentageStr);
+                                if (isNaN(percentage) || percentage &lt; 0) {
+                                    alert('Le pourcentage à la ligne #' + i + ' doit être un nombre positif.');
+                                    return false;
+                                }
+                                total += percentage;
+                            }
+                        }
+                    }
+
+                    // Vérifier seulement si on est pas en mode 'e'
+                    var modeSelect = document.querySelector('select[name=&quot;mode_registration&quot;]');
+                    if (modeSelect &amp;&amp; modeSelect.value !== 'e') {
+                        if (!atLeastOneFilled) {
+                            alert('Veuillez remplir au moins une ligne avec un nom et un pourcentage.');
+                            return false;
+                        }
+
+                        if (Math.abs(total - 100) &gt; 0.01) {
+                            alert('La somme des pourcentages doit être exactement égale à 100%.\nSomme actuelle : ' + total.toFixed(2) + '%');
+                            return false;
+                        }
+                    }
+
+                    // Validation du PV si nécessaire
+                    var pvInput = document.querySelector('input[name=&quot;pv_cn&quot;]');
+                    if (pvInput) {
+                        if (!pvInput.files || pvInput.files.length === 0) {
+                            alert('Le PV du Conseil National est obligatoire pour confirmer l\'inscription.');
+                            return false;
+                        }
+
+                        var file = pvInput.files[0];
+                        var validTypes = ['application/pdf', 'image/jpeg', 'image/png'];
+                        if (validTypes.indexOf(file.type) === -1) {
+                            alert('Le PV doit être un fichier PDF, JPG ou PNG.');
+                            return false;
+                        }
+
+                        if (file.size &gt; 5 * 1024 * 1024) {
+                            alert('Le fichier PV est trop volumineux (max 5MB).');
+                            return false;
+                        }
+                    }
+
+                    return true;
                 }
 
-                if (!atLeastOneFilled) {
-                alert('Veuillez remplir au moins une ligne avec un nom et un pourcentage.');
-                return false;
-                }
-
-                if (total != 100) {
-                alert('La somme des pourcentages doit être exactement égale à 100%.\nSomme actuelle : ' + total + '%');
-                return false;
-                }
-
-                return true;
-                }
-                var pvInput = document.querySelector('input[name="pv_cn"]');
-                if (pvInput) { // Si le champ PV existe sur la page
-                if (!pvInput.files || pvInput.files.length === 0) {
-                alert('Le PV du Conseil National est obligatoire pour confirmer l\'inscription.');
-                return false;
-                }
-
-                // Validation supplémentaire du type de fichier
-                var file = pvInput.files[0];
-                var validTypes = ['application/pdf', 'image/jpeg', 'image/png'];
-                if (validTypes.indexOf(file.type) === -1) {
-                alert('Le PV doit être un fichier PDF, JPG ou PNG.');
-                return false;
-                }
-
-                // Validation de la taille du fichier (max 5MB)
-                if (file.size > 5 * 1024 * 1024) {
-                alert('Le fichier PV est trop volumineux (max 5MB).');
-                return false;
-                }
-                }
-
-                return true;
-                }
-
-
-                document.querySelector('form').onsubmit = validateForm;
+                // Attacher la validation à la soumission du formulaire
+                document.addEventListener('DOMContentLoaded', function() {
+                    var form = document.querySelector('form[action=&quot;/registration&quot;]');
+                    if (form) {
+                        form.addEventListener('submit', function(event) {
+                            if (!validateForm()) {
+                                event.preventDefault();
+                                return false;
+                            }
+                        });
+                    }
+                });
             </script>
 
         </t>
