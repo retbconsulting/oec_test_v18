@@ -1007,7 +1007,7 @@
                                                accept=".pdf,.jpg,.jpeg"
                                                name="copie_cin" class="file"
                                                data-show-upload="true" data-show-caption="true"
-                                               data-show-preview="true"
+                                               data-show-preview="false"
                                                t-att-readonly="None if partner.status_register=='draft' else '1'"
                                                required="required"/>
                                     </div>
@@ -1028,7 +1028,7 @@
                                                    accept=".pdf,.jpg,.jpeg"
                                                    name="copie_cnie" class="file"
                                                    data-show-upload="true" data-show-caption="true"
-                                                   data-show-preview="true"
+                                                   data-show-preview="false"
                                                    t-att-readonly="None if partner.status_register=='draft' else '1'"
                                                    required="required"/>
                                         </div>
@@ -1052,7 +1052,7 @@
                                                    accept=".pdf,.jpg,.jpeg"
                                                    name="extrait_casier_judiciaire"
                                                    class="file" data-show-upload="true" data-show-caption="true"
-                                                   data-show-preview="true"
+                                                   data-show-preview="false"
                                                    t-att-readonly="None if partner.status_register=='draft' else '1'"
                                                    required="required"
                                             />
@@ -1073,7 +1073,7 @@
                                                    accept=".pdf,.jpg,.jpeg"
                                                    name="photographies_recentes"
                                                    class="file" data-show-upload="true" data-show-caption="true"
-                                                   data-show-preview="true"
+                                                   data-show-preview="false"
                                                    t-att-readonly="None if partner.status_register=='draft' else '1'"
                                                    required="required"/>
                                         </div>
@@ -1112,7 +1112,7 @@
                                                    accept=".pdf,.jpg,.jpeg"
                                                    name="extrait_acte_naissance"
                                                    class="file" data-show-upload="true" data-show-caption="true"
-                                                   data-show-preview="true"
+                                                   data-show-preview="false"
                                                    t-att-readonly="None if partner.status_register=='draft' else '1'"
                                                    required="required"/>
                                         </div>
@@ -1167,7 +1167,7 @@
                                                class="file"
                                                data-show-upload="true"
                                                data-show-caption="true"
-                                               data-show-preview="true"
+                                               data-show-preview="false"
                                                t-att-readonly="None if partner.status_register=='draft' else '1'"
                                                required="required"/>
                                     </div>
@@ -1202,7 +1202,7 @@
                                                    class="file"
                                                    data-show-upload="true"
                                                    data-show-caption="true"
-                                                   data-show-preview="true"
+                                                   data-show-preview="false"
                                                    t-att-readonly="None if partner.status_register=='draft' else '1'"
                                                    required="required"/>
                                         </div>
@@ -1253,7 +1253,7 @@
                                                    class="file"
                                                    data-show-upload="true"
                                                    data-show-caption="true"
-                                                   data-show-preview="true"
+                                                   data-show-preview="false"
                                                    t-att-readonly="None if partner.status_register=='draft' else '1'"
                                                    required="required"/>
                                         </div>
@@ -1290,7 +1290,7 @@
                                                    class="file"
                                                    data-show-upload="true"
                                                    data-show-caption="true"
-                                                   data-show-preview="true"
+                                                   data-show-preview="false"
                                                    t-att-readonly="None if partner.status_register=='draft' else '1'"
                                                    required="required"/>
                                         </div>
@@ -1313,7 +1313,7 @@
                                                    accept=".pdf,.jpg,.jpeg"
                                                    name="lettre_demande_inscription"
                                                    class="file" data-show-upload="true" data-show-caption="true"
-                                                   data-show-preview="true"
+                                                   data-show-preview="false"
                                                    t-att-readonly="None if partner.status_register=='draft' else '1'"
                                                    required="required"/>
                                         </div>
@@ -1350,7 +1350,7 @@
                                                    required="required"
                                                    data-show-upload="true"
                                                    data-show-caption="true"
-                                                   data-show-preview="true"
+                                                   data-show-preview="false"
                                                    t-att-readonly="None if partner.status_register=='draft' else '1'"/>
                                         </div>
 
@@ -1555,7 +1555,7 @@
                                                    accept=".pdf,.jpg,.jpeg"
                                                    name="attestation_inscription"
                                                    class="file" data-show-upload="true" data-show-caption="true"
-                                                   data-show-preview="true"
+                                                   data-show-preview="false"
                                                    t-att-readonly="None if partner.status_register=='draft' else '1'"
                                                    required="required"/>
                                         </div>
@@ -1577,7 +1577,7 @@
                                                    accept=".pdf,.jpg,.jpeg"
                                                    name="attestation_inscription"
                                                    class="file" data-show-upload="true" data-show-caption="true"
-                                                   data-show-preview="true"
+                                                   data-show-preview="false"
                                                    t-att-readonly="None if partner.status_register=='draft' else '1'"
                                                    required="required"/>
                                         </div>
@@ -1600,7 +1600,7 @@
                                                    accept=".pdf,.jpg,.jpeg"
                                                    name="copie_contrat_bail"
                                                    class="file" data-show-upload="true" data-show-caption="true"
-                                                   data-show-preview="true"
+                                                   data-show-preview="false"
                                                    t-att-readonly="None if partner.status_register=='draft' else '1'"
                                                    required="required"/>
                                         </div>
@@ -1621,7 +1621,7 @@
                                                    accept=".pdf,.jpg,.jpeg"
                                                    name="bulletin_notification"
                                                    class="file" data-show-upload="true" data-show-caption="true"
-                                                   data-show-preview="true"
+                                                   data-show-preview="false"
                                                    t-att-readonly="None if partner.status_register=='draft' else '1'"
                                                    required="required"/>
                                         </div>
@@ -1641,7 +1641,7 @@
                                                    accept=".pdf,.jpg,.jpeg"
                                                    name="bulletin_notification"
                                                    class="file" data-show-upload="true" data-show-caption="true"
-                                                   data-show-preview="true"
+                                                   data-show-preview="false"
                                                    t-att-readonly="None if partner.status_register=='draft' else '1'"
                                                    required="required"/>
                                         </div>
@@ -1662,7 +1662,7 @@
                                                    accept=".pdf,.jpg,.jpeg"
                                                    name="bulletin_notification"
                                                    class="file" data-show-upload="true" data-show-caption="true"
-                                                   data-show-preview="true"
+                                                   data-show-preview="false"
                                                    t-att-readonly="None if partner.status_register=='draft' else '1'"
                                                    required="required"/>
                                         </div>
@@ -1696,7 +1696,7 @@
                                                    accept=".pdf,.jpg,.jpeg"
                                                    name="attestation_assurance"
                                                    class="file" data-show-upload="true" data-show-caption="true"
-                                                   data-show-preview="true"
+                                                   data-show-preview="false"
                                                    t-att-readonly="None if partner.status_register=='draft' else '1'"
                                                    required="required"/>
                                         </div>
@@ -1734,7 +1734,7 @@
                                                    accept=".pdf,.jpg,.jpeg"
                                                    name="actes_modificatifs"
                                                    class="file" data-show-upload="true" data-show-caption="true"
-                                                   data-show-preview="true"
+                                                   data-show-preview="false"
                                                    t-att-readonly="None if partner.status_register=='draft' else '1'"
                                                    required="required"/>
                                         </div>
@@ -1755,7 +1755,7 @@
                                                    accept=".pdf,.jpg,.jpeg"
                                                    name="actes_modificatifs"
                                                    class="file" data-show-upload="true" data-show-caption="true"
-                                                   data-show-preview="true"
+                                                   data-show-preview="false"
                                                    t-att-readonly="None if partner.status_register=='draft' else '1'"/>
                                         </div>
                                     </t>
@@ -1774,7 +1774,7 @@
                                                    accept=".pdf,.jpg,.jpeg"
                                                    name="copie_convention"
                                                    class="file" data-show-upload="true" data-show-caption="true"
-                                                   data-show-preview="true"
+                                                   data-show-preview="false"
                                                    t-att-readonly="None if partner.status_register=='draft' else '1'"
                                                    required="required"/>
                                         </div>
@@ -1796,7 +1796,7 @@
                                                    accept=".pdf,.jpg,.jpeg"
                                                    name="actes_cession" class="file"
                                                    data-show-upload="true" data-show-caption="true"
-                                                   data-show-preview="true"
+                                                   data-show-preview="false"
                                                    t-att-readonly="None if partner.status_register=='draft' else '1'"/>
                                         </div>
                                     </t>
@@ -1815,7 +1815,7 @@
                                                    accept=".pdf,.jpg,.jpeg"
                                                    name="modele_7" class="file"
                                                    data-show-upload="true" data-show-caption="true"
-                                                   data-show-preview="true"
+                                                   data-show-preview="false"
                                                    t-att-readonly="None if partner.status_register=='draft' else '1'"
                                                    required="required"/>
                                         </div>
@@ -1836,7 +1836,7 @@
                                                    accept=".pdf,.jpg,.jpeg"
                                                    name="contrat_travail" class="file"
                                                    data-show-upload="true" data-show-caption="true"
-                                                   data-show-preview="true"
+                                                   data-show-preview="false"
                                                    t-att-readonly="None if partner.status_register=='draft' else '1'"
                                                    required="required"/>
                                         </div>
@@ -1857,7 +1857,7 @@
                                                    accept=".pdf,.jpg,.jpeg"
                                                    name="contrat_travail" class="file"
                                                    data-show-upload="true" data-show-caption="true"
-                                                   data-show-preview="true"
+                                                   data-show-preview="false"
                                                    t-att-readonly="None if partner.status_register=='draft' else '1'"/>
                                         </div>
                                     </t>
@@ -1877,7 +1877,7 @@
                                                    accept=".pdf,.jpg,.jpeg"
                                                    name="copie_conforme_contrat"
                                                    class="file" data-show-upload="true" data-show-caption="true"
-                                                   data-show-preview="true"
+                                                   data-show-preview="false"
                                                    t-att-readonly="None if partner.status_register=='draft' else '1'"
                                                    required="required"/>
                                         </div>
@@ -1896,7 +1896,7 @@
                                                    accept=".pdf,.jpg,.jpeg"
                                                    name="copie_conforme_contrat"
                                                    class="file" data-show-upload="true" data-show-caption="true"
-                                                   data-show-preview="true"
+                                                   data-show-preview="false"
                                                    t-att-readonly="None if partner.status_register=='draft' else '1'"/>
                                         </div>
                                     </t>
@@ -1916,7 +1916,7 @@
                                                    accept=".pdf,.jpg,.jpeg"
                                                    name="attestation_inscription_membre"
                                                    class="file" data-show-upload="true" data-show-caption="true"
-                                                   data-show-preview="true"
+                                                   data-show-preview="false"
                                                    t-att-readonly="None if partner.status_register=='draft' else '1'"
                                                    required="required"/>
                                         </div>
@@ -1937,7 +1937,7 @@
                                                    accept=".pdf,.jpg,.jpeg"
                                                    name="copie_convention"
                                                    class="file" data-show-upload="true" data-show-caption="true"
-                                                   data-show-preview="true"
+                                                   data-show-preview="false"
                                                    t-att-readonly="None if partner.status_register=='draft' else '1'"/>
                                         </div>
                                     </t>
@@ -1953,7 +1953,7 @@
                                             <input t-att-disabled="partner.status_register == 'in_progress'" id="upload"
                                                    type="file" name="attestation_radiation" accept=".pdf,.jpg,.jpeg"
                                                    class="file" data-show-upload="true" data-show-caption="true"
-                                                   data-show-preview="true"
+                                                   data-show-preview="false"
                                                    t-att-readonly="None if partner.status_register=='draft' else '1'"/>
                                         </div>
                                     </t>
@@ -1987,7 +1987,7 @@
                                                    class="file"
                                                    data-show-upload="true"
                                                    data-show-caption="true"
-                                                   data-show-preview="true"
+                                                   data-show-preview="false"
                                                    t-att-readonly="None if partner.status_register=='draft' else '1'"/>
                                         </div>
 
@@ -2023,7 +2023,7 @@
                                                    class="file"
                                                    data-show-upload="true"
                                                    data-show-caption="true"
-                                                   data-show-preview="true"
+                                                   data-show-preview="false"
                                                    t-att-readonly="None if partner.status_register=='draft' else '1'"
                                                    required="required"/>
                                         </div>
@@ -2048,7 +2048,7 @@
                                                    accept=".pdf,.jpg,.jpeg"
                                                    name="statuts_mis_a_jour"
                                                    class="file" data-show-upload="true" data-show-caption="true"
-                                                   data-show-preview="true"
+                                                   data-show-preview="false"
                                                    t-att-readonly="None if partner.status_register=='draft' else '1'"
                                                    required="required"/>
                                         </div>
@@ -2069,7 +2069,7 @@
                                                    accept=".pdf,.jpg,.jpeg"
                                                    name="statuts_mis_a_jour"
                                                    class="file" data-show-upload="true" data-show-caption="true"
-                                                   data-show-preview="true"
+                                                   data-show-preview="false"
                                                    t-att-readonly="None if partner.status_register=='draft' else '1'"/>
                                         </div>
                                     </t>
@@ -2087,7 +2087,7 @@
                                             <input t-att-disabled="partner.status_register == 'in_progress'" id="upload"
                                                    type="file" name="avenant_contrat_travail" accept=".pdf,.jpg,.jpeg"
                                                    class="file" data-show-upload="true" data-show-caption="true"
-                                                   data-show-preview="true"
+                                                   data-show-preview="false"
                                                    t-att-readonly="None if partner.status_register=='draft' else '1'"
                                                    required="required"/>
                                         </div>
@@ -2139,7 +2139,7 @@
                                                    class="file"
                                                    data-show-upload="true"
                                                    data-show-caption="true"
-                                                   data-show-preview="true"
+                                                   data-show-preview="false"
                                                    t-att-readonly="None if partner.status_register=='draft' else '1'"
                                                    required="required"/>
                                         </div>
@@ -2181,7 +2181,7 @@
                                                    class="file"
                                                    data-show-upload="true"
                                                    data-show-caption="true"
-                                                   data-show-preview="true"
+                                                   data-show-preview="false"
                                                    t-att-readonly="None if partner.status_register=='draft' else '1'"/>
                                         </div>
 
@@ -2715,7 +2715,7 @@
                                                    class="file"
                                                    data-show-upload="true"
                                                    data-show-caption="true"
-                                                   data-show-preview="true"
+                                                   data-show-preview="false"
                                                    required="required"/>
                                         </div>
                                     </div>
