@@ -664,6 +664,7 @@
     </template>
 
     <template id="main_portal_my_home" inherit_id="portal.portal_my_home">
+        <t t-set="partner" t-value="request.env.user.partner_id"/>
         <!--<xpath expr="//div[hasclass('o_portal_docs')]" position="before">
                 <t t-set="portal_vendor_category_enable" t-value="True"/>
             </xpath>-->

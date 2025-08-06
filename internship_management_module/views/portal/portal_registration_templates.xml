@@ -1264,6 +1264,7 @@
                                             <label class="col-form-label" for="engagement">
                                                 Engagement de la société de prendre en charge tout membre de l'ordre
                                                 salarié de la société
+                                                <span class="text-danger">*</span>
                                                 <span t-if="partner.engagement" style="color:blue">(Document déjà
                                                     chargé)
                                                 </span>
@@ -1300,6 +1301,7 @@
                                             <label class="col-form-label" for="lettre_demande_inscription">
                                                 Lettre de demande d’inscription à l'ordre, cachetée et signée par la
                                                 société
+                                                <span class="text-danger">*</span>
                                                 <span t-if="partner.lettre_demande_inscription" style="color:blue">
                                                     (Document
                                                     déjà chargé)
@@ -1321,6 +1323,7 @@
                                             <label class="col-form-label" for="engagement_prise_en_charge">
                                                 Engagement de prise en charge de tout membre de l’Ordre salarié de la
                                                 société
+                                                <span class="text-danger">*</span>
                                                 <span t-if="partner.engagement_prise_en_charge" style="color:blue">
                                                     (Document déjà chargé)
                                                 </span>
@@ -1344,6 +1347,7 @@
                                                    accept=".pdf,.jpg,.jpeg"
                                                    name="engagement_prise_en_charge"
                                                    class="file"
+                                                   required="required"
                                                    data-show-upload="true"
                                                    data-show-caption="true"
                                                    data-show-preview="true"
@@ -1357,101 +1361,116 @@
                     </div>
 
                     <div class="col-lg-12" t-if="partner.mode_registration != 'pm'">
-    <div class="card mb-4">
-        <div class="card-header bg-danger text-white">
-            <h4>Diplômes</h4>
-        </div>
-        <div class="card-body">
-            <div class="row">
+                        <div class="card mb-4">
+                            <div class="card-header bg-danger text-white">
+                                <h4>Diplômes</h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
 
-                <!-- Diplôme principal obligatoire -->
-                <div class="col-12 mb-3">
-                    <strong> Une photocopie du diplôme national d’Expert-comptable ou d’un diplôme reconnu équivalent (certifiée conforme à l’original) <span class="text-danger">*</span></strong>
-                </div>
-                <span class="text-danger">*</span>
-                <div class="form-group col-xl-6" data-type="binary">
-                    <label class="col-form-label" for="photocopie_diplome">
-                        <span t-if="partner.photocopie_diplome" style="color:blue">(Document déjà chargé)</span>
-                    </label>
-                    <input t-att-disabled="partner.status_register == 'in_progress'"
-                           type="file"
-                           name="photocopie_diplome"
-                           class="file"
-                           accept=".pdf,.jpg,.jpeg"
-                           required="required"
-                           data-show-upload="true" data-show-caption="true"
-                           t-att-readonly="None if partner.status_register=='draft' else '1'" />
-                </div>
+                                    <!-- Diplôme principal obligatoire -->
+                                    <div class="col-12 mb-3">
+                                        <strong>Une photocopie du diplôme national d’Expert-comptable ou d’un diplôme
+                                            reconnu équivalent (certifiée conforme à l’original)
+                                            <span class="text-danger">*</span>
+                                        </strong>
+                                    </div>
+                                    <span class="text-danger">*</span>
+                                    <div class="form-group col-xl-6" data-type="binary">
+                                        <label class="col-form-label" for="photocopie_diplome">
+                                            <span t-if="partner.photocopie_diplome" style="color:blue">(Document déjà
+                                                chargé)
+                                            </span>
+                                        </label>
+                                        <input t-att-disabled="partner.status_register == 'in_progress'"
+                                               type="file"
+                                               name="photocopie_diplome"
+                                               class="file"
+                                               accept=".pdf,.jpg,.jpeg"
+                                               required="required"
+                                               data-show-upload="true" data-show-caption="true"
+                                               t-att-readonly="None if partner.status_register=='draft' else '1'"/>
+                                    </div>
 
-                <!-- Bloc pour diplômes étrangers -->
-                <div class="col-12 mt-4 mb-2">
-                    <strong> Documents supplémentaires pour les diplômes étrangers :</strong>
-                </div>
+                                    <!-- Bloc pour diplômes étrangers -->
+                                    <div class="col-12 mt-4 mb-2">
+                                        <strong>Documents supplémentaires pour les diplômes étrangers :</strong>
+                                    </div>
 
-                <div class="form-group col-xl-6" data-type="binary">
-                    <label class="col-form-label" for="attestation_equivalence">
-                        Attestation d’équivalence
-                        <span t-if="partner.attestation_equivalence" style="color:blue">(Document déjà chargé)</span>
-                    </label>
-                    <input t-att-disabled="partner.status_register == 'in_progress'" type="file"
-                           name="attestation_equivalence"
-                           class="file" accept=".pdf,.jpg,.jpeg"
-                           data-show-upload="true" data-show-caption="true"
-                           t-att-readonly="None if partner.status_register=='draft' else '1'" />
-                </div>
+                                    <div class="form-group col-xl-6" data-type="binary">
+                                        <label class="col-form-label" for="attestation_equivalence">
+                                            Attestation d’équivalence
+                                            <span t-if="partner.attestation_equivalence" style="color:blue">(Document
+                                                déjà chargé)
+                                            </span>
+                                        </label>
+                                        <input t-att-disabled="partner.status_register == 'in_progress'" type="file"
+                                               name="attestation_equivalence"
+                                               class="file" accept=".pdf,.jpg,.jpeg"
+                                               data-show-upload="true" data-show-caption="true"
+                                               t-att-readonly="None if partner.status_register=='draft' else '1'"/>
+                                    </div>
 
-                <div class="form-group col-xl-6" data-type="binary">
-                    <label class="col-form-label" for="fiche_annuelle">
-                        03 Fiches annuelles de stage
-                        <span t-if="partner.fiche_annuelle" style="color:blue">(Document déjà chargé)</span>
-                    </label>
-                    <input t-att-disabled="partner.status_register == 'in_progress'" type="file"
-                           name="fiche_annuelle"
-                           class="file" accept=".pdf,.jpg,.jpeg"
-                           data-show-upload="true" data-show-caption="true"
-                           t-att-readonly="None if partner.status_register=='draft' else '1'" />
-                </div>
+                                    <div class="form-group col-xl-6" data-type="binary">
+                                        <label class="col-form-label" for="fiche_annuelle">
+                                            03 Fiches annuelles de stage
+                                            <span t-if="partner.fiche_annuelle" style="color:blue">(Document déjà
+                                                chargé)
+                                            </span>
+                                        </label>
+                                        <input t-att-disabled="partner.status_register == 'in_progress'" type="file"
+                                               name="fiche_annuelle"
+                                               class="file" accept=".pdf,.jpg,.jpeg"
+                                               data-show-upload="true" data-show-caption="true"
+                                               t-att-readonly="None if partner.status_register=='draft' else '1'"/>
+                                    </div>
 
-                <div class="form-group col-xl-6" data-type="binary">
-                    <label class="col-form-label" for="attestation_fin_stage">
-                        Attestation de fin de stage
-                        <span t-if="partner.attestation_fin_stage" style="color:blue">(Document déjà chargé)</span>
-                    </label>
-                    <input t-att-disabled="partner.status_register == 'in_progress'" type="file"
-                           name="attestation_fin_stage"
-                           class="file" accept=".pdf,.jpg,.jpeg"
-                           data-show-upload="true" data-show-caption="true"
-                           t-att-readonly="None if partner.status_register=='draft' else '1'" />
-                </div>
+                                    <div class="form-group col-xl-6" data-type="binary">
+                                        <label class="col-form-label" for="attestation_fin_stage">
+                                            Attestation de fin de stage
+                                            <span t-if="partner.attestation_fin_stage" style="color:blue">(Document déjà
+                                                chargé)
+                                            </span>
+                                        </label>
+                                        <input t-att-disabled="partner.status_register == 'in_progress'" type="file"
+                                               name="attestation_fin_stage"
+                                               class="file" accept=".pdf,.jpg,.jpeg"
+                                               data-show-upload="true" data-show-caption="true"
+                                               t-att-readonly="None if partner.status_register=='draft' else '1'"/>
+                                    </div>
 
-                <div class="form-group col-xl-6" data-type="binary">
-                    <label class="col-form-label" for="fiche_generale_synthese">
-                        Fiche générale de synthèse
-                        <span t-if="partner.fiche_generale_synthese" style="color:blue">(Document déjà chargé)</span>
-                    </label>
-                    <input t-att-disabled="partner.status_register == 'in_progress'" type="file"
-                           name="fiche_generale_synthese"
-                           class="file" accept=".pdf,.jpg,.jpeg"
-                           data-show-upload="true" data-show-caption="true"
-                           t-att-readonly="None if partner.status_register=='draft' else '1'" />
-                </div>
+                                    <div class="form-group col-xl-6" data-type="binary">
+                                        <label class="col-form-label" for="fiche_generale_synthese">
+                                            Fiche générale de synthèse
+                                            <span t-if="partner.fiche_generale_synthese" style="color:blue">(Document
+                                                déjà chargé)
+                                            </span>
+                                        </label>
+                                        <input t-att-disabled="partner.status_register == 'in_progress'" type="file"
+                                               name="fiche_generale_synthese"
+                                               class="file" accept=".pdf,.jpg,.jpeg"
+                                               data-show-upload="true" data-show-caption="true"
+                                               t-att-readonly="None if partner.status_register=='draft' else '1'"/>
+                                    </div>
 
-                <div class="form-group col-xl-6" data-type="binary">
-                    <label class="col-form-label" for="fiche_annuelle_audit">
-                        Fiche annuelle de 200 heures d’audit
-                        <span t-if="partner.fiche_annuelle" style="color:blue">(Document déjà chargé)</span>
-                    </label>
-                    <input t-att-disabled="partner.status_register == 'in_progress'" type="file"
-                           name="fiche_annuelle_audit"
-                           class="file" accept=".pdf,.jpg,.jpeg"
-                           data-show-upload="true" data-show-caption="true"
-                           t-att-readonly="None if partner.status_register=='draft' else '1'" />
-                </div>
+                                    <div class="form-group col-xl-6" data-type="binary">
+                                        <label class="col-form-label" for="fiche_annuelle_audit">
+                                            Fiche annuelle de 200 heures d’audit
+                                            <span t-if="partner.fiche_annuelle" style="color:blue">(Document déjà
+                                                chargé)
+                                            </span>
+                                        </label>
+                                        <input t-att-disabled="partner.status_register == 'in_progress'" type="file"
+                                               name="fiche_annuelle_audit"
+                                               class="file" accept=".pdf,.jpg,.jpeg"
+                                               data-show-upload="true" data-show-caption="true"
+                                               t-att-readonly="None if partner.status_register=='draft' else '1'"/>
+                                    </div>
 
-            </div>
-        </div>
-    </div>
-</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
 
                     <!--<t t-if="partner.mode_registration in ['pm']">
@@ -1932,7 +1951,7 @@
                                             </label>
                                             <br/>
                                             <input t-att-disabled="partner.status_register == 'in_progress'" id="upload"
-                                                   type="file" name="attestation_radiation"  accept=".pdf,.jpg,.jpeg"
+                                                   type="file" name="attestation_radiation" accept=".pdf,.jpg,.jpeg"
                                                    class="file" data-show-upload="true" data-show-caption="true"
                                                    data-show-preview="true"
                                                    t-att-readonly="None if partner.status_register=='draft' else '1'"/>
@@ -2066,7 +2085,7 @@
                                             </label>
                                             <br/>
                                             <input t-att-disabled="partner.status_register == 'in_progress'" id="upload"
-                                                   type="file" name="avenant_contrat_travail"  accept=".pdf,.jpg,.jpeg"
+                                                   type="file" name="avenant_contrat_travail" accept=".pdf,.jpg,.jpeg"
                                                    class="file" data-show-upload="true" data-show-caption="true"
                                                    data-show-preview="true"
                                                    t-att-readonly="None if partner.status_register=='draft' else '1'"
