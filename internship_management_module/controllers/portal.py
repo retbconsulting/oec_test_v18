@@ -254,87 +254,125 @@ class CustomerPortalCustom(CustomerPortal):
             try:
                 partner_vals = {}
                 error_messages = []
+                files = request.httprequest.files
 
-                # 1. Traitement des fichiers obligatoires
-                for field_name in self.DOCUMENT_FIELDS:
-                    if field_name in request.httprequest.files:
-                        file = request.httprequest.files[field_name]
-                        if file and file.filename:  # Vérifie si un fichier a été uploadé
-                            partner_vals.update({
-                                field_name: base64.b64encode(file.read()),
-                                f'{field_name}_filename': file.filename
-                            })
-                        elif field_name in post and post[field_name]:  # Fichier déjà existant
-                            continue
-                        else:
-                            error_messages.append(f"Le document {field_name.replace('_', ' ')} est obligatoire")
+                # 1. Traitement des fichiers obligatoires (seulement ceux avec required)
+                required_docs = [key for key in self.DOCUMENT_FIELDS
+                                 if request.httprequest.form.get(key + '_required') == 'true']
+
+                for field_name in required_docs:
+                    file = files.get(field_name)
+                    if not file or not file.filename:
+                        # Vérifie si le fichier existe déjà sur le partenaire
+                        if not getattr(partner, field_name, False):
+                            field_label = field_name.replace('_', ' ').capitalize()
+                            error_messages.append(f"Le document {field_label} est obligatoire")
+                    else:
+                        try:
+                            # Correction de l'erreur FileStorage
+                            file_data = file.read()
+                            if file_data:
+                                partner_vals.update({
+                                    field_name: base64.b64encode(file_data),
+                                    f'{field_name}_filename': file.filename
+                                })
+                        except Exception as e:
+                            error_messages.append(f"Erreur lors du traitement du fichier {field_name}")
+                            _logger.error("File processing error: %s", str(e))
 
                 if error_messages:
                     values.update({'error_message': error_messages})
                     raise ValidationError("\n".join(error_messages))
 
-                # 2. Traitement de la répartition du capital (pour les PM)
+                # 2. Traitement des fichiers non obligatoires
+                for field_name in set(self.DOCUMENT_FIELDS) - set(required_docs):
+                    file = files.get(field_name)
+                    if file and file.filename:
+                        try:
+                            file_data = file.read()
+                            if file_data:
+                                partner_vals.update({
+                                    field_name: base64.b64encode(file_data),
+                                    f'{field_name}_filename': file.filename
+                                })
+                        except Exception as e:
+                            _logger.warning("Failed to process optional file %s: %s", field_name, str(e))
+
+                # 3. Traitement de la répartition du capital (pour les PM)
                 if partner.mode_registration == 'pm':
                     repartition_lines = []
-                    for i in range(1, 6):
-                        line_vals = {
-                            'name': post.get(f'name{i}', ''),
-                            'percentage': float(post.get(f'percentage{i}', 0)),
-                            'status': post.get(f'status{i}')
-                        }
-                        if line_vals['name']:  # Ne créer que les lignes avec un nom
-                            repartition_lines.append((0, 0, line_vals))
+                    total_percent = 0.0
 
-                    partner_vals['repartition_ids'] = [(5, 0,
-                                                        0)] + repartition_lines  # Supprime anciennes lignes avant d'ajouter
+                    for i in range(1, 6):
+                        name = post.get(f'name{i}')
+                        percentage = float(post.get(f'percentage{i}', 0))
+                        status = post.get(f'status{i}')
+
+                        if name:  # Ne créer que les lignes avec un nom
+                            repartition_lines.append((0, 0, {
+                                'name': name,
+                                'percentage': percentage,
+                                'status': status
+                            }))
+                            total_percent += percentage
+
+                    # Supprime anciennes lignes avant d'ajouter les nouvelles
+                    partner_vals['repartition_ids'] = [(5, 0, 0)] + repartition_lines
 
                     # Validation somme des pourcentages
-                    total_percent = sum(line[2]['percentage'] for line in repartition_lines)
-                    if abs(total_percent - 100) > 0.01:
+                    if abs(total_percent - 100) > 0.01 and repartition_lines:
                         error_messages.append("La somme des pourcentages doit faire exactement 100%")
 
-                # 3. Traitement des autres champs
+                # 4. Traitement des autres champs
                 for field in self.REGISTRATION_FIELDS:
                     if field in post:
-                        partner_vals[field] = post[field]
+                        # Conversion pour les champs spécifiques
+                        if field == 'conseil_regional':
+                            try:
+                                partner_vals[field] = int(post[field]) if post[field] else False
+                            except (ValueError, TypeError):
+                                partner_vals[field] = False
+                        else:
+                            partner_vals[field] = post[field]
 
-                # Conversion champ conseil_regional en integer
-                if 'conseil_regional' in partner_vals:
-                    try:
-                        partner_vals['conseil_regional'] = int(partner_vals['conseil_regional'])
-                    except (ValueError, TypeError):
-                        partner_vals['conseil_regional'] = False
-
-                # 4. Traitement photo profil
-                if 'photographies_recentes' in request.httprequest.files:
-                    file = request.httprequest.files['photographies_recentes']
+                # 5. Traitement photo profil
+                if 'photographies_recentes' in files:
+                    file = files['photographies_recentes']
                     if file and file.filename:
                         partner_vals['image_1920'] = base64.b64encode(file.read())
 
-                # 5. Traitement fichiers multiples
-                if 'autres_fichiers' in request.httprequest.files:
-                    for fichier in request.httprequest.files.getlist('autres_fichiers'):
+                # 6. Traitement fichiers multiples (autres_fichiers)
+                if 'autres_fichiers' in files:
+                    for fichier in files.getlist('autres_fichiers'):
                         if fichier and fichier.filename:
-                            request.env['res.partner.file'].sudo().create({
-                                'name': fichier.filename,
-                                'datas': base64.b64encode(fichier.read()),
-                                'partner_id': partner.id
-                            })
+                            try:
+                                request.env['res.partner.file'].sudo().create({
+                                    'name': fichier.filename,
+                                    'datas': base64.b64encode(fichier.read()),
+                                    'partner_id': partner.id
+                                })
+                            except Exception as e:
+                                _logger.warning("Failed to process additional file: %s", str(e))
 
-                # 6. Mise à jour du partenaire
+                # 7. Mise à jour du type de contact
                 contact_type = request.env['res.partner.type'].sudo().search([('code', '=', 'TEC')], limit=1)
-                partner_vals.update({
-                    'contact_type_id': contact_type.id if contact_type else False,
-                    'contact_type': contact_type.id if contact_type else False,
-                })
+                if contact_type:
+                    partner_vals.update({
+                        'contact_type_id': contact_type.id,
+                        'contact_type': contact_type.id
+                    })
 
+                # 8. Mise à jour du partenaire
                 partner.write(partner_vals)
 
-                # 7. Gestion des actions spécifiques
-                if post.get("action") == "accept":
+                # 9. Gestion des actions spécifiques
+                action = post.get("action")
+                if action == "accept":
                     partner.status_register = "registered"
-                elif post.get("action") == "reject":
+                elif action == "reject":
                     partner.status_register = "rejected"
+                elif action == "submit":
+                    partner.button_in_progress()
 
                 # Redirection après succès
                 return request.redirect('/registration?success=1')
@@ -342,7 +380,7 @@ class CustomerPortalCustom(CustomerPortal):
             except ValidationError as e:
                 values['error_message'] = str(e).split('\n')
             except Exception as e:
-                values['error_message'] = [f"Une erreur est survenue: {str(e)}"]
+                values['error_message'] = [f"Une erreur technique est survenue. Veuillez réessayer."]
                 _logger.error("Registration error: %s", str(e), exc_info=True)
 
         # Préparation des valeurs pour le template
