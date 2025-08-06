@@ -854,11 +854,13 @@ class ResPartner(models.Model):
     contact_registration_type = fields.Selection(
         string="Type d'inscription",
         selection=[
-            ('e', "Inscription d'une personne physique à titre individuel"),
-            ('b', "Inscription d'une personne physique en tant que salarié d'un cabinet inscrit"),
-            ('d', "Inscription d'une personne physique en tant qu'associé d'un cabinet inscrit"),
-            ('c', "Inscription d'une personne morale et d'une personne physique"),
-            ('a', "Inscription d'une personne morale nouvelle par une personne physique déjà inscrite"),
+            # Personne physique
+            ('physique_individuel', 'Inscription d\'une personne physique à titre individuel'),
+            ('physique_salarie', 'Inscription d\'une personne physique en tant que salarié d\'un cabinet inscrit'),
+            ('physique_associe', 'Inscription d\'une personne physique en tant que associé d\'un cabinet inscrit'),
+            # Personne morale
+            ('moraleyes_physiqueyes', 'Inscription d\'une personne morale et d\'une personne physique'),
+            ('moraleyes_physiqueno', 'Inscription d\'une personne morale nouvelle par une personne physique déjà inscrite'),
         ]
     )
 
