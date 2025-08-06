@@ -681,7 +681,7 @@
                 </t>
 
 
-
+            <t t-if="partner.status_register in ['registered']">
                 <t t-call="portal.portal_docs_entry">
                     <t t-set="icon" t-value="'/internship_management_module/static/description/cotisations.svg'"/>
                     <t t-set="title">Mes cotisations</t>
@@ -715,7 +715,7 @@
                     <t t-set="url" t-value="'/my/internships/cs'"/>
                     <t t-set="config_card" t-value="True"/>
                 </t>
-
+            </t>
                 <t t-call="portal.portal_docs_entry">
                 <t t-set="icon" t-value="'/portal/static/src/img/portal-connection.svg'"/>
                 <t t-set="title">Connexion &amp; Sécurité</t>
