@@ -630,7 +630,7 @@
                         <input t-att-disabled="partner.status_register == 'in_progress'" type="phone" name="phone"
                                t-attf-class="form-control #{error.get('phone') and 'is-invalid' or ''}"
                                t-att-value="phone or partner.phone"/>
-                        <small>Format: +212 06-XXXXXXXX</small>
+                        <small>Format: +212 5-XXXXXXXX</small>
                     </div>
                     <div
                             t-attf-class="form-group #{error.get('fax') and 'o_has_error' or ''} col-xl-6">
@@ -645,7 +645,7 @@
                         <input t-att-disabled="partner.status_register == 'in_progress'" type="phone" name="gsm"
                                t-attf-class="form-control #{error.get('gsm') and 'is-invalid' or ''}"
                                t-att-value="gsm or partner.gsm"/>
-                        <small>Format: +212 06-XXXXXXXX</small>
+                        <small>Format: +212 6-XXXXXXXX</small>
                     </div>
                     <div
                             t-attf-class="form-group #{error.get('email') and 'o_has_error' or ''} col-xl-6">
@@ -1004,6 +1004,7 @@
                                         <br/>
                                         <input t-att-disabled="partner.status_register == 'in_progress'" id="upload"
                                                type="file"
+                                               accept=".pdf,.jpg,.jpeg"
                                                name="copie_cin" class="file"
                                                data-show-upload="true" data-show-caption="true"
                                                data-show-preview="true"
@@ -1024,6 +1025,7 @@
                                             <br/>
                                             <input t-att-disabled="partner.status_register == 'in_progress'" id="upload"
                                                    type="file"
+                                                   accept=".pdf,.jpg,.jpeg"
                                                    name="copie_cnie" class="file"
                                                    data-show-upload="true" data-show-caption="true"
                                                    data-show-preview="true"
@@ -1047,6 +1049,7 @@
                                             <br/>
                                             <input t-att-disabled="partner.status_register == 'in_progress'" id="upload"
                                                    type="file"
+                                                   accept=".pdf,.jpg,.jpeg"
                                                    name="extrait_casier_judiciaire"
                                                    class="file" data-show-upload="true" data-show-caption="true"
                                                    data-show-preview="true"
@@ -1067,6 +1070,7 @@
                                             <br/>
                                             <input t-att-disabled="partner.status_register == 'in_progress'" id="upload"
                                                    type="file"
+                                                   accept=".pdf,.jpg,.jpeg"
                                                    name="photographies_recentes"
                                                    class="file" data-show-upload="true" data-show-caption="true"
                                                    data-show-preview="true"
@@ -1105,6 +1109,7 @@
                                             <br/>
                                             <input t-att-disabled="partner.status_register == 'in_progress'" id="upload"
                                                    type="file"
+                                                   accept=".pdf,.jpg,.jpeg"
                                                    name="extrait_acte_naissance"
                                                    class="file" data-show-upload="true" data-show-caption="true"
                                                    data-show-preview="true"
@@ -1157,6 +1162,7 @@
                                         <input t-att-disabled="partner.status_register == 'in_progress'"
                                                id="upload"
                                                type="file"
+                                               accept=".pdf,.jpg,.jpeg"
                                                name="declaration_sur_honneur"
                                                class="file"
                                                data-show-upload="true"
@@ -1191,6 +1197,7 @@
                                             <input t-att-disabled="partner.status_register == 'in_progress'"
                                                    id="questionnaire"
                                                    type="file"
+                                                   accept=".pdf,.jpg,.jpeg"
                                                    name="questionnaire"
                                                    class="file"
                                                    data-show-upload="true"
@@ -1241,6 +1248,7 @@
                                             <input t-att-disabled="partner.status_register == 'in_progress'"
                                                    id="upload"
                                                    type="file"
+                                                   accept=".pdf,.jpg,.jpeg"
                                                    name="demande_inscription_salarie"
                                                    class="file"
                                                    data-show-upload="true"
@@ -1276,6 +1284,7 @@
                                             <input t-att-disabled="partner.status_register == 'in_progress'"
                                                    id="upload"
                                                    type="file"
+                                                   accept=".pdf,.jpg,.jpeg"
                                                    name="engagement"
                                                    class="file"
                                                    data-show-upload="true"
@@ -1299,6 +1308,7 @@
                                             <br/>
                                             <input t-att-disabled="partner.status_register == 'in_progress'" id="upload"
                                                    type="file"
+                                                   accept=".pdf,.jpg,.jpeg"
                                                    name="lettre_demande_inscription"
                                                    class="file" data-show-upload="true" data-show-caption="true"
                                                    data-show-preview="true"
@@ -1331,6 +1341,7 @@
                                             <input t-att-disabled="partner.status_register == 'in_progress'"
                                                    id="engagement_prise_en_charge"
                                                    type="file"
+                                                   accept=".pdf,.jpg,.jpeg"
                                                    name="engagement_prise_en_charge"
                                                    class="file"
                                                    data-show-upload="true"
@@ -1345,145 +1356,103 @@
                         </div>
                     </div>
 
-                    <div class="col-lg-12" t-if="partner.mode_registration not in ['pm']">
-                        <div class="card mb-4">
-                            <div class="card-header bg-danger text-white">
-                                <h4>Diplômes</h4>
-                            </div>
-                            <div class="card-body">
-                                <div class="row">
-                                    <t t-if="partner.mode_registration in ['pp3','pp1','pp2','pp4']">
-                                        <div t-attf-class="form-group col-xl-6" data-type="binary">
-                                            <label class="col-form-label" for="photocopie_diplome">
-                                                Une photocopie du diplôme national d’Expert-Comptable ou d’un diplôme
-                                                reconnu
-                                                équivalent, signé et cacheté (certifiée conforme à l’original)
-                                                <span class="text-danger">*</span>
-                                                <span t-if="partner.photocopie_diplome" style="color:blue">(Document
-                                                    déjà chargé)
-                                                </span>
-                                            </label>
-                                            <br/>
-                                            <input t-att-disabled="partner.status_register == 'in_progress'" id="upload"
-                                                   type="file"
-                                                   name="photocopie_diplome"
-                                                   class="file" data-show-upload="true" data-show-caption="true"
-                                                   data-show-preview="true"
-                                                   t-att-readonly="None if partner.status_register=='draft' else '1'"
-                                                   required="required"/>
-                                        </div>
-                                    </t>
-                                    <t t-if="partner.mode_registration not in ['pm']">
-                                        <div t-attf-class="form-group col-xl-6" data-type="binary">
-                                            <label class="col-form-label" for="fiches_annuelles">
-                                                Trois Fiches annuelles de stage, pour les diplômes étrangers
-                                                (Recto/Verso)
-                                                <span t-if="partner.fiches_annuelles" style="color:blue">(Document
-                                                    déjà chargé)
-                                                </span>
-                                            </label>
-                                            <br/>
-                                            <input t-att-disabled="partner.status_register == 'in_progress'" id="upload"
-                                                   type="file"
-                                                   name="fiches_annuelles"
-                                                   class="file" data-show-upload="true" data-show-caption="true"
-                                                   data-show-preview="true"
-                                                   t-att-readonly="None if partner.status_register=='draft' else '1'"/>
-                                        </div>
-                                    </t>
-                                    <t t-if="partner.mode_registration in ['pp3','pp1','pp2','pp4']">
-                                        <div t-attf-class="form-group col-xl-6" data-type="binary">
-                                            <label class="col-form-label" for="attestation_fin_stage">
-                                                L'attestation de fin de stage, pour les diplôme étrangers
-                                                <span t-if="partner.attestation_fin_stage" style="color:blue">(Document
-                                                    déjà chargé)
-                                                </span>
-                                            </label>
-                                            <br/>
-                                            <input t-att-disabled="partner.status_register == 'in_progress'" id="upload"
-                                                   type="file"
-                                                   name="attestation_fin_stage"
-                                                   class="file" data-show-upload="true" data-show-caption="true"
-                                                   data-show-preview="true"
-                                                   t-att-readonly="None if partner.status_register=='draft' else '1'"/>
-                                        </div>
-                                    </t>
-                                    <t t-if="partner.mode_registration in ['pp3','pp1','pp2','pp4']">
-                                        <div t-attf-class="form-group col-xl-6" data-type="binary">
-                                            <label class="col-form-label" for="fiche_generale_synthese">
-                                                La fiche générale de synthèse, pour les diplôme étrangers
-                                                <span t-if="partner.fiche_generale_synthese" style="color:blue">
-                                                    (Document
-                                                    déjà chargé)
-                                                </span>
-                                            </label>
-                                            <br/>
-                                            <input t-att-disabled="partner.status_register == 'in_progress'" id="upload"
-                                                   type="file"
-                                                   name="fiche_generale_synthese"
-                                                   class="file" data-show-upload="true" data-show-caption="true"
-                                                   data-show-preview="true"
-                                                   t-att-readonly="None if partner.status_register=='draft' else '1'"/>
-                                        </div>
-                                    </t>
-                                    <t t-if="partner.mode_registration in ['pp3','pp1','pp2','pp4']">
-                                        <div t-attf-class="form-group col-xl-6" data-type="binary">
-                                            <label class="col-form-label" for="fiche_annuelle">
-                                                Les 03 Fiches annuelles de stage, pour les diplôme étrangers
-                                                <span t-if="partner.fiche_annuelle" style="color:blue">(Document
-                                                    déjà chargé)
-                                                </span>
-                                            </label>
-                                            <br/>
-                                            <input t-att-disabled="partner.status_register == 'in_progress'" id="upload"
-                                                   type="file"
-                                                   name="fiche_annuelle"
-                                                   class="file" data-show-upload="true" data-show-caption="true"
-                                                   data-show-preview="true"
-                                                   t-att-readonly="None if partner.status_register=='draft' else '1'"/>
-                                        </div>
-                                    </t>
-                                    <t t-if="partner.mode_registration in ['pp3','pp1','pp2','pp4']">
-                                        <div t-attf-class="form-group col-xl-6" data-type="binary">
-                                            <label class="col-form-label" for="attestation_equivalence">
-                                                Une attestation d’équivalence au diplôme national d’expertise comptable,
-                                                délivrée par le
-                                                ministère d’enseignement supérieur, pour tous les diplômes étrangers
-                                                <span t-if="partner.attestation_equivalence" style="color:blue">
-                                                    (Document
-                                                    déjà chargé)
-                                                </span>
-                                            </label>
-                                            <br/>
-                                            <input t-att-disabled="partner.status_register == 'in_progress'" id="upload"
-                                                   type="file"
-                                                   name="attestation_equivalence"
-                                                   class="file" data-show-upload="true" data-show-caption="true"
-                                                   data-show-preview="true"
-                                                   t-att-readonly="None if partner.status_register=='draft' else '1'"/>
-                                        </div>
-                                    </t>
-                                    <t t-if="partner.mode_registration in ['pp3','pp1','pp2','pp4']">
-                                        <div t-attf-class="form-group col-xl-6" data-type="binary">
-                                            <label class="col-form-label" for="fiche_annuelle">
-                                                La fiche annuelle de 200 heures d’audit pour les diplômes étrangers
-                                                <span t-if="partner.fiche_annuelle" style="color:blue">(Document
-                                                    déjà chargé)
-                                                </span>
-                                            </label>
-                                            <br/>
-                                            <input t-att-disabled="partner.status_register == 'in_progress'" id="upload"
-                                                   type="file"
-                                                   name="fiche_annuelle"
-                                                   class="file" data-show-upload="true" data-show-caption="true"
-                                                   data-show-preview="true"
-                                                   t-att-readonly="None if partner.status_register=='draft' else '1'"/>
-                                        </div>
-                                    </t>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <div class="col-lg-12" t-if="partner.mode_registration != 'pm'">
+    <div class="card mb-4">
+        <div class="card-header bg-danger text-white">
+            <h4>Diplômes</h4>
+        </div>
+        <div class="card-body">
+            <div class="row">
+
+                <!-- Diplôme principal obligatoire -->
+                <div class="col-12 mb-3">
+                    <strong> Une photocopie du diplôme national d’Expert-comptable ou d’un diplôme reconnu équivalent (certifiée conforme à l’original) <span class="text-danger">*</span></strong>
+                </div>
+                <span class="text-danger">*</span>
+                <div class="form-group col-xl-6" data-type="binary">
+                    <label class="col-form-label" for="photocopie_diplome">
+                        <span t-if="partner.photocopie_diplome" style="color:blue">(Document déjà chargé)</span>
+                    </label>
+                    <input t-att-disabled="partner.status_register == 'in_progress'"
+                           type="file"
+                           name="photocopie_diplome"
+                           class="file"
+                           accept=".pdf,.jpg,.jpeg"
+                           required="required"
+                           data-show-upload="true" data-show-caption="true"
+                           t-att-readonly="None if partner.status_register=='draft' else '1'" />
+                </div>
+
+                <!-- Bloc pour diplômes étrangers -->
+                <div class="col-12 mt-4 mb-2">
+                    <strong> Documents supplémentaires pour les diplômes étrangers :</strong>
+                </div>
+
+                <div class="form-group col-xl-6" data-type="binary">
+                    <label class="col-form-label" for="attestation_equivalence">
+                        Attestation d’équivalence
+                        <span t-if="partner.attestation_equivalence" style="color:blue">(Document déjà chargé)</span>
+                    </label>
+                    <input t-att-disabled="partner.status_register == 'in_progress'" type="file"
+                           name="attestation_equivalence"
+                           class="file" accept=".pdf,.jpg,.jpeg"
+                           data-show-upload="true" data-show-caption="true"
+                           t-att-readonly="None if partner.status_register=='draft' else '1'" />
+                </div>
+
+                <div class="form-group col-xl-6" data-type="binary">
+                    <label class="col-form-label" for="fiche_annuelle">
+                        03 Fiches annuelles de stage
+                        <span t-if="partner.fiche_annuelle" style="color:blue">(Document déjà chargé)</span>
+                    </label>
+                    <input t-att-disabled="partner.status_register == 'in_progress'" type="file"
+                           name="fiche_annuelle"
+                           class="file" accept=".pdf,.jpg,.jpeg"
+                           data-show-upload="true" data-show-caption="true"
+                           t-att-readonly="None if partner.status_register=='draft' else '1'" />
+                </div>
+
+                <div class="form-group col-xl-6" data-type="binary">
+                    <label class="col-form-label" for="attestation_fin_stage">
+                        Attestation de fin de stage
+                        <span t-if="partner.attestation_fin_stage" style="color:blue">(Document déjà chargé)</span>
+                    </label>
+                    <input t-att-disabled="partner.status_register == 'in_progress'" type="file"
+                           name="attestation_fin_stage"
+                           class="file" accept=".pdf,.jpg,.jpeg"
+                           data-show-upload="true" data-show-caption="true"
+                           t-att-readonly="None if partner.status_register=='draft' else '1'" />
+                </div>
+
+                <div class="form-group col-xl-6" data-type="binary">
+                    <label class="col-form-label" for="fiche_generale_synthese">
+                        Fiche générale de synthèse
+                        <span t-if="partner.fiche_generale_synthese" style="color:blue">(Document déjà chargé)</span>
+                    </label>
+                    <input t-att-disabled="partner.status_register == 'in_progress'" type="file"
+                           name="fiche_generale_synthese"
+                           class="file" accept=".pdf,.jpg,.jpeg"
+                           data-show-upload="true" data-show-caption="true"
+                           t-att-readonly="None if partner.status_register=='draft' else '1'" />
+                </div>
+
+                <div class="form-group col-xl-6" data-type="binary">
+                    <label class="col-form-label" for="fiche_annuelle_audit">
+                        Fiche annuelle de 200 heures d’audit
+                        <span t-if="partner.fiche_annuelle_audit" style="color:blue">(Document déjà chargé)</span>
+                    </label>
+                    <input t-att-disabled="partner.status_register == 'in_progress'" type="file"
+                           name="fiche_annuelle_audit"
+                           class="file" accept=".pdf,.jpg,.jpeg"
+                           data-show-upload="true" data-show-caption="true"
+                           t-att-readonly="None if partner.status_register=='draft' else '1'" />
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
 
                     <!--<t t-if="partner.mode_registration in ['pm']">
                         <div t-attf-class="form-group col-xl-6" data-type="binary">
@@ -1564,6 +1533,7 @@
                                             <br/>
                                             <input t-att-disabled="partner.status_register == 'in_progress'" id="upload"
                                                    type="file"
+                                                   accept=".pdf,.jpg,.jpeg"
                                                    name="attestation_inscription"
                                                    class="file" data-show-upload="true" data-show-caption="true"
                                                    data-show-preview="true"
@@ -1585,6 +1555,7 @@
                                             <br/>
                                             <input t-att-disabled="partner.status_register == 'in_progress'" id="upload"
                                                    type="file"
+                                                   accept=".pdf,.jpg,.jpeg"
                                                    name="attestation_inscription"
                                                    class="file" data-show-upload="true" data-show-caption="true"
                                                    data-show-preview="true"
@@ -1607,6 +1578,7 @@
                                             <br/>
                                             <input t-att-disabled="partner.status_register == 'in_progress'" id="upload"
                                                    type="file"
+                                                   accept=".pdf,.jpg,.jpeg"
                                                    name="copie_contrat_bail"
                                                    class="file" data-show-upload="true" data-show-caption="true"
                                                    data-show-preview="true"
@@ -1619,6 +1591,7 @@
                                             <label class="col-form-label" for="bulletin_notification">
                                                 Bulletin de notification de l’Identifiant Fiscal, au nom du cabinet
                                                 (datant de moins de trois mois)
+                                                <span class="text-danger">*</span>
                                                 <span t-if="partner.bulletin_notification" style="color:blue">(Document
                                                     déjà chargé)
                                                 </span>
@@ -1626,6 +1599,7 @@
                                             <br/>
                                             <input t-att-disabled="partner.status_register == 'in_progress'" id="upload"
                                                    type="file"
+                                                   accept=".pdf,.jpg,.jpeg"
                                                    name="bulletin_notification"
                                                    class="file" data-show-upload="true" data-show-caption="true"
                                                    data-show-preview="true"
@@ -1645,6 +1619,7 @@
                                             <br/>
                                             <input t-att-disabled="partner.status_register == 'in_progress'" id="upload"
                                                    type="file"
+                                                   accept=".pdf,.jpg,.jpeg"
                                                    name="bulletin_notification"
                                                    class="file" data-show-upload="true" data-show-caption="true"
                                                    data-show-preview="true"
@@ -1665,6 +1640,7 @@
                                             <br/>
                                             <input t-att-disabled="partner.status_register == 'in_progress'" id="upload"
                                                    type="file"
+                                                   accept=".pdf,.jpg,.jpeg"
                                                    name="bulletin_notification"
                                                    class="file" data-show-upload="true" data-show-caption="true"
                                                    data-show-preview="true"
@@ -1698,6 +1674,7 @@
                                             <br/>
                                             <input t-att-disabled="partner.status_register == 'in_progress'" id="upload"
                                                    type="file"
+                                                   accept=".pdf,.jpg,.jpeg"
                                                    name="attestation_assurance"
                                                    class="file" data-show-upload="true" data-show-caption="true"
                                                    data-show-preview="true"
@@ -1735,6 +1712,7 @@
                                             <br/>
                                             <input t-att-disabled="partner.status_register == 'in_progress'" id="upload"
                                                    type="file"
+                                                   accept=".pdf,.jpg,.jpeg"
                                                    name="actes_modificatifs"
                                                    class="file" data-show-upload="true" data-show-caption="true"
                                                    data-show-preview="true"
@@ -1755,6 +1733,7 @@
                                             <br/>
                                             <input t-att-disabled="partner.status_register == 'in_progress'" id="upload"
                                                    type="file"
+                                                   accept=".pdf,.jpg,.jpeg"
                                                    name="actes_modificatifs"
                                                    class="file" data-show-upload="true" data-show-caption="true"
                                                    data-show-preview="true"
@@ -1773,6 +1752,7 @@
                                             <br/>
                                             <input t-att-disabled="partner.status_register == 'in_progress'" id="upload"
                                                    type="file"
+                                                   accept=".pdf,.jpg,.jpeg"
                                                    name="copie_convention"
                                                    class="file" data-show-upload="true" data-show-caption="true"
                                                    data-show-preview="true"
@@ -1794,6 +1774,7 @@
                                             <br/>
                                             <input t-att-disabled="partner.status_register == 'in_progress'" id="upload"
                                                    type="file"
+                                                   accept=".pdf,.jpg,.jpeg"
                                                    name="actes_cession" class="file"
                                                    data-show-upload="true" data-show-caption="true"
                                                    data-show-preview="true"
@@ -1805,12 +1786,14 @@
                                             <label class="col-form-label" for="modele_7">
                                                 Certificat modèle 7 du Registre du Commerce (datant de moins de trois
                                                 mois)
+                                                <span class="text-danger">*</span>
                                                 <span t-if="partner.modele_7" style="color:blue">(Document déjà chargé)
                                                 </span>
                                             </label>
                                             <br/>
                                             <input t-att-disabled="partner.status_register == 'in_progress'" id="upload"
                                                    type="file"
+                                                   accept=".pdf,.jpg,.jpeg"
                                                    name="modele_7" class="file"
                                                    data-show-upload="true" data-show-caption="true"
                                                    data-show-preview="true"
@@ -1831,6 +1814,7 @@
                                             <br/>
                                             <input t-att-disabled="partner.status_register == 'in_progress'" id="upload"
                                                    type="file"
+                                                   accept=".pdf,.jpg,.jpeg"
                                                    name="contrat_travail" class="file"
                                                    data-show-upload="true" data-show-caption="true"
                                                    data-show-preview="true"
@@ -1851,6 +1835,7 @@
                                             <br/>
                                             <input t-att-disabled="partner.status_register == 'in_progress'" id="upload"
                                                    type="file"
+                                                   accept=".pdf,.jpg,.jpeg"
                                                    name="contrat_travail" class="file"
                                                    data-show-upload="true" data-show-caption="true"
                                                    data-show-preview="true"
@@ -1870,6 +1855,7 @@
                                             <br/>
                                             <input t-att-disabled="partner.status_register == 'in_progress'" id="upload"
                                                    type="file"
+                                                   accept=".pdf,.jpg,.jpeg"
                                                    name="copie_conforme_contrat"
                                                    class="file" data-show-upload="true" data-show-caption="true"
                                                    data-show-preview="true"
@@ -1888,6 +1874,7 @@
                                             <br/>
                                             <input t-att-disabled="partner.status_register == 'in_progress'" id="upload"
                                                    type="file"
+                                                   accept=".pdf,.jpg,.jpeg"
                                                    name="copie_conforme_contrat"
                                                    class="file" data-show-upload="true" data-show-caption="true"
                                                    data-show-preview="true"
@@ -1907,6 +1894,7 @@
                                             <br/>
                                             <input t-att-disabled="partner.status_register == 'in_progress'" id="upload"
                                                    type="file"
+                                                   accept=".pdf,.jpg,.jpeg"
                                                    name="attestation_inscription_membre"
                                                    class="file" data-show-upload="true" data-show-caption="true"
                                                    data-show-preview="true"
@@ -1927,6 +1915,7 @@
                                             <br/>
                                             <input t-att-disabled="partner.status_register == 'in_progress'" id="upload"
                                                    type="file"
+                                                   accept=".pdf,.jpg,.jpeg"
                                                    name="copie_convention"
                                                    class="file" data-show-upload="true" data-show-caption="true"
                                                    data-show-preview="true"
@@ -1943,7 +1932,7 @@
                                             </label>
                                             <br/>
                                             <input t-att-disabled="partner.status_register == 'in_progress'" id="upload"
-                                                   type="file" name="attestation_radiation"
+                                                   type="file" name="attestation_radiation"  accept=".pdf,.jpg,.jpeg"
                                                    class="file" data-show-upload="true" data-show-caption="true"
                                                    data-show-preview="true"
                                                    t-att-readonly="None if partner.status_register=='draft' else '1'"/>
@@ -1974,6 +1963,7 @@
                                             <input t-att-disabled="partner.status_register == 'in_progress'"
                                                    id="upload"
                                                    type="file"
+                                                   accept=".pdf,.jpg,.jpeg"
                                                    name="engagement"
                                                    class="file"
                                                    data-show-upload="true"
@@ -2009,6 +1999,7 @@
                                             <input t-att-disabled="partner.status_register == 'in_progress'"
                                                    id="upload"
                                                    type="file"
+                                                   accept=".pdf,.jpg,.jpeg"
                                                    name="lettre_demande_inscription"
                                                    class="file"
                                                    data-show-upload="true"
@@ -2035,6 +2026,7 @@
                                             <br/>
                                             <input t-att-disabled="partner.status_register == 'in_progress'" id="upload"
                                                    type="file"
+                                                   accept=".pdf,.jpg,.jpeg"
                                                    name="statuts_mis_a_jour"
                                                    class="file" data-show-upload="true" data-show-caption="true"
                                                    data-show-preview="true"
@@ -2055,6 +2047,7 @@
                                             <br/>
                                             <input t-att-disabled="partner.status_register == 'in_progress'" id="upload"
                                                    type="file"
+                                                   accept=".pdf,.jpg,.jpeg"
                                                    name="statuts_mis_a_jour"
                                                    class="file" data-show-upload="true" data-show-caption="true"
                                                    data-show-preview="true"
@@ -2065,6 +2058,7 @@
                                         <div t-attf-class="form-group col-xl-6" data-type="binary">
                                             <label class="col-form-label" for="avenant_contrat_travail">
                                                 Avenant au contrat de travail visé par le Président du Conseil National
+                                                <span class="text-danger">*</span>
                                                 <span t-if="partner.avenant_contrat_travail" style="color:blue">
                                                     (Document
                                                     déjà chargé)
@@ -2072,7 +2066,7 @@
                                             </label>
                                             <br/>
                                             <input t-att-disabled="partner.status_register == 'in_progress'" id="upload"
-                                                   type="file" name="avenant_contrat_travail"
+                                                   type="file" name="avenant_contrat_travail"  accept=".pdf,.jpg,.jpeg"
                                                    class="file" data-show-upload="true" data-show-caption="true"
                                                    data-show-preview="true"
                                                    t-att-readonly="None if partner.status_register=='draft' else '1'"
@@ -2121,6 +2115,7 @@
                                             <br/>
                                             <input t-att-disabled="partner.status_register == 'in_progress'"
                                                    type="file"
+                                                   accept=".pdf,.jpg,.jpeg"
                                                    name="cheque_droit_entree"
                                                    class="file"
                                                    data-show-upload="true"
@@ -2162,6 +2157,7 @@
                                             <br/>
                                             <input t-att-disabled="partner.status_register == 'in_progress'"
                                                    type="file"
+                                                   accept=".pdf,.jpg,.jpeg"
                                                    name="cheque_droit_entree"
                                                    class="file"
                                                    data-show-upload="true"
@@ -2695,6 +2691,7 @@
 
                                             <input id="pv_cn_upload"
                                                    type="file"
+                                                   accept=".pdf,.jpg,.jpeg"
                                                    name="pv_cn"
                                                    class="file"
                                                    data-show-upload="true"
@@ -2720,7 +2717,7 @@
                                             <br/>
                                             <input t-att-disabled="partner.status_register == 'in_progress'"
                                                    id="autres_fichiers"
-                                                   type="file" name="autres_fichiers"
+                                                   type="file" name="autres_fichiers[]"
                                                    class="file" multiple="multiple" accept=".pdf,.jpg,.jpeg"
                                                    data-show-upload="true" data-show-caption="true"/>
                                         </div>

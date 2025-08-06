@@ -692,7 +692,7 @@ class ResPartner(models.Model):
     other_information = fields.Text(
         string='Other Informations',
     )
-
+    autres_fichiers_ids = fields.One2many('res.partner.file', 'partner_id', string="Autres fichiers")
     status = fields.Selection(
         string='Contact Status',
         selection='_get_status',
@@ -1630,3 +1630,11 @@ class ResPartner(models.Model):
 
     def button_print(self):
         return self.env.ref('internship_management_module.internship_livret').report_action(self)
+
+class ResPartnerFile(models.Model):
+    _name = 'res.partner.file'
+    _description = 'Fichiers supplémentaires pour partenaire'
+
+    name = fields.Char("Nom du fichier")
+    datas = fields.Binary("Fichier", required=True)
+    partner_id = fields.Many2one('res.partner', string="Partenaire", ondelete='cascade')

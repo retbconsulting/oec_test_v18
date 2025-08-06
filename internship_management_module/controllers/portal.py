@@ -293,6 +293,17 @@ class CustomerPortalCustom(CustomerPortal):
                         partner_vals[field] = False
             if 'photographies_recentes' in post:           
                 partner_vals.update({'image_1920': post['photographies_recentes']})
+            # Gestion des fichiers multiples : autres_fichiers
+            if 'autres_fichiers' in request.httprequest.files:
+                fichiers_multiples = request.httprequest.files.getlist('autres_fichiers')
+                for fichier in fichiers_multiples:
+                    if fichier:
+                        file_data = base64.b64encode(fichier.read())
+                        request.env['res.partner.file'].sudo().create({
+                            'name': fichier.filename,
+                            'datas': file_data,
+                            'partner_id': partner.id
+                        })
 
             #############################
             contact_type_id = request.env['res.partner.type'].sudo().search([('code', '=', 'TEC')], limit=1)
