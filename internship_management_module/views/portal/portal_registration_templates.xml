@@ -2822,145 +2822,72 @@
                 </div>
             </form>
             <script type="text/javascript">
-                document.addEventListener('DOMContentLoaded', function() {
-                // Fonction pour valider les types de fichiers
-                function validateFileTypes(input) {
-                if (input.files &amp;&amp; input.files.length &gt; 0) {
-                var file = input.files[0];
-                var validTypes = ['application/pdf', 'image/jpeg', 'image/jpg'];
-                var fileType = file.type.toLowerCase();
+    function validateForm() {
+        // Validation des pourcentages (existante)
+        var total = 0;
+        var atLeastOneFilled = false;
+        for (var i = 1; i &lt;= 5; i++) {
+            var nameInput = document.querySelector('input[name="name' + i + '"]');
+            var percentageInput = document.querySelector('input[name="percentage' + i + '"]');
 
-                if (validTypes.indexOf(fileType) === -1) {
-                alert('Seuls les fichiers PDF, JPG et JPEG sont accept&amp;eacute;s pour : ' +
-                input.parentElement.querySelector('label').textContent.trim());
-                input.value = ''; // Effacer la s&amp;eacute;lection
-                return false;
-                }
-
-                // V&amp;eacute;rifier la taille du fichier (max 5MB)
-                if (file.size &gt; 5 * 1024 * 1024) {
-                alert('Le fichier est trop volumineux (max 5MB) pour : ' +
-                input.parentElement.querySelector('label').textContent.trim());
-                input.value = ''; // Effacer la s&amp;eacute;lection
-                return false;
-                }
-                }
-                return true;
-                }
-
-                // Valider tous les champs obligatoires
-                function validateRequiredFields() {
-                var isValid = true;
-
-                // V&amp;eacute;rifier les fichiers obligatoires
-                var requiredFileInputs = document.querySelectorAll('input[type="file"][required]');
-                for (var i = 0; i &lt; requiredFileInputs.length; i++) {
-                var input = requiredFileInputs[i];
-                // V&amp;eacute;rifier si un fichier est d&amp;eacute;j&amp;agrave; upload&amp;eacute;
-                if (!input.hasAttribute('data-has-file') &amp;&amp; (!input.files || input.files.length === 0)) {
-                var fieldName = input.parentElement.querySelector('label').textContent.trim();
-                alert('Le document "' + fieldName + '" est obligatoire.');
-                input.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                isValid = false;
-                continue;
-                }
-
-                // Valider le type de fichier
-                if (!validateFileTypes(input)) {
-                isValid = false;
-                continue;
-                }
-                }
-
-                // V&amp;eacute;rifier la case &amp;agrave; cocher
-                var declarationCheckbox = document.getElementById('declaration_honneur');
-                if (!declarationCheckbox.checked) {
-                alert('Vous devez accepter la d&amp;eacute;claration sur l\'honneur.');
-                declarationCheckbox.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                isValid = false;
-                }
-
-                return isValid;
-                }
-
-                // Valider la r&amp;eacute;partition du capital
-                function validateCapitalDistribution() {
-                var modeSelect = document.querySelector('select[name="mode_registration"]');
-                if (modeSelect &amp;&amp; modeSelect.value === 'e') return true;
-
-                var total = 0;
-                var atLeastOneFilled = false;
-
-                for (var i = 1; i &lt;= 5; i++) {
-                var nameInput = document.querySelector('input[name="name' + i + '"]');
-                var percentageInput = document.querySelector('input[name="percentage' + i + '"]');
-
-                if (nameInput &amp;&amp; percentageInput) {
+            if (nameInput &amp;&amp; percentageInput) {
                 var name = nameInput.value.trim();
                 var percentageStr = percentageInput.value.trim();
 
-                if (name !== '' &amp;&amp; percentageStr !== '') {
-                atLeastOneFilled = true;
-                var percentage = parseFloat(percentageStr);
-                if (isNaN(percentage) || percentage &lt; 0) {
-                alert('Le pourcentage &amp;agrave; la ligne #' + i + ' doit &amp;ecirc;tre un nombre positif.');
+                if (name != '' &amp;&amp; percentageStr != '') {
+                    atLeastOneFilled = true;
+                    var percentage = parseFloat(percentageStr);
+                    if (isNaN(percentage) || percentage &lt; 0) {
+                        alert('Le pourcentage à la ligne #' + i + ' doit être un nombre positif.');
+                        return false;
+                    }
+                    total += percentage;
+                }
+            }
+        }
+
+        // Vérification des fichiers obligatoires
+        var requiredFiles = document.querySelectorAll('input[type="file"][required]');
+        for (var j = 0; j &lt; requiredFiles.length; j++) {
+            var fileInput = requiredFiles[j];
+            if (!fileInput.files || fileInput.files.length === 0) {
+                var fieldName = fileInput.closest('.form-group').querySelector('label').textContent.trim();
+                alert('Le document "' + fieldName + '" est obligatoire.');
+                fileInput.scrollIntoView({behavior: 'smooth'});
                 return false;
-                }
-                total += percentage;
-                }
-                }
-                }
+            }
 
-                if (!atLeastOneFilled) {
-                alert('Veuillez remplir au moins une ligne avec un nom et un pourcentage.');
+            // Vérification du type de fichier
+            var file = fileInput.files[0];
+            var validTypes = ['application/pdf', 'image/jpeg', 'image/png'];
+            if (validTypes.indexOf(file.type) === -1) {
+                alert('Le fichier pour "' + fieldName + '" doit être PDF, JPG ou PNG.');
                 return false;
-                }
+            }
+        }
 
-                if (Math.abs(total - 100) &gt; 0.01) {
-                alert('La somme des pourcentages doit &amp;ecirc;tre exactement &amp;eacute;gale &amp;agrave;
-                100%.\nSomme actuelle : ' + total.toFixed(2) + '%');
-                return false;
-                }
+        // Vérification case à cocher
+        var checkbox = document.getElementById('declaration_honneur');
+        if (!checkbox.checked) {
+            alert('Vous devez accepter la déclaration sur l\'honneur.');
+            return false;
+        }
 
-                return true;
-                }
+        return true;
+    }
 
-                // Gestionnaire de soumission du formulaire
-                var form = document.querySelector('form[action="/registration"]');
-                if (form) {
-                form.addEventListener('submit', function(event) {
-                if (!validateRequiredFields() || !validateCapitalDistribution()) {
-                event.preventDefault();
-                return false;
+    document.addEventListener('DOMContentLoaded', function() {
+        var form = document.querySelector('form[action="/registration"]');
+        if (form) {
+            form.addEventListener('submit', function(event) {
+                if (!validateForm()) {
+                    event.preventDefault();
+                    return false;
                 }
-                });
-                }
-
-                // Marquer les champs de fichiers d&amp;eacute;j&amp;agrave; remplis
-                var fileInputs = document.querySelectorAll('input[type="file"]');
-                for (var j = 0; j &lt; fileInputs.length; j++) {
-                var input = fileInputs[j];
-                if (input.value) {
-                input.setAttribute('data-has-file', 'true');
-                }
-
-                // Valider le type de fichier lors de la s&amp;eacute;lection
-                input.addEventListener('change', function() {
-                validateFileTypes(this);
-                });
-                }
-
-                // Gestionnaire pour le bouton Enregistrer
-                var saveButton = document.querySelector('button.btn-danger.float-left');
-                if (saveButton) {
-                saveButton.addEventListener('click', function(e) {
-                if (validateRequiredFields() &amp;&amp; validateCapitalDistribution()) {
-                form.submit();
-                }
-                });
-                }
-                });
-            </script>
+            });
+        }
+    });
+</script>
 
         </t>
     </template>

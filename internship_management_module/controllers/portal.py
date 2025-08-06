@@ -245,103 +245,128 @@ class CustomerPortalCustom(CustomerPortal):
 
     @route(['/registration'], type='http', auth='user', website=True)
     def registration(self, redirect=None, **post):
-        print("$$$$$$$$$$$$$$$$$$$$")
         values = {}
-        partner_vals = {}
+        partner = request.env.user.partner_id
         centers = request.env['operating.unit'].sudo().search([])
         pays = request.env['res.country'].sudo().search([])
-        partner = request.env.user.partner_id
-        if post and request.httprequest.method == 'POST':
-        
-            document_dict = {key: post[key] for key in self.DOCUMENT_FIELDS if key in post}
-            for key in document_dict.keys():
-                if post.get(key):
-                    file = post.get(key)
-                    filename = post.get(key).filename
-                    post.update({key: Markup(base64.b64encode(file.read()).decode('utf-8'))})
-                    filename_field = key + '_filename'
-                    partner_vals.update({filename_field : filename})
-                else:
-                    del post[key]
-            
-            if partner.mode_registration == 'pm':
-                repartition_dict = {key: post[key] for key in self.REPARTITION_CAPITAL_SOCIAL_FIELDS if key in post}  
-                values_table = []
-                for i in range(1,6):
-                    name = 'name' + str(i)
-                    percentage = 'percentage' + str(i)
-                    status = 'status' + str(i)
-                    values_table.append((0, 0, {
-                        'name': post.get(name) if post.get(name) else '',
-                        'percentage': post.get(percentage) if post.get(percentage) else 0,
-                        'status': post.get(status) if post.get(status) else None
-                    }))
 
-                partner_vals.update({'repartition_ids': values_table})
-                partner.write({'repartition_ids': None})
-                # Mettre à jour le status_register en fonction du bouton cliqué
+        if post and request.httprequest.method == 'POST':
+            try:
+                partner_vals = {}
+                error_messages = []
+
+                # 1. Traitement des fichiers obligatoires
+                for field_name in self.DOCUMENT_FIELDS:
+                    if field_name in request.httprequest.files:
+                        file = request.httprequest.files[field_name]
+                        if file and file.filename:  # Vérifie si un fichier a été uploadé
+                            partner_vals.update({
+                                field_name: base64.b64encode(file.read()),
+                                f'{field_name}_filename': file.filename
+                            })
+                        elif field_name in post and post[field_name]:  # Fichier déjà existant
+                            continue
+                        else:
+                            error_messages.append(f"Le document {field_name.replace('_', ' ')} est obligatoire")
+
+                if error_messages:
+                    values.update({'error_message': error_messages})
+                    raise ValidationError("\n".join(error_messages))
+
+                # 2. Traitement de la répartition du capital (pour les PM)
+                if partner.mode_registration == 'pm':
+                    repartition_lines = []
+                    for i in range(1, 6):
+                        line_vals = {
+                            'name': post.get(f'name{i}', ''),
+                            'percentage': float(post.get(f'percentage{i}', 0)),
+                            'status': post.get(f'status{i}')
+                        }
+                        if line_vals['name']:  # Ne créer que les lignes avec un nom
+                            repartition_lines.append((0, 0, line_vals))
+
+                    partner_vals['repartition_ids'] = [(5, 0,
+                                                        0)] + repartition_lines  # Supprime anciennes lignes avant d'ajouter
+
+                    # Validation somme des pourcentages
+                    total_percent = sum(line[2]['percentage'] for line in repartition_lines)
+                    if abs(total_percent - 100) > 0.01:
+                        error_messages.append("La somme des pourcentages doit faire exactement 100%")
+
+                # 3. Traitement des autres champs
+                for field in self.REGISTRATION_FIELDS:
+                    if field in post:
+                        partner_vals[field] = post[field]
+
+                # Conversion champ conseil_regional en integer
+                if 'conseil_regional' in partner_vals:
+                    try:
+                        partner_vals['conseil_regional'] = int(partner_vals['conseil_regional'])
+                    except (ValueError, TypeError):
+                        partner_vals['conseil_regional'] = False
+
+                # 4. Traitement photo profil
+                if 'photographies_recentes' in request.httprequest.files:
+                    file = request.httprequest.files['photographies_recentes']
+                    if file and file.filename:
+                        partner_vals['image_1920'] = base64.b64encode(file.read())
+
+                # 5. Traitement fichiers multiples
+                if 'autres_fichiers' in request.httprequest.files:
+                    for fichier in request.httprequest.files.getlist('autres_fichiers'):
+                        if fichier and fichier.filename:
+                            request.env['res.partner.file'].sudo().create({
+                                'name': fichier.filename,
+                                'datas': base64.b64encode(fichier.read()),
+                                'partner_id': partner.id
+                            })
+
+                # 6. Mise à jour du partenaire
+                contact_type = request.env['res.partner.type'].sudo().search([('code', '=', 'TEC')], limit=1)
+                partner_vals.update({
+                    'contact_type_id': contact_type.id if contact_type else False,
+                    'contact_type': contact_type.id if contact_type else False,
+                })
+
+                partner.write(partner_vals)
+
+                # 7. Gestion des actions spécifiques
                 if post.get("action") == "accept":
                     partner.status_register = "registered"
                 elif post.get("action") == "reject":
                     partner.status_register = "rejected"
 
-            partner_vals.update({key: post[key] for key in self.REGISTRATION_FIELDS if key in post})
-            for field in set(['conseil_regional']) & set(partner_vals.keys()):
-                    try:
-                        partner_vals[field] = int(partner_vals[field])
-                    except:
-                        partner_vals[field] = False
-            if 'photographies_recentes' in post:           
-                partner_vals.update({'image_1920': post['photographies_recentes']})
-            # Gestion des fichiers multiples : autres_fichiers
-            if 'autres_fichiers' in request.httprequest.files:
-                fichiers_multiples = request.httprequest.files.getlist('autres_fichiers')
-                for fichier in fichiers_multiples:
-                    if fichier:
-                        file_data = base64.b64encode(fichier.read())
-                        request.env['res.partner.file'].sudo().create({
-                            'name': fichier.filename,
-                            'datas': file_data,
-                            'partner_id': partner.id
-                        })
+                # Redirection après succès
+                return request.redirect('/registration?success=1')
 
-            #############################
-            contact_type_id = request.env['res.partner.type'].sudo().search([('code', '=', 'TEC')], limit=1)
-            partner_vals.update({
-                'contact_type_id': contact_type_id.id if contact_type_id else False,
-                'contact_type': contact_type_id.id if contact_type_id else False,
-            })
-            ############################
-            
-            partner.write(partner_vals)
+            except ValidationError as e:
+                values['error_message'] = str(e).split('\n')
+            except Exception as e:
+                values['error_message'] = [f"Une erreur est survenue: {str(e)}"]
+                _logger.error("Registration error: %s", str(e), exc_info=True)
+
+        # Préparation des valeurs pour le template
         values.update({
-            'error': {},
-            'error_message': [],
             'register_types': partner._fields['contact_registration_mode'].selection,
             'type_selection': partner._fields['contact_registration_type'].selection,
             'centers': centers,
-            'payss':pays,
-            'partner': partner
+            'payss': pays,
+            'partner': partner,
+            'error': {}
         })
-        
-        if partner.mode_registration == 'pm':
-            etat_repartition = {}
-            count = 0
-            for repartition in partner.repartition_ids:
-                count += 1
-                name = 'name' + str(count)
-                percentage = 'percentage' + str(count)
-                status = 'status' + str(count)
-                etat_repartition.update({
-                    name : repartition.name,
-                    percentage : repartition.percentage,
-                    status : repartition.status
-                })
-            values.update(etat_repartition)
 
-        response = request.render("internship_management_module.portal_registration", values)
-        #response.headers['X-Frame-Options'] = 'DENY'
-        return response
+        # Préparation de la répartition existante (pour PM)
+        if partner.mode_registration == 'pm':
+            repartition_data = {}
+            for i, line in enumerate(partner.repartition_ids, start=1):
+                repartition_data.update({
+                    f'name{i}': line.name,
+                    f'percentage{i}': line.percentage,
+                    f'status{i}': line.status
+                })
+            values.update(repartition_data)
+
+        return request.render("internship_management_module.portal_registration", values)
 
         
     @route(['/registration/submit'], type='http', auth='public', website=True)
