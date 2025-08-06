@@ -243,6 +243,13 @@ class ResPartner(models.Model):
     # --------------------------------------------------------------------
     # FIELDS
     # --------------------------------------------------------------------
+    type_selection = fields.Selection([
+        ('a', "Inscription d'une personne morale par une PP inscrite"),
+        ('b', "PP salarié d’un cabinet inscrit"),
+        ('c', "PM + PP"),
+        ('d', "PP associée d’un cabinet inscrit"),
+        ('e', "PP individuelle"),
+    ], string="Type d'inscription")
     mandat_number = fields.Integer(string="Nombre de mandats")
     date_inscription = fields.Date(string="Date d'inscription")
     is_first_rejected = fields.Boolean(string='Premier rejet?', readonly=True)
