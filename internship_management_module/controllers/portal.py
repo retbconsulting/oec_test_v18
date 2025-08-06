@@ -56,7 +56,80 @@ class CustomerPortalCustom(CustomerPortal):
     DOCUMENT_FIELDS = ['lettre_demande_inscription', 'declaration_sur_honneur', 'actes_modificatifs', 'copie_bo_jal', 'actes_cession', 'statuts', 'copie_conforme_contrat', 'modele_7', 'attestation_radiation', 'attestation_assurance', 'attestation_inscription', 'bulletin_notification', 'copie_cheque', 'contrat_travail', 'copie_cin', 'engagement', 'attestation_inscription_membre', 'extrait_casier_judiciaire', 'extrait_acte_naissance', 'photographies_recentes', 'photocopie_diplome', 'attestation_equivalence', 'fiches_annuelles', 'attestation_fin_stage', 'fiche_generale_synthese', 'fiche_annuelle', 'copie_convention', 'certificat_residence', 'demande_inscription_societe', 'demande_inscription_salarie', 'avenant_contrat_travail', 'copie_contrat_bail', 'declaration_sur_honneur_societe', 'lettre_demande_inscription_societe']
     REGISTRATION_FIELDS = ['hours', 'mode_registration', 'name', 'second_name', 'sexe', 'cin_number', 'phone', 'fax', 'gsm', 'email', 'diplome', 'already_registred', 'raison_sociale', 'forme_juridique', 'siege_social', 'capital_social', 'effectif', 'identifiant_fiscal', 'taxe_professionnelle', 'conseil_regional'] + DOCUMENT_FIELDS
     REPARTITION_CAPITAL_SOCIAL_FIELDS = ['name', 'percentage']
+    DOCUMENT_REQUIREMENTS = {
+        # Documents communs à tous les modes
+        'common': [
+            'copie_cin',
+            'declaration_sur_honneur',
+            'photocopie_diplome'
+        ],
 
+        # Documents spécifiques par mode
+        'pp1': [
+            'extrait_casier_judiciaire',
+            'photographies_recentes',
+            'extrait_acte_naissance',
+            'demande_inscription_salarie',
+            'questionnaire'
+        ],
+
+        'pp2': [
+            'copie_cnie',
+            'extrait_casier_judiciaire',
+            'photographies_recentes',
+            'extrait_acte_naissance',
+            'engagement_prise_en_charge',
+            'attestation_inscription',
+            'bulletin_notification',
+            'attestation_assurance',
+            'actes_modificatifs',
+            'copie_bo_jal',
+            'modele_7',
+            'questionnaire'
+        ],
+
+        'pp3': [
+            'extrait_casier_judiciaire',
+            'photographies_recentes',
+            'extrait_acte_naissance',
+            'demande_inscription_salarie',
+            'engagement',
+            'lettre_demande_inscription',
+            'attestation_inscription',
+            'bulletin_notification',
+            'attestation_assurance',
+            'avenant_contrat_travail',
+            'modele_7',
+            'questionnaire'
+        ],
+
+        'pp4': [
+            'extrait_casier_judiciaire',
+            'photographies_recentes',
+            'extrait_acte_naissance',
+            'engagement',
+            'attestation_inscription',
+            'bulletin_notification',
+            'attestation_assurance',
+            'modele_7',
+            'questionnaire'
+        ],
+
+        'pm': [
+            'attestation_inscription',
+            'bulletin_notification',
+            'attestation_assurance',
+            'actes_modificatifs',
+            'copie_bo_jal',
+            'modele_7',
+            'contrat_travail',
+            'copie_conforme_contrat',
+            'attestation_inscription_membre',
+            'lettre_demande_inscription',
+            'statuts_mis_a_jour',
+            'questionnaire'
+        ]
+    }
     
     
     
@@ -247,101 +320,79 @@ class CustomerPortalCustom(CustomerPortal):
     def registration(self, redirect=None, **post):
         values = {}
         partner = request.env.user.partner_id
-        centers = request.env['operating.unit'].sudo().search([])
-        pays = request.env['res.country'].sudo().search([])
+        current_mode = partner.mode_registration or post.get('mode_registration')
 
         if post and request.httprequest.method == 'POST':
+            error_messages = []
+            partner_vals = {}
+            files = request.httprequest.files
+
             try:
-                partner_vals = {}
-                error_messages = []
-                files = request.httprequest.files
+                # 1. Traitement des champs de base
+                for field in self.REGISTRATION_FIELDS:
+                    if field in post:
+                        partner_vals[field] = post[field]
 
-                # 1. Traitement des fichiers obligatoires (seulement ceux avec required)
-                required_docs = [key for key in self.DOCUMENT_FIELDS
-                                 if request.httprequest.form.get(key + '_required') == 'true']
+                # 2. Déterminer les documents requis pour ce mode
+                required_docs = self.DOCUMENT_REQUIREMENTS.get('common', []) + \
+                                self.DOCUMENT_REQUIREMENTS.get(current_mode, [])
 
-                for field_name in required_docs:
-                    file = files.get(field_name)
-                    if not file or not file.filename:
-                        # Vérifie si le fichier existe déjà sur le partenaire
-                        if not getattr(partner, field_name, False):
-                            field_label = field_name.replace('_', ' ').capitalize()
-                            error_messages.append(f"Le document {field_label} est obligatoire")
-                    else:
-                        try:
-                            # Correction de l'erreur FileStorage
-                            file_data = file.read()
-                            if file_data:
-                                partner_vals.update({
-                                    field_name: base64.b64encode(file_data),
-                                    f'{field_name}_filename': file.filename
-                                })
-                        except Exception as e:
-                            error_messages.append(f"Erreur lors du traitement du fichier {field_name}")
-                            _logger.error("File processing error: %s", str(e))
+                # 3. Validation des documents requis
+                for doc_field in required_docs:
+                    # Vérifie si le fichier est fourni ou déjà existant
+                    file = files.get(doc_field)
+                    if (not file or not file.filename) and not getattr(partner, doc_field, False):
+                        field_label = doc_field.replace('_', ' ').capitalize()
+                        error_messages.append(f"Le document {field_label} est obligatoire")
 
-                if error_messages:
-                    values.update({'error_message': error_messages})
-                    raise ValidationError("\n".join(error_messages))
+                # 4. Validation des champs obligatoires communs
+                common_required = ['name', 'second_name', 'email', 'phone', 'cin_number']
+                for field in common_required:
+                    if not post.get(field):
+                        error_messages.append(f"Le champ {field.replace('_', ' ')} est obligatoire")
 
-                # 2. Traitement des fichiers non obligatoires
-                for field_name in set(self.DOCUMENT_FIELDS) - set(required_docs):
-                    file = files.get(field_name)
-                    if file and file.filename:
-                        try:
-                            file_data = file.read()
-                            if file_data:
-                                partner_vals.update({
-                                    field_name: base64.b64encode(file_data),
-                                    f'{field_name}_filename': file.filename
-                                })
-                        except Exception as e:
-                            _logger.warning("Failed to process optional file %s: %s", field_name, str(e))
-
-                # 3. Traitement de la répartition du capital (pour les PM)
-                if partner.mode_registration == 'pm':
+                # 5. Validation spécifique pour les personnes morales
+                if current_mode == 'pm':
+                    # Validation de la répartition du capital
+                    total_percent = 0
                     repartition_lines = []
-                    total_percent = 0.0
 
                     for i in range(1, 6):
                         name = post.get(f'name{i}')
-                        percentage = float(post.get(f'percentage{i}', 0))
-                        status = post.get(f'status{i}')
+                        percent = float(post.get(f'percentage{i}', 0))
 
-                        if name:  # Ne créer que les lignes avec un nom
+                        if name:  # Ligne remplie
                             repartition_lines.append((0, 0, {
                                 'name': name,
-                                'percentage': percentage,
-                                'status': status
+                                'percentage': percent,
+                                'status': post.get(f'status{i}')
                             }))
-                            total_percent += percentage
+                            total_percent += percent
 
-                    # Supprime anciennes lignes avant d'ajouter les nouvelles
-                    partner_vals['repartition_ids'] = [(5, 0, 0)] + repartition_lines
-
-                    # Validation somme des pourcentages
                     if abs(total_percent - 100) > 0.01 and repartition_lines:
                         error_messages.append("La somme des pourcentages doit faire exactement 100%")
 
-                # 4. Traitement des autres champs
-                for field in self.REGISTRATION_FIELDS:
-                    if field in post:
-                        # Conversion pour les champs spécifiques
-                        if field == 'conseil_regional':
-                            try:
-                                partner_vals[field] = int(post[field]) if post[field] else False
-                            except (ValueError, TypeError):
-                                partner_vals[field] = False
-                        else:
-                            partner_vals[field] = post[field]
+                    partner_vals['repartition_ids'] = [(5, 0, 0)] + repartition_lines
 
-                # 5. Traitement photo profil
+                if error_messages:
+                    values['error_message'] = error_messages
+                    raise ValidationError("\n".join(error_messages))
+
+                # 6. Traitement des fichiers
+                for doc_field in self.DOCUMENT_FIELDS:
+                    if doc_field in files:
+                        file = files[doc_field]
+                        if file and file.filename:
+                            partner_vals[doc_field] = base64.b64encode(file.read())
+                            partner_vals[f'{doc_field}_filename'] = file.filename
+
+                # 7. Gestion de la photo de profil
                 if 'photographies_recentes' in files:
                     file = files['photographies_recentes']
                     if file and file.filename:
                         partner_vals['image_1920'] = base64.b64encode(file.read())
 
-                # 6. Traitement fichiers multiples (autres_fichiers)
+                # 8. Traitement des fichiers supplémentaires
                 if 'autres_fichiers' in files:
                     for fichier in files.getlist('autres_fichiers'):
                         if fichier and fichier.filename:
@@ -354,55 +405,46 @@ class CustomerPortalCustom(CustomerPortal):
                             except Exception as e:
                                 _logger.warning("Failed to process additional file: %s", str(e))
 
-                # 7. Mise à jour du type de contact
-                contact_type = request.env['res.partner.type'].sudo().search([('code', '=', 'TEC')], limit=1)
-                if contact_type:
-                    partner_vals.update({
-                        'contact_type_id': contact_type.id,
-                        'contact_type': contact_type.id
-                    })
-
-                # 8. Mise à jour du partenaire
+                # 9. Mise à jour du partenaire
                 partner.write(partner_vals)
 
-                # 9. Gestion des actions spécifiques
-                action = post.get("action")
-                if action == "accept":
-                    partner.status_register = "registered"
-                elif action == "reject":
-                    partner.status_register = "rejected"
-                elif action == "submit":
-                    partner.button_in_progress()
+                # 10. Gestion de la soumission
+                if 'submit' in post:
+                    # Vérification supplémentaire avant soumission
+                    missing_docs = [
+                        doc for doc in required_docs
+                        if not getattr(partner, doc, False)
+                    ]
 
-                # Redirection après succès
-                return request.redirect('/registration?success=1')
+                    if missing_docs:
+                        error_messages = [f"Documents manquants pour soumission: {', '.join(missing_docs)}"]
+                        values['error_message'] = error_messages
+                        raise ValidationError("\n".join(error_messages))
+
+                    # Validation de la checkbox
+                    if not post.get('declaration_honneur'):
+                        error_messages.append("Vous devez accepter la déclaration sur l'honneur")
+                        values['error_message'] = error_messages
+                        raise ValidationError("\n".join(error_messages))
+
+                    partner.button_in_progress()
+                    return request.redirect('/registration?submitted=1')
+
+                return request.redirect('/registration?saved=1')
 
             except ValidationError as e:
                 values['error_message'] = str(e).split('\n')
             except Exception as e:
-                values['error_message'] = [f"Une erreur technique est survenue. Veuillez réessayer."]
+                values['error_message'] = ["Une erreur technique est survenue"]
                 _logger.error("Registration error: %s", str(e), exc_info=True)
 
         # Préparation des valeurs pour le template
         values.update({
+            'partner': partner,
             'register_types': partner._fields['contact_registration_mode'].selection,
             'type_selection': partner._fields['contact_registration_type'].selection,
-            'centers': centers,
-            'payss': pays,
-            'partner': partner,
-            'error': {}
+            'error': values.get('error', {})
         })
-
-        # Préparation de la répartition existante (pour PM)
-        if partner.mode_registration == 'pm':
-            repartition_data = {}
-            for i, line in enumerate(partner.repartition_ids, start=1):
-                repartition_data.update({
-                    f'name{i}': line.name,
-                    f'percentage{i}': line.percentage,
-                    f'status{i}': line.status
-                })
-            values.update(repartition_data)
 
         return request.render("internship_management_module.portal_registration", values)
 
