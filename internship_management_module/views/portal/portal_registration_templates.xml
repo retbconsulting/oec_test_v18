@@ -2744,7 +2744,6 @@
     };
 
     const requiredDocs = requiredDocsByMode[mode] || [];
-
     let errors = [];
 
     // V&amp;eacute;rification des champs communs obligatoires
@@ -2771,29 +2770,74 @@
     });
 
     // V&amp;eacute;rification de la checkbox
-    if (!document.querySelector('input[name="declaration_honneur"]').checked) {
+    const declarationCheckbox = document.querySelector('input[name="declaration_honneur"]');
+    if (!declarationCheckbox || !declarationCheckbox.checked) {
         errors.push("Vous devez accepter la d&amp;eacute;claration sur l'honneur");
     }
 
-    // Validation sp&amp;eacute;cifique pour les PM (r&amp;eacute;partition du capital)
+    // Validation sp&amp;eacute;cifique pour les PM (r&amp;eacute;partition du capital) - VERSION CORRIG&amp;Eacute;E
     if (mode === 'pm') {
         let totalPercent = 0;
         let atLeastOneFilled = false;
+        let associesDetails = [];
 
         for (let i = 1; i &lt;= 5; i++) {
-            const name = document.querySelector(`input[name="name${i}"]`)?.value.trim();
-            const percent = parseFloat(document.querySelector(`input[name="percentage${i}"]`)?.value) || 0;
+            const nameInput = document.querySelector(`input[name="name${i}"]`);
+            const percentInput = document.querySelector(`input[name="percentage${i}"]`);
 
-            if (name) {
+            const name = nameInput ? nameInput.value.trim() : '';
+            const percentValue = percentInput ? percentInput.value.trim() : '';
+
+            console.log(`Associ&amp;eacute; ${i}: nom="${name}", pourcentage="${percentValue}"`); // Debug
+
+            if (name || percentValue) {
                 atLeastOneFilled = true;
+
+                // V&amp;eacute;rifier que si un nom est rempli, le pourcentage l'est aussi et vice versa
+                if (name &amp;&amp; !percentValue) {
+                    errors.push(`Le pourcentage pour l'associ&amp;eacute; "${name}" est manquant`);
+                    continue;
+                }
+                if (!name &amp;&amp; percentValue) {
+                    errors.push(`Le nom pour le pourcentage ${percentValue}% est manquant`);
+                    continue;
+                }
+
+                // Conversion et validation du pourcentage
+                const percent = parseFloat(percentValue.replace(',', '.')); // G&amp;eacute;rer les virgules
+
+                if (isNaN(percent)) {
+                    errors.push(`Le pourcentage pour l'associ&amp;eacute; "${name}" n'est pas un nombre valide`);
+                    continue;
+                }
+
+                if (percent &lt;= 0) {
+                    errors.push(`Le pourcentage pour l'associ&amp;eacute; "${name}" doit &amp;ecirc;tre sup&amp;eacute;rieur &amp;agrave; 0`);
+                    continue;
+                }
+
+                if (percent &gt; 100) {
+                    errors.push(`Le pourcentage pour l'associ&amp;eacute; "${name}" ne peut pas d&amp;eacute;passer 100%`);
+                    continue;
+                }
+
                 totalPercent += percent;
+                associesDetails.push({nom: name, pourcentage: percent});
             }
         }
 
+        console.log(`Total calcul&amp;eacute;: ${totalPercent}%`); // Debug
+        console.log('Associ&amp;eacute;s:', associesDetails); // Debug
+
         if (!atLeastOneFilled) {
             errors.push("Veuillez remplir au moins un associ&amp;eacute;");
-        } else if (Math.abs(totalPercent - 100) &gt; 0.01) {
-            errors.push(`La somme des pourcentages doit faire exactement 100% (actuellement: ${totalPercent.toFixed(2)}%)`);
+        } else {
+            // V&amp;eacute;rification plus robuste de la somme
+            const roundedTotal = Math.round(totalPercent * 100) / 100; // Arrondi &amp;agrave; 2 d&amp;eacute;cimales
+
+            if (Math.abs(roundedTotal - 100) &gt; 0.01) {
+                errors.push(`La somme des pourcentages doit faire exactement 100% (actuellement: ${roundedTotal.toFixed(2)}%)`);
+            }
         }
     }
 
