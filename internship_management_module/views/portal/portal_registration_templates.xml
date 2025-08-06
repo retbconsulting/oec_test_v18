@@ -376,99 +376,103 @@
         </t>
     </template>
 
-    <template id="portal_inscription_submit" >
-         <t t-call="portal.portal_layout">
-             <div class="container mt-4 mb-5">
-                 <div class="card">
-                     <div class="card-header bg-primary text-white">
-                         <h3 class="mb-0">Confirmation de votre demande d'inscription</h3>
-                     </div>
+    <template id="portal_inscription_submit">
+        <t t-call="portal.portal_layout">
+            <div class="container mt-4 mb-5">
+                <div class="card">
+                    <div class="card-header bg-primary text-white">
+                        <h3 class="mb-0">Confirmation de votre demande d'inscription</h3>
+                    </div>
 
-                     <div class="card-body">
-                         <div class="row">
-                             <div class="col-md-6">
-                                 <h4 class="text-primary">Informations personnelles</h4>
-                                 <div class="form-group row">
-                                     <label class="col-sm-4 col-form-label">Nom:</label>
-                                     <div class="col-sm-8">
-                                         <p class="form-control-plaintext" t-esc="name"/>
-                                     </div>
-                                 </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h4 class="text-primary">Informations personnelles</h4>
+                                <div class="form-group row">
+                                    <label class="col-sm-4 col-form-label">Nom:</label>
+                                    <div class="col-sm-8">
+                                        <p class="form-control-plaintext" t-esc="name"/>
+                                    </div>
+                                </div>
 
-                                 <div class="form-group row">
-                                     <label class="col-sm-4 col-form-label">Prénom:</label>
-                                     <div class="col-sm-8">
-                                         <p class="form-control-plaintext" t-esc="prenom"/>
-                                     </div>
-                                 </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-4 col-form-label">Prénom:</label>
+                                    <div class="col-sm-8">
+                                        <p class="form-control-plaintext" t-esc="prenom"/>
+                                    </div>
+                                </div>
 
-                                 <div class="form-group row">
-                                     <label class="col-sm-4 col-form-label">Email:</label>
-                                     <div class="col-sm-8">
-                                         <p class="form-control-plaintext" t-esc="email"/>
-                                     </div>
-                                 </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-4 col-form-label">Email:</label>
+                                    <div class="col-sm-8">
+                                        <p class="form-control-plaintext" t-esc="email"/>
+                                    </div>
+                                </div>
 
-                                 <div class="form-group row">
-                                     <label class="col-sm-4 col-form-label">Mode d'inscription:</label>
-                                     <div class="col-sm-8">
-                                         <p class="form-control-plaintext" t-esc="mode"/>
-                                     </div>
-                                 </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-4 col-form-label">Mode d'inscription:</label>
+                                    <div class="col-sm-8">
+                                        <p class="form-control-plaintext" t-esc="mode"/>
+                                    </div>
+                                </div>
 
-                                 <div t-if="type_selection" class="form-group row">
-                                     <label class="col-sm-4 col-form-label">Type de sélection:</label>
-                                     <div class="col-sm-8">
-                                         <p class="form-control-plaintext" t-esc="type_selection"/>
-                                     </div>
-                                 </div>
+                                <div t-if="type_selection" class="form-group row">
+                                    <label class="col-sm-4 col-form-label">Type de sélection:</label>
+                                    <div class="col-sm-8">
+                                        <p class="form-control-plaintext" t-esc="type_selection"/>
+                                    </div>
+                                </div>
 
-                                 <div t-if="show_pp_rattache and pp_rattache" class="form-group row">
-                                     <label class="col-sm-4 col-form-label">Rattaché à:</label>
-                                     <div class="col-sm-8">
-                                         <p class="form-control-plaintext" t-esc="pp_rattache"/>
-                                     </div>
-                                 </div>
-                             </div>
+                                <div t-if="show_pp_rattache and pp_rattache" class="form-group row">
+                                    <label class="col-sm-4 col-form-label">Rattaché à:</label>
+                                    <div class="col-sm-8">
+                                        <p class="form-control-plaintext" t-esc="pp_rattache"/>
+                                    </div>
+                                </div>
+                            </div>
 
-                             <div class="col-md-6">
-                                 <h4 class="text-primary">Documents joints</h4>
+                            <div class="col-md-6">
+                                <h4 class="text-primary">Documents joints</h4>
 
-                                 <div t-if="has_copie_cin" class="form-group">
-                                     <label>Copie CIN:</label>
-                                     <div>
-                                         <a href="/download/document?doc_type=cin" class="btn btn-outline-primary">
-                                             <i class="fa fa-download mr-2"/> Télécharger
-                                         </a>
-                                     </div>
-                                 </div>
+                                <div t-if="has_copie_cin" class="form-group">
+                                    <label>Copie CIN:</label>
+                                    <div>
+                                        <a href="/download/document?doc_type=cin" class="btn btn-outline-primary">
+                                            <i class="fa fa-download mr-2"/>
+                                            Télécharger
+                                        </a>
+                                    </div>
+                                </div>
 
-                                 <div t-if="has_diplome" class="form-group">
-                                     <label>Diplôme:</label>
-                                     <div>
-                                         <a href="/download/document?doc_type=diplome" class="btn btn-outline-primary">
-                                             <i class="fa fa-download mr-2"/> Télécharger
-                                         </a>
-                                     </div>
-                                 </div>
-                             </div>
-                         </div>
+                                <div t-if="has_diplome" class="form-group">
+                                    <label>Diplôme:</label>
+                                    <div>
+                                        <a href="/download/document?doc_type=diplome" class="btn btn-outline-primary">
+                                            <i class="fa fa-download mr-2"/>
+                                            Télécharger
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
-                         <div class="text-center mt-4">
-                             <form method="post">
-                                 <button type="submit" name="confirm" class="btn btn-primary mr-3">
-                                     <i class="fa fa-check mr-2"/> Confirmer l'inscription
-                                 </button>
-                                 <a href="/demande-inscription" class="btn btn-secondary">
-                                     <i class="fa fa-edit mr-2"/> Modifier
-                                 </a>
-                             </form>
-                         </div>
-                     </div>
-                 </div>
-             </div>
-         </t>
- </template>
+                        <div class="text-center mt-4">
+                            <form method="post">
+                                <button type="submit" name="confirm" class="btn btn-primary mr-3">
+                                    <i class="fa fa-check mr-2"/>
+                                    Confirmer l'inscription
+                                </button>
+                                <a href="/demande-inscription" class="btn btn-secondary">
+                                    <i class="fa fa-edit mr-2"/>
+                                    Modifier
+                                </a>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
 
     <template id="portal_registration">
         <t t-call="portal.portal_layout">
@@ -991,7 +995,8 @@
                                 <div class="row">
                                     <div t-attf-class="form-group col-xl-6" data-type="binary">
                                         <label class="col-form-label" for="copie_cin">
-                                                Une photocopie certifiée conforme de la CNIE
+                                            Une photocopie certifiée conforme de la CNIE
+                                            <span class="text-danger">*</span>
                                             <span t-if="partner.copie_cin" style="color:blue">(Document déjà chargé)
                                             </span>
                                         </label>
@@ -1001,15 +1006,18 @@
                                                name="copie_cin" class="file"
                                                data-show-upload="true" data-show-caption="true"
                                                data-show-preview="true"
-                                               t-att-readonly="None if partner.status_register=='draft' else '1'"/>
+                                               t-att-readonly="None if partner.status_register=='draft' else '1'"
+                                               required="required"/>
                                     </div>
                                     <t t-if="partner.mode_registration in ['pp2']">
                                         <div t-attf-class="form-group col-xl-6" data-type="binary">
                                             <label class="col-form-label" for="copie_cnie">
 
                                                 Copie de la CNIE pour le ou les associés
+                                                <span class="text-danger">*</span>
 
-                                                <span t-if="partner.copie_cnie" style="color:blue">(Document déjà chargé)
+                                                <span t-if="partner.copie_cnie" style="color:blue">(Document déjà
+                                                    chargé)
                                                 </span>
                                             </label>
                                             <br/>
@@ -1018,7 +1026,8 @@
                                                    name="copie_cnie" class="file"
                                                    data-show-upload="true" data-show-caption="true"
                                                    data-show-preview="true"
-                                                   t-att-readonly="None if partner.status_register=='draft' else '1'"/>
+                                                   t-att-readonly="None if partner.status_register=='draft' else '1'"
+                                                   required="required"/>
                                         </div>
                                     </t>
                                     <t t-if="partner.mode_registration in ['pp3','pp1','pp2','pp4']">
@@ -1028,6 +1037,7 @@
                                                 moins de
                                                 trois
                                                 mois
+                                                <span class="text-danger">*</span>
                                                 <span t-if="partner.extrait_casier_judiciaire" style="color:blue">
                                                     (Document
                                                     déjà chargé)
@@ -1039,13 +1049,16 @@
                                                    name="extrait_casier_judiciaire"
                                                    class="file" data-show-upload="true" data-show-caption="true"
                                                    data-show-preview="true"
-                                                   t-att-readonly="None if partner.status_register=='draft' else '1'"/>
+                                                   t-att-readonly="None if partner.status_register=='draft' else '1'"
+                                                   required="required"
+                                            />
                                         </div>
                                     </t>
                                     <t t-if="partner.mode_registration in ['pp3','pp1','pp2','pp4']">
                                         <div t-attf-class="form-group col-xl-6" data-type="binary">
                                             <label class="col-form-label" for="photographies_recentes">
                                                 Trois photographies récentes du candidat
+                                                <span class="text-danger">*</span>
                                                 <span t-if="partner.photographies_recentes" style="color:blue">(Document
                                                     déjà chargé)
                                                 </span>
@@ -1056,7 +1069,8 @@
                                                    name="photographies_recentes"
                                                    class="file" data-show-upload="true" data-show-caption="true"
                                                    data-show-preview="true"
-                                                   t-att-readonly="None if partner.status_register=='draft' else '1'"/>
+                                                   t-att-readonly="None if partner.status_register=='draft' else '1'"
+                                                   required="required"/>
                                         </div>
                                     </t>
                                     <!--<t t-if="partner.mode_registration in ['pp']">
@@ -1082,7 +1096,7 @@
                                         <div t-attf-class="form-group col-xl-6" data-type="binary">
                                             <label class="col-form-label" for="extrait_acte_naissance">
                                                 Un extrait d’acte de naissance datant de moins de trois mois
-                                                (Recto/Verso)
+                                                <span class="text-danger">*</span>
                                                 <span t-if="partner.extrait_acte_naissance" style="color:blue">(Document
                                                     déjà chargé)
                                                 </span>
@@ -1093,7 +1107,8 @@
                                                    name="extrait_acte_naissance"
                                                    class="file" data-show-upload="true" data-show-caption="true"
                                                    data-show-preview="true"
-                                                   t-att-readonly="None if partner.status_register=='draft' else '1'"/>
+                                                   t-att-readonly="None if partner.status_register=='draft' else '1'"
+                                                   required="required"/>
                                         </div>
                                     </t>
                                 </div>
@@ -1111,12 +1126,22 @@
                                     <div t-attf-class="form-group col-xl-6" data-type="binary">
                                         <label class="col-form-label" for="declaration_sur_honneur">
                                             Déclaration sur l’honneur
+                                            <span class="text-danger">*</span>
                                             <span t-if="partner.declaration_sur_honneur" style="color:blue">
                                                 (Document déjà chargé)
                                             </span>
                                         </label>
 
-                                        <!-- ✅ Lien de téléchargement si le fichier existe -->
+                                        <!-- 🔗 Modèle à télécharger -->
+                                        <div>
+                                            <a href="/internship_management_module/static/src/documents/Modèle - Déclaration sur l'honneur.docx"
+                                               target="_blank"
+                                               class="btn btn-outline-info btn-sm mb-2">
+                                                📄 Télécharger le modèle (.docx)
+                                            </a>
+                                        </div>
+
+                                        <!-- ✅ Fichier déjà chargé -->
                                         <t t-if="partner.declaration_sur_honneur">
                                             <a t-att-href="'/web/content/res.partner/%s/declaration_sur_honneur?download=true' % partner.id"
                                                target="_blank"
@@ -1127,7 +1152,7 @@
 
                                         <br/>
 
-                                        <!-- Champ de chargement -->
+                                        <!-- 📤 Champ de chargement -->
                                         <input t-att-disabled="partner.status_register == 'in_progress'"
                                                id="upload"
                                                type="file"
@@ -1136,66 +1161,129 @@
                                                data-show-upload="true"
                                                data-show-caption="true"
                                                data-show-preview="true"
-                                               t-att-readonly="None if partner.status_register=='draft' else '1'"/>
+                                               t-att-readonly="None if partner.status_register=='draft' else '1'"
+                                               required="required"/>
                                     </div>
+
                                     <t t-if="partner.mode_registration in ['pp3','pm','pp1','pp2','pp4']">
                                         <div t-attf-class="form-group col-xl-6" data-type="binary">
                                             <label class="col-form-label" for="questionnaire">
                                                 Questionnaire dûment rempli, daté et signé
+                                                <span class="text-danger">*</span>
                                                 <span t-if="partner.questionnaire" style="color:blue">
                                                     (Document déjà chargé)
                                                 </span>
                                             </label>
+
+                                            <!-- 🔗 Lien vers le modèle du questionnaire -->
+                                            <div>
+                                                <a href="/internship_management_module/static/src/documents/Questionnaire.rtf.doc"
+                                                   target="_blank"
+                                                   class="btn btn-outline-info btn-sm mb-2">
+                                                    📄 Télécharger le modèle du questionnaire (.docx)
+                                                </a>
+                                            </div>
+
                                             <br/>
+
+                                            <!-- 📤 Champ de chargement -->
                                             <input t-att-disabled="partner.status_register == 'in_progress'"
                                                    id="questionnaire"
-                                                   type="file" name="questionnaire"
-                                                   class="file" data-show-upload="true" data-show-caption="true"
+                                                   type="file"
+                                                   name="questionnaire"
+                                                   class="file"
+                                                   data-show-upload="true"
+                                                   data-show-caption="true"
                                                    data-show-preview="true"
-                                                   t-att-readonly="None if partner.status_register=='draft' else '1'"/>
+                                                   t-att-readonly="None if partner.status_register=='draft' else '1'"
+                                                   required="required"/>
                                         </div>
+
                                     </t>
                                     <t t-if="partner.mode_registration in ['pp3','pp1']">
                                         <div t-attf-class="form-group col-xl-6" data-type="binary">
                                             <label class="col-form-label" for="demande_inscription_salarie">
                                                 <t t-if="partner.mode_registration in ['pp3']">
-                                                    Lettre de demande d’inscription à l’Ordre, daté et signée par le
+                                                    Lettre de demande d’inscription à l’Ordre, datée et signée par le
                                                     salarié
                                                 </t>
                                                 <t t-if="partner.mode_registration in ['pp1']">
                                                     Lettre de demande d’inscription à l’Ordre
                                                 </t>
+                                                <span class="text-danger">*</span>
                                                 <span t-if="partner.demande_inscription_salarie" style="color:blue">
-                                                    (Document
-                                                    déjà chargé)
+                                                    (Document déjà chargé)
                                                 </span>
                                             </label>
+
+                                            <!-- 🔗 Lien vers le bon modèle selon le mode d'inscription -->
+                                            <div>
+                                                <t t-if="partner.mode_registration == 'pp3'">
+                                                    <a href="/internship_management_module/static/src/documents/Modèle - Demande d'inscription PP.docx"
+                                                       target="_blank"
+                                                       class="btn btn-outline-info btn-sm mb-2">
+                                                        📄 Télécharger le modèle de lettre (.docx) pour salarié
+                                                    </a>
+                                                </t>
+                                                <t t-if="partner.mode_registration == 'pp1'">
+                                                    <a href="/internship_management_module/static/src/documents/Modèle - Demande d'inscription PP.docx"
+                                                       target="_blank"
+                                                       class="btn btn-outline-info btn-sm mb-2">
+                                                        📄 Télécharger le modèle de lettre (.docx)
+                                                    </a>
+                                                </t>
+                                            </div>
+
                                             <br/>
-                                            <input t-att-disabled="partner.status_register == 'in_progress'" id="upload"
-                                                   type="file" name="demande_inscription_salarie"
-                                                   class="file" data-show-upload="true" data-show-caption="true"
+
+                                            <!-- 📤 Champ d’upload -->
+                                            <input t-att-disabled="partner.status_register == 'in_progress'"
+                                                   id="upload"
+                                                   type="file"
+                                                   name="demande_inscription_salarie"
+                                                   class="file"
+                                                   data-show-upload="true"
+                                                   data-show-caption="true"
                                                    data-show-preview="true"
-                                                   t-att-readonly="None if partner.status_register=='draft' else '1'"/>
+                                                   t-att-readonly="None if partner.status_register=='draft' else '1'"
+                                                   required="required"/>
                                         </div>
+
                                     </t>
                                     <t t-if="partner.mode_registration in ['pp3','pp4']">
                                         <div t-attf-class="form-group col-xl-6" data-type="binary">
                                             <label class="col-form-label" for="engagement">
                                                 Engagement de la société de prendre en charge tout membre de l'ordre
-                                                salarié de
-                                                société
+                                                salarié de la société
                                                 <span t-if="partner.engagement" style="color:blue">(Document déjà
                                                     chargé)
                                                 </span>
                                             </label>
+
+                                            <!-- 🔗 Lien vers le modèle de document -->
+                                            <div>
+                                                <a href="/internship_management_module/static/src/documents/Modèle - Engagement.docx"
+                                                   target="_blank"
+                                                   class="btn btn-outline-info btn-sm mb-2">
+                                                    📄 Télécharger le modèle d'engagement de la société (.docx)
+                                                </a>
+                                            </div>
+
                                             <br/>
-                                            <input t-att-disabled="partner.status_register == 'in_progress'" id="upload"
+
+                                            <!-- 📤 Champ d’upload -->
+                                            <input t-att-disabled="partner.status_register == 'in_progress'"
+                                                   id="upload"
                                                    type="file"
-                                                   name="engagement" class="file"
-                                                   data-show-upload="true" data-show-caption="true"
+                                                   name="engagement"
+                                                   class="file"
+                                                   data-show-upload="true"
+                                                   data-show-caption="true"
                                                    data-show-preview="true"
-                                                   t-att-readonly="None if partner.status_register=='draft' else '1'"/>
+                                                   t-att-readonly="None if partner.status_register=='draft' else '1'"
+                                                   required="required"/>
                                         </div>
+
                                     </t>
                                     <t t-if="partner.mode_registration in ['pp3']">
                                         <div t-attf-class="form-group col-xl-6" data-type="binary">
@@ -1213,7 +1301,8 @@
                                                    name="lettre_demande_inscription"
                                                    class="file" data-show-upload="true" data-show-caption="true"
                                                    data-show-preview="true"
-                                                   t-att-readonly="None if partner.status_register=='draft' else '1'"/>
+                                                   t-att-readonly="None if partner.status_register=='draft' else '1'"
+                                                   required="required"/>
                                         </div>
                                     </t>
                                     <t t-if="partner.mode_registration in ['pp2','pp1']">
@@ -1225,14 +1314,30 @@
                                                     (Document déjà chargé)
                                                 </span>
                                             </label>
+
+                                            <!-- 🔗 Lien vers le modèle de l'engagement -->
+                                            <div>
+                                                <a href="/internship_management_module/static/src/documents/Modèle - Engagement.docx"
+                                                   target="_blank"
+                                                   class="btn btn-outline-info btn-sm mb-2">
+                                                    📄 Télécharger le modèle d'engagement (.docx)
+                                                </a>
+                                            </div>
+
                                             <br/>
+
+                                            <!-- 📤 Champ de chargement -->
                                             <input t-att-disabled="partner.status_register == 'in_progress'"
-                                                   id="engagement_prise_en_charge" type="file"
+                                                   id="engagement_prise_en_charge"
+                                                   type="file"
                                                    name="engagement_prise_en_charge"
-                                                   class="file" data-show-upload="true" data-show-caption="true"
+                                                   class="file"
+                                                   data-show-upload="true"
+                                                   data-show-caption="true"
                                                    data-show-preview="true"
                                                    t-att-readonly="None if partner.status_register=='draft' else '1'"/>
                                         </div>
+
                                     </t>
                                 </div>
                             </div>
@@ -1252,6 +1357,7 @@
                                                 Une photocopie du diplôme national d’Expert-Comptable ou d’un diplôme
                                                 reconnu
                                                 équivalent, signé et cacheté (certifiée conforme à l’original)
+                                                <span class="text-danger">*</span>
                                                 <span t-if="partner.photocopie_diplome" style="color:blue">(Document
                                                     déjà chargé)
                                                 </span>
@@ -1262,13 +1368,15 @@
                                                    name="photocopie_diplome"
                                                    class="file" data-show-upload="true" data-show-caption="true"
                                                    data-show-preview="true"
-                                                   t-att-readonly="None if partner.status_register=='draft' else '1'"/>
+                                                   t-att-readonly="None if partner.status_register=='draft' else '1'"
+                                                   required="required"/>
                                         </div>
                                     </t>
                                     <t t-if="partner.mode_registration not in ['pm']">
                                         <div t-attf-class="form-group col-xl-6" data-type="binary">
                                             <label class="col-form-label" for="fiches_annuelles">
-                                                Trois Fiches annuelles de stage, pour le diplôme français (Recto/Verso)
+                                                Trois Fiches annuelles de stage, pour les diplômes étrangers
+                                                (Recto/Verso)
                                                 <span t-if="partner.fiches_annuelles" style="color:blue">(Document
                                                     déjà chargé)
                                                 </span>
@@ -1285,7 +1393,7 @@
                                     <t t-if="partner.mode_registration in ['pp3','pp1','pp2','pp4']">
                                         <div t-attf-class="form-group col-xl-6" data-type="binary">
                                             <label class="col-form-label" for="attestation_fin_stage">
-                                                L'attestation de fin de stage, pour le diplôme étrangers
+                                                L'attestation de fin de stage, pour les diplôme étrangers
                                                 <span t-if="partner.attestation_fin_stage" style="color:blue">(Document
                                                     déjà chargé)
                                                 </span>
@@ -1302,7 +1410,7 @@
                                     <t t-if="partner.mode_registration in ['pp3','pp1','pp2','pp4']">
                                         <div t-attf-class="form-group col-xl-6" data-type="binary">
                                             <label class="col-form-label" for="fiche_generale_synthese">
-                                                La fiche générale de synthèse, pour le diplôme étrangers
+                                                La fiche générale de synthèse, pour les diplôme étrangers
                                                 <span t-if="partner.fiche_generale_synthese" style="color:blue">
                                                     (Document
                                                     déjà chargé)
@@ -1320,7 +1428,7 @@
                                     <t t-if="partner.mode_registration in ['pp3','pp1','pp2','pp4']">
                                         <div t-attf-class="form-group col-xl-6" data-type="binary">
                                             <label class="col-form-label" for="fiche_annuelle">
-                                                Les 03 Fiches annuelles de stage, pour le diplôme étrangers
+                                                Les 03 Fiches annuelles de stage, pour les diplôme étrangers
                                                 <span t-if="partner.fiche_annuelle" style="color:blue">(Document
                                                     déjà chargé)
                                                 </span>
@@ -1439,12 +1547,14 @@
                                         <div t-attf-class="form-group col-xl-6" data-type="binary">
                                             <label class="col-form-label" for="attestation_inscription">
                                                 <t t-if="partner.mode_registration in ['pp3']">
-                                                Attestation d'inscription à la Taxe Professionnelle, au nom du cabinet
-                                                (datant de moins de trois mois)
+                                                    Attestation d'inscription à la Taxe Professionnelle, au nom du
+                                                    cabinet
+                                                    (datant de moins de trois mois)
                                                 </t>
                                                 <t t-if="partner.mode_registration in ['pm']">
-                                                Attestation d'inscription à la Taxe Professionnelle
+                                                    Attestation d'inscription à la Taxe Professionnelle
                                                 </t>
+                                                <span class="text-danger">*</span>
                                                 <span t-if="partner.attestation_inscription" style="color:blue">
                                                     (Document
                                                     déjà chargé)
@@ -1456,7 +1566,8 @@
                                                    name="attestation_inscription"
                                                    class="file" data-show-upload="true" data-show-caption="true"
                                                    data-show-preview="true"
-                                                   t-att-readonly="None if partner.status_register=='draft' else '1'"/>
+                                                   t-att-readonly="None if partner.status_register=='draft' else '1'"
+                                                   required="required"/>
                                         </div>
                                     </t>
                                     <t t-if="partner.mode_registration in ['pp2','pp1','pp4']">
@@ -1464,6 +1575,7 @@
                                             <label class="col-form-label" for="attestation_inscription">
                                                 Attestation d'inscription à la Taxe Professionnelle (datant de moins de
                                                 trois mois)
+                                                <span class="text-danger">*</span>
                                                 <span t-if="partner.attestation_inscription" style="color:blue">
                                                     (Document
                                                     déjà chargé)
@@ -1475,16 +1587,18 @@
                                                    name="attestation_inscription"
                                                    class="file" data-show-upload="true" data-show-caption="true"
                                                    data-show-preview="true"
-                                                   t-att-readonly="None if partner.status_register=='draft' else '1'"/>
+                                                   t-att-readonly="None if partner.status_register=='draft' else '1'"
+                                                   required="required"/>
                                         </div>
                                     </t>
                                     <t t-if="partner.mode_registration in ['pp2','pp1']">
                                         <div t-attf-class="form-group col-xl-6" data-type="binary">
                                             <label class="col-form-label" for="copie_contrat_bail">
-                                                Une copie certifiée du contrat de bail certifiée conforme ou certificat
+                                                Une copie certifiée du contrat de bail conforme ou certificat
                                                 de
                                                 propriété
                                                 du siège social
+                                                <span class="text-danger">*</span>
                                                 <span t-if="partner.copie_contrat_bail" style="color:blue">(Document
                                                     déjà chargé)
                                                 </span>
@@ -1495,7 +1609,8 @@
                                                    name="copie_contrat_bail"
                                                    class="file" data-show-upload="true" data-show-caption="true"
                                                    data-show-preview="true"
-                                                   t-att-readonly="None if partner.status_register=='draft' else '1'"/>
+                                                   t-att-readonly="None if partner.status_register=='draft' else '1'"
+                                                   required="required"/>
                                         </div>
                                     </t>
                                     <t t-if="partner.mode_registration in ['pp3']">
@@ -1513,13 +1628,15 @@
                                                    name="bulletin_notification"
                                                    class="file" data-show-upload="true" data-show-caption="true"
                                                    data-show-preview="true"
-                                                   t-att-readonly="None if partner.status_register=='draft' else '1'"/>
+                                                   t-att-readonly="None if partner.status_register=='draft' else '1'"
+                                                   required="required"/>
                                         </div>
                                     </t>
                                     <t t-if="partner.mode_registration in ['pm']">
                                         <div t-attf-class="form-group col-xl-6" data-type="binary">
                                             <label class="col-form-label" for="bulletin_notification">
                                                 Bulletin de notification de l’Identifiant Fiscal
+                                                <span class="text-danger">*</span>
                                                 <span t-if="partner.bulletin_notification" style="color:blue">(Document
                                                     déjà chargé)
                                                 </span>
@@ -1530,7 +1647,8 @@
                                                    name="bulletin_notification"
                                                    class="file" data-show-upload="true" data-show-caption="true"
                                                    data-show-preview="true"
-                                                   t-att-readonly="None if partner.status_register=='draft' else '1'"/>
+                                                   t-att-readonly="None if partner.status_register=='draft' else '1'"
+                                                   required="required"/>
                                         </div>
                                     </t>
                                     <t t-if="partner.mode_registration in ['pp2','pp1','pp4']">
@@ -1538,6 +1656,7 @@
                                             <label class="col-form-label" for="bulletin_notification">
                                                 Bulletin de notification de l’Identifiant Fiscal
                                                 (datant de moins de trois mois)
+                                                <span class="text-danger">*</span>
                                                 <span t-if="partner.bulletin_notification" style="color:blue">(Document
                                                     déjà chargé)
                                                 </span>
@@ -1548,7 +1667,8 @@
                                                    name="bulletin_notification"
                                                    class="file" data-show-upload="true" data-show-caption="true"
                                                    data-show-preview="true"
-                                                   t-att-readonly="None if partner.status_register=='draft' else '1'"/>
+                                                   t-att-readonly="None if partner.status_register=='draft' else '1'"
+                                                   required="required"/>
                                         </div>
                                     </t>
                                     <t t-if="partner.mode_registration in ['pp3','pm','pp2','pp1','pp4']">
@@ -1569,6 +1689,7 @@
                                                 <t t-if="partner.mode_registration in ['pp4']">
                                                     Attestation d’assurance Responsabilité Civile Professionnelle
                                                 </t>
+                                                <span class="text-danger">*</span>
                                                 <span t-if="partner.attestation_assurance" style="color:blue">(Document
                                                     déjà chargé)
                                                 </span>
@@ -1579,7 +1700,8 @@
                                                    name="attestation_assurance"
                                                    class="file" data-show-upload="true" data-show-caption="true"
                                                    data-show-preview="true"
-                                                   t-att-readonly="None if partner.status_register=='draft' else '1'"/>
+                                                   t-att-readonly="None if partner.status_register=='draft' else '1'"
+                                                   required="required"/>
                                         </div>
                                     </t>
                                     <!--<t t-if="partner.mode_registration in ['pm']">
@@ -1599,10 +1721,31 @@
                                                    t-att-readonly="None if partner.status_register=='draft' else '1'"/>
                                         </div>
                                     </t>-->
-                                    <t t-if="partner.mode_registration in ['pm','pp2','pp1','pp4']">
+                                    <t t-if="partner.mode_registration in ['pm','pp2','pp1']">
                                         <div t-attf-class="form-group col-xl-6" data-type="binary">
                                             <label class="col-form-label" for="actes_modificatifs">
-                                                Actes modificatifs des statuts (certifiés conformes aux originaux)
+                                                Actes modificatifs des statuts (certifiés conformes)
+                                                <span class="text-danger">*</span>
+                                                <span t-if="partner.actes_modificatifs" style="color:blue">(Document
+                                                    déjà
+                                                    chargé)
+                                                </span>
+                                            </label>
+                                            <br/>
+                                            <input t-att-disabled="partner.status_register == 'in_progress'" id="upload"
+                                                   type="file"
+                                                   name="actes_modificatifs"
+                                                   class="file" data-show-upload="true" data-show-caption="true"
+                                                   data-show-preview="true"
+                                                   t-att-readonly="None if partner.status_register=='draft' else '1'"
+                                                   required="required"/>
+                                        </div>
+                                    </t>
+                                    <t t-if="partner.mode_registration in ['pp4']">
+                                        <div t-attf-class="form-group col-xl-6" data-type="binary">
+                                            <label class="col-form-label" for="actes_modificatifs">
+                                                Actes modificatifs des statuts (certifiés conformes)
+
                                                 <span t-if="partner.actes_modificatifs" style="color:blue">(Document
                                                     déjà
                                                     chargé)
@@ -1621,6 +1764,7 @@
                                         <div t-attf-class="form-group col-xl-6" data-type="binary">
                                             <label class="col-form-label" for="copie_bo_jal">
                                                 Une copie du BO et du JAL
+                                                <span class="text-danger">*</span>
                                                 <span t-if="partner.copie_bo_jal" style="color:blue">(Document
                                                     déjà chargé)
                                                 </span>
@@ -1631,7 +1775,8 @@
                                                    name="copie_convention"
                                                    class="file" data-show-upload="true" data-show-caption="true"
                                                    data-show-preview="true"
-                                                   t-att-readonly="None if partner.status_register=='draft' else '1'"/>
+                                                   t-att-readonly="None if partner.status_register=='draft' else '1'"
+                                                   required="required"/>
                                         </div>
                                     </t>
                                     <t t-if="partner.mode_registration in ['pm','pp2','pp1','pp4']">
@@ -1639,7 +1784,8 @@
                                             <label class="col-form-label" for="actes_cession">
                                                 Actes de cession de parts sociales ou de transferts d’actions, le cas
                                                 échéant (certifiés
-                                                conformes aux originaux)
+                                                conformes)
+
                                                 <span t-if="partner.actes_cession" style="color:blue">(Document déjà
                                                     chargé)
                                                 </span>
@@ -1667,14 +1813,36 @@
                                                    name="modele_7" class="file"
                                                    data-show-upload="true" data-show-caption="true"
                                                    data-show-preview="true"
-                                                   t-att-readonly="None if partner.status_register=='draft' else '1'"/>
+                                                   t-att-readonly="None if partner.status_register=='draft' else '1'"
+                                                   required="required"/>
                                         </div>
                                     </t>
-                                    <t t-if="partner.mode_registration in ['pm','pp2','pp1']">
+                                    <t t-if="partner.mode_registration in ['pm','pp1']">
                                         <div t-attf-class="form-group col-xl-6" data-type="binary">
                                             <label class="col-form-label" for="contrat_travail">
                                                 Contrat de travail pour le ou les associés non-membres de l'Ordre, le
                                                 cas échéant
+                                                <span class="text-danger">*</span>
+                                                <span t-if="partner.contrat_travail" style="color:blue">(Document déjà
+                                                    chargé)
+                                                </span>
+                                            </label>
+                                            <br/>
+                                            <input t-att-disabled="partner.status_register == 'in_progress'" id="upload"
+                                                   type="file"
+                                                   name="contrat_travail" class="file"
+                                                   data-show-upload="true" data-show-caption="true"
+                                                   data-show-preview="true"
+                                                   t-att-readonly="None if partner.status_register=='draft' else '1'"
+                                                   required="required"/>
+                                        </div>
+                                    </t>
+                                    <t t-if="partner.mode_registration in ['pp2']">
+                                        <div t-attf-class="form-group col-xl-6" data-type="binary">
+                                            <label class="col-form-label" for="contrat_travail">
+                                                Contrat de travail pour le ou les associés non-membres de l'Ordre, le
+                                                cas échéant
+
                                                 <span t-if="partner.contrat_travail" style="color:blue">(Document déjà
                                                     chargé)
                                                 </span>
@@ -1693,6 +1861,7 @@
                                             <label class="col-form-label" for="copie_conforme_contrat">
                                                 Le contrat de bail (copie certifiée conforme) ou certificat de propriété
                                                 du siège social
+                                                <span class="text-danger">*</span>
                                                 <span t-if="partner.copie_conforme_contrat" style="color:blue">(Document
                                                     déjà chargé)
                                                 </span>
@@ -1703,7 +1872,8 @@
                                                    name="copie_conforme_contrat"
                                                    class="file" data-show-upload="true" data-show-caption="true"
                                                    data-show-preview="true"
-                                                   t-att-readonly="None if partner.status_register=='draft' else '1'"/>
+                                                   t-att-readonly="None if partner.status_register=='draft' else '1'"
+                                                   required="required"/>
                                         </div>
                                     </t>
                                     <t t-if="partner.mode_registration in ['pp4']">
@@ -1727,6 +1897,7 @@
                                         <div t-attf-class="form-group col-xl-6" data-type="binary">
                                             <label class="col-form-label" for="attestation_inscription_membre">
                                                 Attestation d’inscription du membre de l'ordre personne physique
+                                                <span class="text-danger">*</span>
                                                 <span t-if="partner.attestation_inscription_membre" style="color:blue">
                                                     (Document
                                                     déjà chargé)
@@ -1738,7 +1909,8 @@
                                                    name="attestation_inscription_membre"
                                                    class="file" data-show-upload="true" data-show-caption="true"
                                                    data-show-preview="true"
-                                                   t-att-readonly="None if partner.status_register=='draft' else '1'"/>
+                                                   t-att-readonly="None if partner.status_register=='draft' else '1'"
+                                                   required="required"/>
                                         </div>
                                     </t>
                                     <t t-if="partner.mode_registration in ['pp']">
@@ -1785,14 +1957,30 @@
                                                     chargé)
                                                 </span>
                                             </label>
+
+                                            <!-- 🔗 Lien vers le modèle d'engagement -->
+                                            <div>
+                                                <a href="/internship_management_module/static/src/documents/Modèle - Engagement.docx"
+                                                   target="_blank"
+                                                   class="btn btn-outline-info btn-sm mb-2">
+                                                    📄 Télécharger le modèle d'engagement (.docx)
+                                                </a>
+                                            </div>
+
                                             <br/>
-                                            <input t-att-disabled="partner.status_register == 'in_progress'" id="upload"
+
+                                            <!-- 📤 Champ d’upload -->
+                                            <input t-att-disabled="partner.status_register == 'in_progress'"
+                                                   id="upload"
                                                    type="file"
-                                                   name="engagement" class="file"
-                                                   data-show-upload="true" data-show-caption="true"
+                                                   name="engagement"
+                                                   class="file"
+                                                   data-show-upload="true"
+                                                   data-show-caption="true"
                                                    data-show-preview="true"
                                                    t-att-readonly="None if partner.status_register=='draft' else '1'"/>
                                         </div>
+
                                     </t>
                                     <t t-if="partner.mode_registration in ['pm']">
                                         <div t-attf-class="form-group col-xl-6" data-type="binary">
@@ -1804,14 +1992,31 @@
                                                     (Document déjà chargé)
                                                 </span>
                                             </label>
+
+                                            <!-- 🔗 Lien vers le modèle de lettre -->
+                                            <div>
+                                                <a href="/internship_management_module/static/src/documents/Modèle - Demande d'inscription PM.docx"
+                                                   target="_blank"
+                                                   class="btn btn-outline-info btn-sm mb-2">
+                                                    📄 Télécharger le modèle de lettre (.docx)
+                                                </a>
+                                            </div>
+
                                             <br/>
-                                            <input t-att-disabled="partner.status_register == 'in_progress'" id="upload"
+
+                                            <!-- 📤 Champ d’upload -->
+                                            <input t-att-disabled="partner.status_register == 'in_progress'"
+                                                   id="upload"
                                                    type="file"
                                                    name="lettre_demande_inscription"
-                                                   class="file" data-show-upload="true" data-show-caption="true"
+                                                   class="file"
+                                                   data-show-upload="true"
+                                                   data-show-caption="true"
                                                    data-show-preview="true"
-                                                   t-att-readonly="None if partner.status_register=='draft' else '1'"/>
+                                                   t-att-readonly="None if partner.status_register=='draft' else '1'"
+                                                   required="required"/>
                                         </div>
+
                                     </t>
 
                                     <!-- Document 2: Statuts mis à jour -->
@@ -1832,14 +2037,16 @@
                                                    name="statuts_mis_a_jour"
                                                    class="file" data-show-upload="true" data-show-caption="true"
                                                    data-show-preview="true"
-                                                   t-att-readonly="None if partner.status_register=='draft' else '1'"/>
+                                                   t-att-readonly="None if partner.status_register=='draft' else '1'"
+                                                   required="required"/>
                                         </div>
                                     </t>
                                     <t t-if="partner.mode_registration in ['pp2','pp4']">
                                         <div t-attf-class="form-group col-xl-6" data-type="binary">
                                             <label class="col-form-label" for="statuts_mis_a_jour">
-                                                Statuts mis à jour suite aux différentes modifications (certifiés conformes), cf modèles OEC
-                                                <span class="text-danger">*</span>
+                                                Statuts mis à jour suite aux différentes modifications (certifiés
+                                                conformes), cf modèles OEC
+
                                                 <span t-if="partner.statuts_mis_a_jour" style="color:blue">
                                                     (Document déjà chargé)
                                                 </span>
@@ -1867,7 +2074,8 @@
                                                    type="file" name="avenant_contrat_travail"
                                                    class="file" data-show-upload="true" data-show-caption="true"
                                                    data-show-preview="true"
-                                                   t-att-readonly="None if partner.status_register=='draft' else '1'"/>
+                                                   t-att-readonly="None if partner.status_register=='draft' else '1'"
+                                                   required="required"/>
                                         </div>
                                     </t>
                                 </div>
@@ -1886,7 +2094,7 @@
                                             <h5>
                                                 <i class="fas fa-money-check-alt"></i>
                                                 Chèque correspondant au droit d'entrée
-                                                <span class="text-danger">*</span>
+
                                             </h5>
                                             <ul class="mb-3">
                                                 <li>
@@ -1900,46 +2108,88 @@
                                             </ul>
                                         </div>
                                     </div>
+                                    <t t-if="partner.mode_registration in ['pp3','pm']">
+                                        <div class="form-group col-xl-6" data-type="binary">
+                                            <label class="col-form-label" for="cheque_droit_entree">
+                                                Chèque du droit d'entrée
+                                                <span class="text-danger">*</span>
+                                                <span t-if="partner.cheque_droit_entree" style="color:blue">
+                                                    (Document déjà chargé)
+                                                </span>
+                                            </label>
+                                            <br/>
+                                            <input t-att-disabled="partner.status_register == 'in_progress'"
+                                                   type="file"
+                                                   name="cheque_droit_entree"
+                                                   class="file"
+                                                   data-show-upload="true"
+                                                   data-show-caption="true"
+                                                   data-show-preview="true"
+                                                   t-att-readonly="None if partner.status_register=='draft' else '1'"
+                                                   required="required"/>
+                                        </div>
 
-                                    <div class="form-group col-xl-6" data-type="binary">
-                                        <label class="col-form-label" for="cheque_droit_entree">
-                                            Chèque du droit d'entrée
-                                            <span class="text-danger">*</span>
-                                            <span t-if="partner.cheque_droit_entree" style="color:blue">
-                                                (Document déjà chargé)
-                                            </span>
-                                        </label>
-                                        <br/>
-                                        <input t-att-disabled="partner.status_register == 'in_progress'"
-                                               type="file"
-                                               name="cheque_droit_entree"
-                                               class="file"
-                                               data-show-upload="true"
-                                               data-show-caption="true"
-                                               data-show-preview="true"
-                                               t-att-readonly="None if partner.status_register=='draft' else '1'"/>
-                                    </div>
+                                        <div class="form-group col-xl-6">
+                                            <label class="col-form-label" for="montant_droit_entree">
+                                                Montant du droit d'entrée
+                                                <span class="text-danger">*</span>
+                                            </label>
+                                            <select name="montant_droit_entree"
+                                                    class="form-control"
+                                                    t-att-disabled="partner.status_register == 'in_progress'"
+                                                    t-att-readonly="None if partner.status_register=='draft' else '1'">
+                                                <option value="">-- Sélectionner le montant --</option>
+                                                <option value="4000"
+                                                        t-att-selected="partner.montant_droit_entree == '4000'">
+                                                    4000,00 DH (Casablanca)
+                                                </option>
+                                                <option value="3000"
+                                                        t-att-selected="partner.montant_droit_entree == '3000'">
+                                                    3000,00 DH (Hors Casablanca)
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </t>
+                                    <t t-if="partner.mode_registration in ['pp1','pp2','pp4']">
+                                        <div class="form-group col-xl-6" data-type="binary">
+                                            <label class="col-form-label" for="cheque_droit_entree">
+                                                Chèque du droit d'entrée
+                                                <span t-if="partner.cheque_droit_entree" style="color:blue">
+                                                    (Document déjà chargé)
+                                                </span>
+                                            </label>
+                                            <br/>
+                                            <input t-att-disabled="partner.status_register == 'in_progress'"
+                                                   type="file"
+                                                   name="cheque_droit_entree"
+                                                   class="file"
+                                                   data-show-upload="true"
+                                                   data-show-caption="true"
+                                                   data-show-preview="true"
+                                                   t-att-readonly="None if partner.status_register=='draft' else '1'"/>
+                                        </div>
 
-                                    <div class="form-group col-xl-6">
-                                        <label class="col-form-label" for="montant_droit_entree">
-                                            Montant du droit d'entrée
-                                            <span class="text-danger">*</span>
-                                        </label>
-                                        <select name="montant_droit_entree"
-                                                class="form-control"
-                                                t-att-disabled="partner.status_register == 'in_progress'"
-                                                t-att-readonly="None if partner.status_register=='draft' else '1'">
-                                            <option value="">-- Sélectionner le montant --</option>
-                                            <option value="4000"
-                                                    t-att-selected="partner.montant_droit_entree == '4000'">
-                                                4000,00 DH (Casablanca)
-                                            </option>
-                                            <option value="3000"
-                                                    t-att-selected="partner.montant_droit_entree == '3000'">
-                                                3000,00 DH (Hors Casablanca)
-                                            </option>
-                                        </select>
-                                    </div>
+                                        <div class="form-group col-xl-6">
+                                            <label class="col-form-label" for="montant_droit_entree">
+                                                Montant du droit d'entrée
+
+                                            </label>
+                                            <select name="montant_droit_entree"
+                                                    class="form-control"
+                                                    t-att-disabled="partner.status_register == 'in_progress'"
+                                                    t-att-readonly="None if partner.status_register=='draft' else '1'">
+                                                <option value="">-- Sélectionner le montant --</option>
+                                                <option value="4000"
+                                                        t-att-selected="partner.montant_droit_entree == '4000'">
+                                                    4000,00 DH (Casablanca)
+                                                </option>
+                                                <option value="3000"
+                                                        t-att-selected="partner.montant_droit_entree == '3000'">
+                                                    3000,00 DH (Hors Casablanca)
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </t>
                                 </div>
                             </div>
                         </div>
