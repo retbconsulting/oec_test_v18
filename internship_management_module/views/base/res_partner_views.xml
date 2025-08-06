@@ -267,7 +267,8 @@
                     <attribute name="invisible">1</attribute>
                 </xpath>
                 <xpath expr="//field[@name='parent_id']" position="attributes">
-                    <attribute name="invisible">1</attribute>
+                    <attribute name="string">Cabinet rattaché</attribute>
+                    <attribute name="invisible">is_company</attribute>
                 </xpath>
                 <xpath expr="//notebook" position="inside">
                     <page string="Contrat de stage" invisible="contact_type != 'ST'">
@@ -646,10 +647,10 @@
                     <attribute name="invisible">1</attribute>
                 </page>
                 <page name="contact_addresses" position="attributes">
-                    <attribute name="invisible">1</attribute>
+                    <attribute name="invisible">not is_company</attribute>
                 </page>
                 <page name="contact_addresses" position="after">
-                    <page name="inscription" string="Inscription">
+                    <page name="inscription" string="Inscription" invisible="contact_type != 'ST'">
                         <group>
                             <field name="birthday"/>
                             <field name="place_of_birth"/>

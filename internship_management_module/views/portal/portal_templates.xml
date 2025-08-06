@@ -1,7 +1,10 @@
 <odoo>
-<!--    <template id="remove_original_docs_card" inherit_id="portal.portal_my_home" priority="20">-->
-<!--        <xpath expr="//div[hasclass('o_portal_docs')]" position="replace"/>-->
-<!--    </template>-->
+    
+    <template id="oec_custom_signup" inherit_id="auth_signup.signup">
+        <xpath expr="//form" position="attributes">
+            <attribute name="action">/demande-inscription</attribute>
+        </xpath>
+    </template>
 
 <!--    <template id="remove_docs_extension" inherit_id="portal_my_home_documents" priority="30">-->
 <!--        <xpath expr="." position="replace"/>-->

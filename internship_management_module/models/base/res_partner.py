@@ -788,20 +788,12 @@ class ResPartner(models.Model):
         copy=False,
         default='New'
     )
-    type_selection = fields.Selection([
-        ('a', "Inscription d'une personne morale par une PP inscrite"),
-        ('b', "PP salarié d’un cabinet inscrit"),
-        ('c', "PM + PP"),
-        ('d', "PP associée d’un cabinet inscrit"),
-        ('e', "PP individuelle"),
-    ], string="Type d'inscription")
 
     start_date = fields.Date(
         string='Date de début du stage',
         compute='_compute_get_start_date',
         store=True
     )
-    prenom = fields.Char(string="Prénom")
 
     derogation = fields.Boolean(
         string='Dérogation'
@@ -850,6 +842,26 @@ class ResPartner(models.Model):
     motif_reject = fields.Char(string="Motif de rejet")
     country = fields.Many2one(comodel_name='res.country', string='Pays')
     #hours = fields.Selection(string="200 heures", selection='_get_options')
+
+    contact_registration_mode = fields.Selection(
+        string="Mode d'inscription",
+        selection=[
+            ('pm', 'Personne Morale'), 
+            ('pp', 'Personne Physique'), 
+        ]
+    )
+    contact_registration_type = fields.Selection(
+        string="Type d'inscription",
+        selection=[
+            # Personne physique
+            ('physique_individuel', 'Inscription d\'une personne physique à titre individuel'), 
+            ('physique_salarie', 'Inscription d\'une personne physique en tant que salarié d\'un cabinet inscrit'), 
+            ('physique_associe', 'Inscription d\'une personne physique en tant que associé d\'un cabinet inscrit'), 
+            # Personne morale
+            ('moraleyes_physiqueyes', 'Inscription d\'une personne morale et d\'une personne physique'), 
+            ('moraleyes_physiqueno', 'Inscription d\'une personne morale nouvelle par une personne physique déjà inscrite'), 
+        ]
+    )
 
     # ------------------------------------------------------------------------
     # METHODS
@@ -1027,6 +1039,9 @@ class ResPartner(models.Model):
         url = "{}registration".format(base_url)
         email = self.env.ref('base.user_admin').email
         register_template.with_context(url=url,email_from=email,login=self.email,password=random_password).send_mail(self.id,force_send=True)
+        _logger.error(f"URL : {url}")
+        _logger.error(f"Login : {self.email}")
+        _logger.error(f"Password : {random_password}")
         return self.write({'status_register' : 'account_created'})
 
 
