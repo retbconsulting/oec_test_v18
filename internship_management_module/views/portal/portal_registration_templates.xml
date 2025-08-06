@@ -2720,7 +2720,7 @@
                 </div>
             </form>
             <script type="text/javascript">
-                function validateBeforeSubmit() {
+               function validateBeforeSubmit() {
     const mode = document.querySelector('select[name="mode_registration"]').value;
     const requiredDocsByMode = {
         'pp1': ['copie_cin', 'declaration_sur_honneur', 'photocopie_diplome', 'extrait_casier_judiciaire',
@@ -2775,12 +2775,17 @@
         errors.push("Vous devez accepter la d&amp;eacute;claration sur l'honneur");
     }
 
-    // Validation sp&amp;eacute;cifique pour les PM (r&amp;eacute;partition du capital) - VERSION CORRIG&amp;Eacute;E
-    if (mode === 'pm') {
+    // Validation de la r&amp;eacute;partition du capital (pour tous les modes) - VERSION CORRIG&amp;Eacute;E
+    // V&amp;eacute;rifier s'il y a des champs de pourcentage dans le formulaire
+    const hasPercentageFields = document.querySelector('input[name="percentage1"]') !== null;
+
+    if (hasPercentageFields) {
         let totalPercent = 0;
         let atLeastOneFilled = false;
         let associesDetails = [];
+        let hasValidationErrors = false;
 
+        // Premi&amp;egrave;re passe : collecter les donn&amp;eacute;es et v&amp;eacute;rifier les erreurs de base
         for (let i = 1; i &lt;= 5; i++) {
             const nameInput = document.querySelector(`input[name="name${i}"]`);
             const percentInput = document.querySelector(`input[name="percentage${i}"]`);
@@ -2796,10 +2801,12 @@
                 // V&amp;eacute;rifier que si un nom est rempli, le pourcentage l'est aussi et vice versa
                 if (name &amp;&amp; !percentValue) {
                     errors.push(`Le pourcentage pour l'associ&amp;eacute; "${name}" est manquant`);
+                    hasValidationErrors = true;
                     continue;
                 }
                 if (!name &amp;&amp; percentValue) {
                     errors.push(`Le nom pour le pourcentage ${percentValue}% est manquant`);
+                    hasValidationErrors = true;
                     continue;
                 }
 
@@ -2808,19 +2815,23 @@
 
                 if (isNaN(percent)) {
                     errors.push(`Le pourcentage pour l'associ&amp;eacute; "${name}" n'est pas un nombre valide`);
+                    hasValidationErrors = true;
                     continue;
                 }
 
                 if (percent &lt;= 0) {
                     errors.push(`Le pourcentage pour l'associ&amp;eacute; "${name}" doit &amp;ecirc;tre sup&amp;eacute;rieur &amp;agrave; 0`);
+                    hasValidationErrors = true;
                     continue;
                 }
 
                 if (percent &gt; 100) {
                     errors.push(`Le pourcentage pour l'associ&amp;eacute; "${name}" ne peut pas d&amp;eacute;passer 100%`);
+                    hasValidationErrors = true;
                     continue;
                 }
 
+                // Si on arrive ici, les donn&amp;eacute;es sont valides
                 totalPercent += percent;
                 associesDetails.push({nom: name, pourcentage: percent});
             }
@@ -2828,15 +2839,20 @@
 
         console.log(`Total calcul&amp;eacute;: ${totalPercent}%`); // Debug
         console.log('Associ&amp;eacute;s:', associesDetails); // Debug
+        console.log('Erreurs de validation:', hasValidationErrors); // Debug
 
+        // V&amp;eacute;rifications finales
         if (!atLeastOneFilled) {
             errors.push("Veuillez remplir au moins un associ&amp;eacute;");
-        } else {
-            // V&amp;eacute;rification plus robuste de la somme
+        } else if (!hasValidationErrors &amp;&amp; associesDetails.length &gt; 0) {
+            // V&amp;eacute;rifier la somme seulement s'il n'y a pas d'erreurs de validation
             const roundedTotal = Math.round(totalPercent * 100) / 100; // Arrondi &amp;agrave; 2 d&amp;eacute;cimales
+
+            console.log(`V&amp;eacute;rification finale: ${roundedTotal} !== 100 ?`); // Debug
 
             if (Math.abs(roundedTotal - 100) &gt; 0.01) {
                 errors.push(`La somme des pourcentages doit faire exactement 100% (actuellement: ${roundedTotal.toFixed(2)}%)`);
+                console.log('Erreur de somme ajout&amp;eacute;e !'); // Debug
             }
         }
     }
