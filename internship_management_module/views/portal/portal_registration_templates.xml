@@ -489,7 +489,7 @@
                                 <li
                                         t-attf-class="#{partner.status_register=='draft' and 'text-primary' or 'text-muted'}"
                                         class="text-primary">
-                                    Inscription
+                                    Création du compte
                                     <span class="chevron"/>
                                 </li>
                                 <li
@@ -691,7 +691,7 @@
                 <br/>
 
                 <div class="row">
-                    <t t-if="partner.mode_registration not in ['e']">
+                    <t t-if="partner.mode_registration not in ['pp1']">
                         <div id="raison_sociale"
                              t-attf-class="form-group #{error.get('raison_sociale') and 'o_has_error' or ''} col-xl-6">
                             <label class="col-form-label" for="raison_sociale">Raison sociale</label>
@@ -701,7 +701,7 @@
                                    t-att-value="raison_sociale or partner.raison_sociale"/>
                         </div>
                     </t>
-                    <t t-if="partner.mode_registration not in ['e']">
+                    <t t-if="partner.mode_registration not in ['PP1']">
                         <div id="forme_juridique"
                              t-attf-class="form-group #{error.get('forme_juridique') and 'o_has_error' or ''} col-xl-6">
                             <label class="col-form-label" for="forme_juridique">Forme juridique</label>
@@ -793,7 +793,7 @@
                             </select>
                         </div>
                     </t>
-                    <t t-if="partner.mode_registration not in ['e']">
+                    <t t-if="partner.mode_registration not in ['pp1']">
                         <label class="col-form-label" for="conseil_regional">Etat de répartition du capital social
                         </label>
                         <table
@@ -1319,7 +1319,7 @@
                                                    required="required"/>
                                         </div>
                                     </t>
-                                    <t t-if="partner.mode_registration in ['pp2','pp1']">
+                                    <t t-if="partner.mode_registration in ['pp2']">
                                         <div t-attf-class="form-group col-xl-6" data-type="binary">
                                             <label class="col-form-label" for="engagement_prise_en_charge">
                                                 Engagement de prise en charge de tout membre de l’Ordre salarié de la
@@ -1376,7 +1376,7 @@
                                             <span class="text-danger">*</span>
                                         </strong>
                                     </div>
-                                    <span class="text-danger">*</span>
+
                                     <div class="form-group col-xl-6" data-type="binary">
                                         <label class="col-form-label" for="photocopie_diplome">
                                             <span t-if="partner.photocopie_diplome" style="color:blue">(Document déjà
@@ -1671,7 +1671,7 @@
                                     <t t-if="partner.mode_registration in ['pp3','pm','pp2','pp1','pp4']">
                                         <div t-attf-class="form-group col-xl-6" data-type="binary">
                                             <label class="col-form-label" for="attestation_assurance">
-                                                <t t-if="partner.mode_registration in ['pm','pp2','pp1']">
+                                                <t t-if="partner.mode_registration in ['pm','pp2']">
                                                     Attestation d’assurance Responsabilité Civile Professionnelle au nom
                                                     de la société
                                                 </t>
@@ -1719,7 +1719,7 @@
                                                    t-att-readonly="None if partner.status_register=='draft' else '1'"/>
                                         </div>
                                     </t>-->
-                                    <t t-if="partner.mode_registration in ['pm','pp2','pp1']">
+                                    <t t-if="partner.mode_registration in ['pm','pp2']">
                                         <div t-attf-class="form-group col-xl-6" data-type="binary">
                                             <label class="col-form-label" for="actes_modificatifs">
                                                 Actes modificatifs des statuts (certifiés conformes)
@@ -1760,7 +1760,7 @@
                                                    t-att-readonly="None if partner.status_register=='draft' else '1'"/>
                                         </div>
                                     </t>
-                                    <t t-if="partner.mode_registration in ['pm','pp2','pp1','pp4']">
+                                    <t t-if="partner.mode_registration in ['pm','pp2','pp4']">
                                         <div t-attf-class="form-group col-xl-6" data-type="binary">
                                             <label class="col-form-label" for="copie_bo_jal">
                                                 Une copie du BO et du JAL
@@ -1780,7 +1780,7 @@
                                                    required="required"/>
                                         </div>
                                     </t>
-                                    <t t-if="partner.mode_registration in ['pm','pp2','pp1','pp4']">
+                                    <t t-if="partner.mode_registration in ['pm','pp2','pp4']">
                                         <div t-attf-class="form-group col-xl-6" data-type="binary">
                                             <label class="col-form-label" for="actes_cession">
                                                 Actes de cession de parts sociales ou de transferts d’actions, le cas
@@ -1801,7 +1801,7 @@
                                                    t-att-readonly="None if partner.status_register=='draft' else '1'"/>
                                         </div>
                                     </t>
-                                    <t t-if="partner.mode_registration in ['pp3','pm','pp2','pp1','pp4']">
+                                    <t t-if="partner.mode_registration in ['pp3','pm','pp2','pp4']">
                                         <div t-attf-class="form-group col-xl-6" data-type="binary">
                                             <label class="col-form-label" for="modele_7">
                                                 Certificat modèle 7 du Registre du Commerce (datant de moins de trois
@@ -1821,7 +1821,7 @@
                                                    required="required"/>
                                         </div>
                                     </t>
-                                    <t t-if="partner.mode_registration in ['pm','pp1']">
+                                    <t t-if="partner.mode_registration in ['pm']">
                                         <div t-attf-class="form-group col-xl-6" data-type="binary">
                                             <label class="col-form-label" for="contrat_travail">
                                                 Contrat de travail pour le ou les associés non-membres de l'Ordre, le
@@ -1901,7 +1901,7 @@
                                                    t-att-readonly="None if partner.status_register=='draft' else '1'"/>
                                         </div>
                                     </t>
-                                    <t t-if="partner.mode_registration in ['pm','pp2','pp1']">
+                                    <t t-if="partner.mode_registration in ['pm','pp2']">
                                         <div t-attf-class="form-group col-xl-6" data-type="binary">
                                             <label class="col-form-label" for="attestation_inscription_membre">
                                                 Attestation d’inscription du membre de l'ordre personne physique
@@ -2123,50 +2123,8 @@
                                             </ul>
                                         </div>
                                     </div>
-                                    <t t-if="partner.mode_registration in ['pp3','pm']">
-                                        <div class="form-group col-xl-6" data-type="binary">
-                                            <label class="col-form-label" for="cheque_droit_entree">
-                                                Chèque du droit d'entrée
-                                                <span class="text-danger">*</span>
-                                                <span t-if="partner.cheque_droit_entree" style="color:blue">
-                                                    (Document déjà chargé)
-                                                </span>
-                                            </label>
-                                            <br/>
-                                            <input t-att-disabled="partner.status_register == 'in_progress'"
-                                                   type="file"
-                                                   accept=".pdf,.jpg,.jpeg"
-                                                   name="cheque_droit_entree"
-                                                   class="file"
-                                                   data-show-upload="true"
-                                                   data-show-caption="true"
-                                                   data-show-preview="false"
-                                                   t-att-readonly="None if partner.status_register=='draft' else '1'"
-                                                   required="required"/>
-                                        </div>
-
-                                        <div class="form-group col-xl-6">
-                                            <label class="col-form-label" for="montant_droit_entree">
-                                                Montant du droit d'entrée
-                                                <span class="text-danger">*</span>
-                                            </label>
-                                            <select name="montant_droit_entree"
-                                                    class="form-control"
-                                                    t-att-disabled="partner.status_register == 'in_progress'"
-                                                    t-att-readonly="None if partner.status_register=='draft' else '1'">
-                                                <option value="">-- Sélectionner le montant --</option>
-                                                <option value="4000"
-                                                        t-att-selected="partner.montant_droit_entree == '4000'">
-                                                    4000,00 DH (Casablanca)
-                                                </option>
-                                                <option value="3000"
-                                                        t-att-selected="partner.montant_droit_entree == '3000'">
-                                                    3000,00 DH (Hors Casablanca)
-                                                </option>
-                                            </select>
-                                        </div>
-                                    </t>
-                                    <t t-if="partner.mode_registration in ['pp1','pp2','pp4']">
+                                    
+                                    <t t-if="partner.mode_registration in ['pp1','pp2','pp4','pp3','pm']">
                                         <div class="form-group col-xl-6" data-type="binary">
                                             <label class="col-form-label" for="cheque_droit_entree">
                                                 Chèque du droit d'entrée
@@ -2650,7 +2608,7 @@
                 <div class="clearfix">
                     <br/>
                     <br/>
-                    <div class="row o_portal_details col-lg-12 alert alert-danger">
+                    <!--<div class="row o_portal_details col-lg-12 alert alert-danger">
                         <h6 class="alert-heading">NB:</h6>
                         <t t-if="partner.mode_registration == 'pm'">
                             <ul>
@@ -2693,7 +2651,7 @@
                                 </li>
                             </ul>
                         </t>
-                    </div>
+                    </div>-->
                     <br/>
                     <br/>
                     <div class="form-group">
