@@ -219,21 +219,40 @@ class ResPartnerRegistrationUnfavorable(models.TransientModel):
     def confirm(self):
         if self.partner_id.status_register == 'in_progress_member_elu':
             self.partner_id.write({'reserve_member_elu' : 'Avis défavorable' + '\n' + self.motif,
-                                    'status_register':'in_progress_secretaire_general',
+                                    'status_register':'account_created',
                                     'date_final_member_elu': fields.Date.today(),
                                     'date_initial_secretaire_general': fields.Date.today()})
 
         elif self.partner_id.status_register == 'in_progress_secretaire_general':
             self.partner_id.write({'reserve_secretaire_general' : 'Avis défavorable' + '\n' + self.motif,
-                                    'status_register':'in_progress_president_conseil',
+                                    'status_register':'account_created',
                                     'date_final_secretaire_general': fields.Date.today(),
                                     'date_initial_president_conseil': fields.Date.today()})
 
         else:
             self.partner_id.write({'reserve_president_conseil' : 'Avis défavorable' + '\n' + self.motif,
-                                    'status_register':'in_progress_conseil_national',
+                                    'status_register':'account_created',
                                     'date_final_president_conseil': fields.Date.today(),
                                     'date_initial_conseil_national': fields.Date.today()})
+
+    # def confirm(self):
+    #     if self.partner_id.status_register == 'in_progress_member_elu':
+    #         self.partner_id.write({'reserve_member_elu' : 'Avis défavorable' + '\n' + self.motif,
+    #                                 'status_register':'in_progress_secretaire_general',
+    #                                 'date_final_member_elu': fields.Date.today(),
+    #                                 'date_initial_secretaire_general': fields.Date.today()})
+
+    #     elif self.partner_id.status_register == 'in_progress_secretaire_general':
+    #         self.partner_id.write({'reserve_secretaire_general' : 'Avis défavorable' + '\n' + self.motif,
+    #                                 'status_register':'in_progress_president_conseil',
+    #                                 'date_final_secretaire_general': fields.Date.today(),
+    #                                 'date_initial_president_conseil': fields.Date.today()})
+
+    #     else:
+    #         self.partner_id.write({'reserve_president_conseil' : 'Avis défavorable' + '\n' + self.motif,
+    #                                 'status_register':'in_progress_conseil_national',
+    #                                 'date_final_president_conseil': fields.Date.today(),
+    #                                 'date_initial_conseil_national': fields.Date.today()})
 
 class ResPartner(models.Model):
 
