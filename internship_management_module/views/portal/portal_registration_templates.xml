@@ -1202,152 +1202,120 @@
 
                                      </t>-->
                                     <t t-if="partner.mode_registration in ['pp3','pp1']">
-                                    <div t-attf-class="form-group col-xl-6" data-type="binary">
-                                        <div class="d-flex justify-content-between align-items-center mb-2">
-                                            <label class="col-form-label mb-0">
-                                                <t t-if="partner.mode_registration in ['pp3']">
-                                                    Lettre de demande d’inscription à l’Ordre, datée et signée par le
-                                                    salarié
-                                                </t>
-                                                <t t-if="partner.mode_registration in ['pp1']">
-                                                    Lettre de demande d’inscription à l’Ordre
-                                                </t>
-                                                <span class="text-danger">*</span>
-                                                <span t-if="partner.demande_inscription_salarie" style="color:blue">
-                                                    (Document déjà chargé)
-                                                </span>
-                                            </label>
-
-                                            <!-- 🔗 Lien vers le bon modèle selon le mode d'inscription -->
-
+                                        <div t-attf-class="form-group col-xl-6" data-type="binary">
+                                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                                <label class="col-form-label mb-0">
+                                                    <t t-if="partner.mode_registration in ['pp3']">
+                                                        Lettre de demande d'inscription à l'Ordre, datée et signée par
+                                                        le salarié
+                                                    </t>
+                                                    <t t-if="partner.mode_registration in ['pp1']">
+                                                        Lettre de demande d'inscription à l'Ordre
+                                                    </t>
+                                                    <span class="text-danger">*</span>
+                                                    <span t-if="partner.demande_inscription_salarie" style="color:blue">
+                                                        (Document déjà chargé)
+                                                    </span>
+                                                </label>
                                                 <t t-if="partner.mode_registration == 'pp3'">
                                                     <a href="/internship_management_module/static/src/documents/Modèle - Demande d'inscription PP.docx"
                                                        target="_blank"
-                                                       class="btn btn-outline-info btn-sm mb-2">
+                                                       class="btn btn-outline-info btn-sm">
                                                         📄 Télécharger le modèle de lettre (.docx) pour salarié
                                                     </a>
                                                 </t>
-                                            </div>
                                                 <t t-if="partner.mode_registration == 'pp1'">
                                                     <a href="/internship_management_module/static/src/documents/Modèle - Demande d'inscription PP.docx"
                                                        target="_blank"
-                                                       class="btn btn-outline-info btn-sm mb-2">
+                                                       class="btn btn-outline-info btn-sm">
                                                         📄 Télécharger le modèle de lettre (.docx)
                                                     </a>
                                                 </t>
+                                            </div>
 
-
-
-                                            <!-- 📤 Champ d’upload -->
                                             <input t-att-disabled="partner.status_register == 'in_progress'"
-                                                   id="upload"
                                                    type="file"
                                                    accept=".pdf,.jpg,.jpeg"
                                                    name="demande_inscription_salarie"
-                                                   class="file"
-                                                   data-show-upload="true"
-                                                   data-show-caption="true"
-                                                   data-show-preview="false"
-                                                   t-att-readonly="None if partner.status_register=='draft' else '1'"
+                                                   class="form-control"
                                                    required="required"/>
                                         </div>
-
                                     </t>
+
                                     <t t-if="partner.mode_registration in ['pp3','pp4']">
                                         <div t-attf-class="form-group col-xl-6" data-type="binary">
-                                            <label class="col-form-label" for="engagement">
-                                                Engagement de la société de prendre en charge tout membre de l'ordre
-                                                salarié de la société
-                                                <span class="text-danger">*</span>
-                                                <span t-if="partner.engagement" style="color:blue">(Document déjà
-                                                    chargé)
-                                                </span>
-                                            </label>
-
-                                            <!-- 🔗 Lien vers le modèle de document -->
-                                            <div>
+                                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                                <label class="col-form-label mb-0">
+                                                    Engagement de la société de prendre en charge tout membre de l'ordre
+                                                    salarié de la société
+                                                    <span class="text-danger">*</span>
+                                                    <span t-if="partner.engagement" style="color:blue">(Document déjà
+                                                        chargé)
+                                                    </span>
+                                                </label>
                                                 <a href="/internship_management_module/static/src/documents/Modèle - Engagement.docx"
                                                    target="_blank"
-                                                   class="btn btn-outline-info btn-sm mb-2">
+                                                   class="btn btn-outline-info btn-sm">
                                                     📄 Télécharger le modèle d'engagement de la société (.docx)
                                                 </a>
                                             </div>
 
-                                            <br/>
-
-                                            <!-- 📤 Champ d’upload -->
                                             <input t-att-disabled="partner.status_register == 'in_progress'"
-                                                   id="upload"
                                                    type="file"
                                                    accept=".pdf,.jpg,.jpeg"
                                                    name="engagement"
-                                                   class="file"
-                                                   data-show-upload="true"
-                                                   data-show-caption="true"
-                                                   data-show-preview="false"
-                                                   t-att-readonly="None if partner.status_register=='draft' else '1'"
+                                                   class="form-control"
                                                    required="required"/>
                                         </div>
-
                                     </t>
+
                                     <t t-if="partner.mode_registration in ['pp3']">
                                         <div t-attf-class="form-group col-xl-6" data-type="binary">
-                                            <label class="col-form-label" for="lettre_demande_inscription">
-                                                Lettre de demande d’inscription à l'ordre, cachetée et signée par la
-                                                société
-                                                <span class="text-danger">*</span>
-                                                <span t-if="partner.lettre_demande_inscription" style="color:blue">
-                                                    (Document
-                                                    déjà chargé)
-                                                </span>
-                                            </label>
-                                            <br/>
-                                            <input t-att-disabled="partner.status_register == 'in_progress'" id="upload"
+                                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                                <label class="col-form-label mb-0">
+                                                    Lettre de demande d'inscription à l'ordre, cachetée et signée par la
+                                                    société
+                                                    <span class="text-danger">*</span>
+                                                    <span t-if="partner.lettre_demande_inscription" style="color:blue">
+                                                        (Document déjà chargé)
+                                                    </span>
+                                                </label>
+                                            </div>
+
+                                            <input t-att-disabled="partner.status_register == 'in_progress'"
                                                    type="file"
                                                    accept=".pdf,.jpg,.jpeg"
                                                    name="lettre_demande_inscription"
-                                                   class="file" data-show-upload="true" data-show-caption="true"
-                                                   data-show-preview="false"
-                                                   t-att-readonly="None if partner.status_register=='draft' else '1'"
+                                                   class="form-control"
                                                    required="required"/>
                                         </div>
                                     </t>
+
                                     <t t-if="partner.mode_registration in ['pp2']">
                                         <div t-attf-class="form-group col-xl-6" data-type="binary">
-                                            <label class="col-form-label" for="engagement_prise_en_charge">
-                                                Engagement de prise en charge de tout membre de l’Ordre salarié de la
-                                                société
-                                                <span class="text-danger">*</span>
-                                                <span t-if="partner.engagement_prise_en_charge" style="color:blue">
-                                                    (Document déjà chargé)
-                                                </span>
-                                            </label>
-
-                                            <!-- 🔗 Lien vers le modèle de l'engagement -->
-                                            <div>
+                                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                                <label class="col-form-label mb-0">
+                                                    Engagement de prise en charge de tout membre de l'Ordre salarié de
+                                                    la société
+                                                    <span class="text-danger">*</span>
+                                                    <span t-if="partner.engagement_prise_en_charge" style="color:blue">
+                                                        (Document déjà chargé)
+                                                    </span>
+                                                </label>
                                                 <a href="/internship_management_module/static/src/documents/Modèle - Engagement.docx"
                                                    target="_blank"
-                                                   class="btn btn-outline-info btn-sm mb-2">
+                                                   class="btn btn-outline-info btn-sm">
                                                     📄 Télécharger le modèle d'engagement (.docx)
                                                 </a>
                                             </div>
 
-                                            <br/>
-
-                                            <!-- 📤 Champ de chargement -->
                                             <input t-att-disabled="partner.status_register == 'in_progress'"
-                                                   id="engagement_prise_en_charge"
                                                    type="file"
                                                    accept=".pdf,.jpg,.jpeg"
                                                    name="engagement_prise_en_charge"
-                                                   class="file"
-                                                   required="required"
-                                                   data-show-upload="true"
-                                                   data-show-caption="true"
-                                                   data-show-preview="false"
-                                                   t-att-readonly="None if partner.status_register=='draft' else '1'"/>
+                                                   class="form-control"
+                                                   required="required"/>
                                         </div>
-
                                     </t>
                                 </div>
                             </div>
