@@ -285,7 +285,7 @@
                     <p>Vous devez être connecté en tant que personne physique déjà inscrite pour effectuer cette
                         demande.
                     </p>
-                    <a href="/web/login" class="btn btn-primary">Se connecter</a>
+                    <a href="/web/login?redirect=/demande-inscription" class="btn btn-primary">Se connecter</a>
                 </div>
 
                 <div class="form-section">
@@ -633,13 +633,13 @@
                                t-att-value="phone or partner.phone"/>
                         <small>Format: +212 5-XXXXXXXX</small>
                     </div>
-                    <div
+                    <!--<div
                             t-attf-class="form-group #{error.get('fax') and 'o_has_error' or ''} col-xl-6">
                         <label class="col-form-label" for="fax">Fax</label>
                         <input t-att-disabled="partner.status_register == 'in_progress'" type="text" name="fax"
                                t-attf-class="form-control #{error.get('fax') and 'is-invalid' or ''}"
                                t-att-value="fax or partner.phone"/>
-                    </div>
+                    </div>-->
                     <div
                             t-attf-class="form-group #{error.get('gsm') and 'o_has_error' or ''} col-xl-6">
                         <label class="col-form-label" for="gsm">Téléphone mobile</label>
@@ -1173,7 +1173,7 @@
                                                required="required"/>
                                     </div>
 
-                                    <t t-if="partner.mode_registration in ['pp3','pm','pp1','pp2','pp4']">
+                                   <!-- <t t-if="partner.mode_registration in ['pp3','pm','pp1','pp2','pp4']">
                                         <div t-attf-class="form-group col-xl-6" data-type="binary">
                                             <label class="col-form-label" for="questionnaire">
                                                 Questionnaire dûment rempli, daté et signé
@@ -1183,7 +1183,7 @@
                                                 </span>
                                             </label>
 
-                                            <!-- 🔗 Lien vers le modèle du questionnaire -->
+
                                             <div>
                                                 <a href="/internship_management_module/static/src/documents/Questionnaire.rtf.doc"
                                                    target="_blank"
@@ -1194,7 +1194,7 @@
 
                                             <br/>
 
-                                            <!-- 📤 Champ de chargement -->
+
                                             <input t-att-disabled="partner.status_register == 'in_progress'"
                                                    id="questionnaire"
                                                    type="file"
@@ -1208,7 +1208,7 @@
                                                    required="required"/>
                                         </div>
 
-                                    </t>
+                                    </t>-->
                                     <t t-if="partner.mode_registration in ['pp3','pp1']">
                                         <div t-attf-class="form-group col-xl-6" data-type="binary">
                                             <label class="col-form-label" for="demande_inscription_salarie">
