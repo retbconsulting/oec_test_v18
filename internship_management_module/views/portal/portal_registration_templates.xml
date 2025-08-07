@@ -562,7 +562,7 @@
                         <label for="mode_registration">Mode d'inscription</label>
                         <select class="form-control" id="mode_registration" name="mode_registration" disabled="true">
                             <t t-foreach="register_types" t-as="register_type">
-                                <option t-att-selected="register_type[0] == partner.mode_registration"
+                                <option t-att-selected="register_type[0] == partner.contact_registration_mode"
                                         t-att-value="register_type[0]">
                                     <t t-out="register_type[1]"/>
                                 </option>
