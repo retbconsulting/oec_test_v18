@@ -1131,18 +1131,18 @@
                             <div class="card-body">
                                 <div class="row">
                                     <div t-attf-class="form-group col-xl-6" data-type="binary">
-                                        <div class="d-flex align-items-center gap-2 mb-2">
-                                            <label class="col-form-label mb-0 flex-grow-1">
-                                                Déclaration sur l'honneur
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <label class="col-form-label mb-0">
+                                                Déclaration sur l’honneur
                                                 <span class="text-danger">*</span>
                                                 <span t-if="partner.declaration_sur_honneur" style="color:blue">
-                                                    (Déjà chargé)
+                                                    (Document déjà chargé)
                                                 </span>
                                             </label>
                                             <a href="/internship_management_module/static/src/documents/Modèle - Déclaration sur l'honneur.docx"
                                                target="_blank"
-                                               class="btn btn-outline-info btn-sm nowrap">
-                                                <i class="fa fa-download mr-1"></i>Modèle
+                                               class="btn btn-outline-info btn-sm">
+                                                📄 Télécharger le modèle
                                             </a>
                                         </div>
 
@@ -1202,8 +1202,9 @@
 
                                      </t>-->
                                     <t t-if="partner.mode_registration in ['pp3','pp1']">
-                                        <div t-attf-class="form-group col-xl-6" data-type="binary">
-                                            <label class="col-form-label" for="demande_inscription_salarie">
+                                    <div t-attf-class="form-group col-xl-6" data-type="binary">
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <label class="col-form-label mb-0">
                                                 <t t-if="partner.mode_registration in ['pp3']">
                                                     Lettre de demande d’inscription à l’Ordre, datée et signée par le
                                                     salarié
@@ -1218,7 +1219,7 @@
                                             </label>
 
                                             <!-- 🔗 Lien vers le bon modèle selon le mode d'inscription -->
-                                            <div>
+
                                                 <t t-if="partner.mode_registration == 'pp3'">
                                                     <a href="/internship_management_module/static/src/documents/Modèle - Demande d'inscription PP.docx"
                                                        target="_blank"
@@ -1226,6 +1227,7 @@
                                                         📄 Télécharger le modèle de lettre (.docx) pour salarié
                                                     </a>
                                                 </t>
+                                            </div>
                                                 <t t-if="partner.mode_registration == 'pp1'">
                                                     <a href="/internship_management_module/static/src/documents/Modèle - Demande d'inscription PP.docx"
                                                        target="_blank"
@@ -1233,9 +1235,8 @@
                                                         📄 Télécharger le modèle de lettre (.docx)
                                                     </a>
                                                 </t>
-                                            </div>
 
-                                            <br/>
+
 
                                             <!-- 📤 Champ d’upload -->
                                             <input t-att-disabled="partner.status_register == 'in_progress'"
