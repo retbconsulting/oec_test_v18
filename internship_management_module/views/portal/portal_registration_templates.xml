@@ -2720,148 +2720,149 @@
                 </div>
             </form>
             <script type="text/javascript">
-               function validateBeforeSubmit() {
-    const mode = document.querySelector('select[name="mode_registration"]').value;
-    const requiredDocsByMode = {
-        'pp1': ['copie_cin', 'declaration_sur_honneur', 'photocopie_diplome', 'extrait_casier_judiciaire',
+                function validateBeforeSubmit() {
+                const mode = document.querySelector('select[name="mode_registration"]').value;
+                const requiredDocsByMode = {
+                'pp1': ['copie_cin', 'declaration_sur_honneur', 'photocopie_diplome', 'extrait_casier_judiciaire',
                 'photographies_recentes', 'extrait_acte_naissance', 'demande_inscription_salarie', 'questionnaire'],
-        'pp2': ['copie_cin', 'declaration_sur_honneur', 'photocopie_diplome', 'copie_cnie',
+                'pp2': ['copie_cin', 'declaration_sur_honneur', 'photocopie_diplome', 'copie_cnie',
                 'extrait_casier_judiciaire', 'photographies_recentes', 'extrait_acte_naissance',
                 'engagement_prise_en_charge', 'attestation_inscription', 'bulletin_notification',
                 'attestation_assurance', 'actes_modificatifs', 'copie_bo_jal', 'modele_7', 'questionnaire'],
-        'pp3': ['copie_cin', 'declaration_sur_honneur', 'photocopie_diplome', 'extrait_casier_judiciaire',
+                'pp3': ['copie_cin', 'declaration_sur_honneur', 'photocopie_diplome', 'extrait_casier_judiciaire',
                 'photographies_recentes', 'extrait_acte_naissance', 'demande_inscription_salarie',
                 'engagement', 'lettre_demande_inscription', 'attestation_inscription',
                 'bulletin_notification', 'attestation_assurance', 'avenant_contrat_travail',
                 'modele_7', 'questionnaire'],
-        'pp4': ['copie_cin', 'declaration_sur_honneur', 'photocopie_diplome', 'extrait_casier_judiciaire',
+                'pp4': ['copie_cin', 'declaration_sur_honneur', 'photocopie_diplome', 'extrait_casier_judiciaire',
                 'photographies_recentes', 'extrait_acte_naissance', 'engagement', 'attestation_inscription',
                 'bulletin_notification', 'attestation_assurance', 'modele_7', 'questionnaire'],
-        'pm': ['copie_cin', 'declaration_sur_honneur', 'photocopie_diplome', 'attestation_inscription',
-               'bulletin_notification', 'attestation_assurance', 'actes_modificatifs', 'copie_bo_jal',
-               'modele_7', 'contrat_travail', 'copie_conforme_contrat', 'attestation_inscription_membre',
-               'lettre_demande_inscription', 'statuts_mis_a_jour', 'questionnaire']
-    };
+                'pm': ['copie_cin', 'declaration_sur_honneur', 'photocopie_diplome', 'attestation_inscription',
+                'bulletin_notification', 'attestation_assurance', 'actes_modificatifs', 'copie_bo_jal',
+                'modele_7', 'contrat_travail', 'copie_conforme_contrat', 'attestation_inscription_membre',
+                'lettre_demande_inscription', 'statuts_mis_a_jour', 'questionnaire']
+                };
 
-    const requiredDocs = requiredDocsByMode[mode] || [];
-    let errors = [];
+                const requiredDocs = requiredDocsByMode[mode] || [];
+                let errors = [];
 
+                const requiredFields = ['name', 'second_name', 'email', 'phone', 'cin_number'];
+                requiredFields.forEach(field =&gt; {
+                const input = document.querySelector(`[name="${field}"]`);
+                if (input &amp;&amp; !input.value.trim()) {
+                const label = document.querySelector(`label[for="${field}"]`);
+                const fieldName = label ? label.textContent.trim() : field;
+                errors.push(`Le champ ${fieldName} est obligatoire`);
+                }
+                });
 
-    const requiredFields = ['name', 'second_name', 'email', 'phone', 'cin_number'];
-    requiredFields.forEach(field =&gt; {
-        const input = document.querySelector(`[name="${field}"]`);
-        if (input &amp;&amp; !input.value.trim()) {
-            const label = document.querySelector(`label[for="${field}"]`);
-            const fieldName = label ? label.textContent.trim() : field;
-            errors.push(`Le champ ${fieldName} est obligatoire`);
-        }
-    });
+                const declarationCheckbox = document.querySelector('input[name="declaration_honneur"]');
+                if (!declarationCheckbox || !declarationCheckbox.checked) {
+                errors.push("Vous devez accepter la d&amp;eacute;claration sur l'honneur");
+                }
 
+                console.log("D&amp;eacute;but validation pourcentages..."); // Debug
+                const hasPercentageFields = document.querySelector('input[name="percentage1"]') !== null;
 
-    requiredDocs.forEach(doc =&gt; {
-        const input = document.querySelector(`input[name="${doc}"]`);
-        const hasFile = input &amp;&amp; (input.files.length &gt; 0 || input.dataset.hasFile === 'true');
+                if (hasPercentageFields) {
+                console.log("Champs pourcentage d&amp;eacute;tect&amp;eacute;s"); // Debug
+                let total = 0;
+                let atLeastOneFilled = false;
 
-        if (!hasFile) {
-            const label = document.querySelector(`label[for="${doc}"]`);
-            const docName = label ? label.textContent.trim() : doc;
-            errors.push(`Le document ${docName} est obligatoire`);
-        }
-    });
+                for (let i = 1; i &lt;= 5; i++) {
+                const nameInput = document.querySelector('input[name="name' + i + '"]');
+                const percentageInput = document.querySelector('input[name="percentage' + i + '"]');
 
-
-    const declarationCheckbox = document.querySelector('input[name="declaration_honneur"]');
-    if (!declarationCheckbox || !declarationCheckbox.checked) {
-        errors.push("Vous devez accepter la d&amp;eacute;claration sur l'honneur");
-    }
-
-
-    const hasPercentageFields = document.querySelector('input[name="percentage1"]') !== null;
-
-    if (hasPercentageFields) {
-        let total = 0;
-        let atLeastOneFilled = false;
-
-        for (let i = 1; i &lt;= 5; i++) {
-            const nameInput = document.querySelector('input[name="name' + i + '"]');
-            const percentageInput = document.querySelector('input[name="percentage' + i + '"]');
-
-            if (nameInput &amp;&amp; percentageInput) {
+                if (nameInput &amp;&amp; percentageInput) {
                 const name = nameInput.value.trim();
                 const percentageStr = percentageInput.value.trim();
+                console.log(`Ligne ${i}: nom="${name}", pourcentage="${percentageStr}"`); // Debug
 
                 if (name !== '' &amp;&amp; percentageStr !== '') {
-                    atLeastOneFilled = true;
-                    const percentage = parseFloat(percentageStr);
-                    if (isNaN(percentage) || percentage &lt; 0) {
-                        errors.push('Le pourcentage &amp;agrave; la ligne #' + i + ' doit &amp;ecirc;tre un nombre positif.');
-                        continue;
-                    }
-                    total += percentage;
+                atLeastOneFilled = true;
+                const percentage = parseFloat(percentageStr);
+                if (isNaN(percentage) || percentage &lt; 0) {
+                errors.push('Le pourcentage &amp;agrave; la ligne #' + i + ' doit &amp;ecirc;tre un nombre positif.');
+                continue;
                 }
-            }
-        }
+                total += percentage;
+                }
+                }
+                }
 
+                console.log(`Total: ${total}, Au moins un rempli: ${atLeastOneFilled}, Mode: ${mode}`); // Debug
 
-        const modeSelect = document.querySelector('select[name="mode_registration"]');
-        if (modeSelect &amp;&amp; modeSelect.value !== 'e') {
-            if (!atLeastOneFilled) {
+                const modeSelect = document.querySelector('select[name="mode_registration"]');
+                if (modeSelect &amp;&amp; modeSelect.value !== 'e') {
+                if (!atLeastOneFilled) {
                 errors.push('Veuillez remplir au moins une ligne avec un nom et un pourcentage.');
-            } else if (Math.abs(total - 100) &gt; 0.01) {
-                errors.push('La somme des pourcentages doit &amp;ecirc;tre exactement &amp;eacute;gale &amp;agrave; 100%.\nSomme actuelle : ' + total.toFixed(2) + '%');
-            }
-        }
-
-        console.log(`Total calcul&amp;eacute; (logique qui fonctionne): ${total}%`); // Debug
-    }
-
-
-    const pvInput = document.querySelector('input[name="pv_cn"]');
-    if (pvInput) {
-        if (!pvInput.files || pvInput.files.length === 0) {
-            errors.push('Le PV du Conseil National est obligatoire pour confirmer l\'inscription.');
-        } else {
-            const file = pvInput.files[0];
-            const validTypes = ['application/pdf', 'image/jpeg', 'image/png'];
-            if (validTypes.indexOf(file.type) === -1) {
-                errors.push('Le PV doit &amp;ecirc;tre un fichier PDF, JPG ou PNG.');
-            }
-
-            if (file.size &gt; 5 * 1024 * 1024) {
-                errors.push('Le fichier PV est trop volumineux (max 5MB).');
-            }
-        }
-    }
-
-    if (errors.length &gt; 0) {
-        alert("Erreurs de validation:\n\n" + errors.join("\n"));
-        return false;
-    }
-
-    return confirm("&amp;Ecirc;tes-vous s&amp;ucirc;r de vouloir soumettre votre inscription ? Cette action est irr&amp;eacute;versible.");
-}
-
-
-document.addEventListener('DOMContentLoaded', function() {
-    const form = document.querySelector('form[action="/registration"]');
-    if (form) {
-        form.addEventListener('submit', function(event) {
-            // Si c'est le bouton Soumettre qui a d&amp;eacute;clench&amp;eacute; l'&amp;eacute;v&amp;eacute;nement
-            if (event.submitter &amp;&amp; event.submitter.textContent.includes('Soumettre')) {
-                if (!validateBeforeSubmit()) {
-                    event.preventDefault();
+                console.log("Erreur: aucune ligne remplie"); // Debug
+                } else if (Math.abs(total - 100) &gt; 0.01) {
+                errors.push('La somme des pourcentages doit &amp;ecirc;tre exactement &amp;eacute;gale &amp;agrave;
+                100%.\nSomme actuelle : ' + total.toFixed(2) + '%');
+                console.log(`Erreur: somme incorrecte ${total}%`); // Debug
                 }
-            }
-        });
-    }
+                }
+                }
 
-    
-    document.querySelectorAll('input[type="file"]').forEach(input =&gt; {
-        if (input.dataset.hasFile === 'true') {
-            input.dataset.hasFile = 'true';
-        }
-    });
-});
+                requiredDocs.forEach(doc =&gt; {
+                const input = document.querySelector(`input[name="${doc}"]`);
+                const hasFile = input &amp;&amp; (input.files.length &gt; 0 || input.dataset.hasFile === 'true');
+
+                if (!hasFile) {
+                const label = document.querySelector(`label[for="${doc}"]`);
+                const docName = label ? label.textContent.trim() : doc;
+                errors.push(`Le document ${docName} est obligatoire`);
+                }
+                });
+
+                const pvInput = document.querySelector('input[name="pv_cn"]');
+                if (pvInput) {
+                if (!pvInput.files || pvInput.files.length === 0) {
+                errors.push('Le PV du Conseil National est obligatoire pour confirmer l\'inscription.');
+                } else {
+                const file = pvInput.files[0];
+                const validTypes = ['application/pdf', 'image/jpeg', 'image/png'];
+                if (validTypes.indexOf(file.type) === -1) {
+                errors.push('Le PV doit &amp;ecirc;tre un fichier PDF, JPG ou PNG.');
+                }
+
+                if (file.size &gt; 5 * 1024 * 1024) {
+                errors.push('Le fichier PV est trop volumineux (max 5MB).');
+                }
+                }
+                }
+
+                console.log("Erreurs totales:", errors); // Debug
+
+                if (errors.length &gt; 0) {
+                alert("Erreurs de validation:\n\n" + errors.join("\n"));
+                return false;
+                }
+
+                return confirm("&amp;Ecirc;tes-vous s&amp;ucirc;r de vouloir soumettre votre inscription ? Cette action
+                est irr&amp;eacute;versible.");
+                }
+
+                document.addEventListener('DOMContentLoaded', function() {
+                const form = document.querySelector('form[action="/registration"]');
+                if (form) {
+                form.addEventListener('submit', function(event) {
+                // Si c'est le bouton Soumettre qui a d&amp;eacute;clench&amp;eacute; l'&amp;eacute;v&amp;eacute;nement
+                if (event.submitter &amp;&amp; event.submitter.textContent.includes('Soumettre')) {
+                if (!validateBeforeSubmit()) {
+                event.preventDefault();
+                }
+                }
+                });
+                }
+
+                document.querySelectorAll('input[type="file"]').forEach(input =&gt; {
+                if (input.dataset.hasFile === 'true') {
+                input.dataset.hasFile = 'true';
+                }
+                });
+                });
             </script>
 
         </t>
