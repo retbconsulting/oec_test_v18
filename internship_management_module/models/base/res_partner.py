@@ -907,7 +907,9 @@ class ResPartner(models.Model):
         ('4000', '4000,00 DH (Casablanca)'),
         ('3000', '3000,00 DH (Hors Casablanca)')
     ], string="Montant droit d'entrée")
-    
+    denomination = fields.Char(string="Dénomination sociale")
+    rc = fields.Char(string="Numéro RC")
+    ice = fields.Char(string="ICE")
     # Champ pour le statut d'inscription (si ce n'est pas déjà défini)
    # status_register = fields.Selection([
     #    ('draft', 'Brouillon'),

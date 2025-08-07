@@ -289,6 +289,9 @@
                                 <field name="cin_number"/>
                                 <field name="diplome"/>
                                 <field name="raison_sociale"/>
+                                <field name="denomination" invisible="mode_registration != 'pm'"/>
+                                <field name="rc" invisible="mode_registration != 'pm'"/>
+                                <field name="ice" invisible="mode_registration != 'pm'"/>
                             </group>
                             <group>
                                 <field name="legal_form"/>
