@@ -1131,18 +1131,18 @@
                             <div class="card-body">
                                 <div class="row">
                                     <div t-attf-class="form-group col-xl-6" data-type="binary">
-                                        <div class="d-flex justify-content-between align-items-center mb-2">
-                                            <label class="col-form-label mb-0">
-                                                Déclaration sur l’honneur
+                                        <div class="d-flex align-items-center gap-2 mb-2">
+                                            <label class="col-form-label mb-0 flex-grow-1">
+                                                Déclaration sur l'honneur
                                                 <span class="text-danger">*</span>
                                                 <span t-if="partner.declaration_sur_honneur" style="color:blue">
-                                                    (Document déjà chargé)
+                                                    (Déjà chargé)
                                                 </span>
                                             </label>
                                             <a href="/internship_management_module/static/src/documents/Modèle - Déclaration sur l'honneur.docx"
                                                target="_blank"
-                                               class="btn btn-outline-info btn-sm">
-                                                📄 Télécharger le modèle
+                                               class="btn btn-outline-info btn-sm nowrap">
+                                                <i class="fa fa-download mr-1"></i>Modèle
                                             </a>
                                         </div>
 
