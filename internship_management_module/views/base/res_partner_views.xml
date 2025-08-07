@@ -487,49 +487,7 @@
                                            readonly="status_register != 'in_progress'" nolabel="1"/>
                                 </group>
                             </group>
-                            <div class="col-lg-12" t-if="partner.status_register == 'in_progress_conseil_national'">
-                            <div class="card mb-4">
-                                <div class="card-header bg-primary text-white">
-                                    <h4>Validation par le Conseil National</h4>
-                                </div>
-                                <div class="card-body">
-                                    <div class="row">
-                                        <div t-if="partner.status_register == 'in_progress_conseil_national'"
-                                             t-attf-class="form-group col-xl-6" data-type="binary">
-                                            <label class="col-form-label" for="pv_cn">
-                                                PV du Conseil National (Obligatoire pour confirmation)
-                                                <span t-if="partner.pv_cn" style="color:blue">
-                                                    (Document déjà chargé)
-                                                </span>
-                                            </label>
 
-                                            <!-- Lien de téléchargement si le PV existe -->
-                                            <t t-if="partner.pv_cn">
-                                                <a t-att-href="'/web/content/res.partner/%s/pv_cn?download=true' % partner.id"
-                                                   target="_blank"
-                                                   class="btn btn-outline-primary btn-sm mt-1">
-                                                    📥 Télécharger le PV
-                                                </a>
-                                            </t>
-
-                                            <br/>
-
-
-                                            <input id="pv_cn_upload"
-                                                   type="file"
-                                                   accept=".pdf,.jpg,.jpeg"
-                                                   name="pv_cn"
-                                                   class="file"
-                                                   data-show-upload="true"
-                                                   data-show-caption="true"
-                                                   data-show-preview="false"
-                                                   required="required"/>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                            
                             <group string="Autres documents">
                                 <group invisible="mode_registration not in ['pm', 'pp1', 'pp2']">
                                     <field name="copie_conforme_contrat_filename" column_invisible="1"/>
