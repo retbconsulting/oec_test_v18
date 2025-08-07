@@ -1131,84 +1131,76 @@
                             <div class="card-body">
                                 <div class="row">
                                     <div t-attf-class="form-group col-xl-6" data-type="binary">
-                                        <label class="col-form-label" for="declaration_sur_honneur">
-                                            Déclaration sur l’honneur
-                                            <span class="text-danger">*</span>
-                                            <span t-if="partner.declaration_sur_honneur" style="color:blue">
-                                                (Document déjà chargé)
-                                            </span>
-                                        </label>
-
-                                        <!-- 🔗 Modèle à télécharger -->
-                                        <div>
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <label class="col-form-label mb-0">
+                                                Déclaration sur l’honneur
+                                                <span class="text-danger">*</span>
+                                                <span t-if="partner.declaration_sur_honneur" style="color:blue">
+                                                    (Document déjà chargé)
+                                                </span>
+                                            </label>
                                             <a href="/internship_management_module/static/src/documents/Modèle - Déclaration sur l'honneur.docx"
                                                target="_blank"
-                                               class="btn btn-outline-info btn-sm mb-2">
-                                                📄 Télécharger le modèle (.docx)
+                                               class="btn btn-outline-info btn-sm">
+                                                📄 Télécharger le modèle
                                             </a>
                                         </div>
 
-                                        <!-- ✅ Fichier déjà chargé -->
+                                        <!-- Fichier déjà chargé -->
                                         <t t-if="partner.declaration_sur_honneur">
                                             <a t-att-href="'/web/content/res.partner/%s/declaration_sur_honneur?download=true' % partner.id"
                                                target="_blank"
-                                               class="btn btn-outline-primary btn-sm mt-1">
-                                                📥 Télécharger le document
+                                               class="btn btn-outline-primary btn-sm d-block mb-2">
+                                                📥 Télécharger le document existant
                                             </a>
                                         </t>
 
-                                        <br/>
-
-                                        <!-- 📤 Champ de chargement -->
+                                        <!-- Champ de chargement -->
                                         <input t-att-disabled="partner.status_register == 'in_progress'"
-                                               id="upload"
                                                type="file"
                                                accept=".pdf,.jpg,.jpeg"
                                                name="declaration_sur_honneur"
-                                               class="file"
-                                               data-show-upload="true"
-                                               data-show-caption="true"
-                                               data-show-preview="false"
+                                               class="form-control"
                                                t-att-readonly="None if partner.status_register=='draft' else '1'"
                                                required="required"/>
                                     </div>
 
-                                   <!-- <t t-if="partner.mode_registration in ['pp3','pm','pp1','pp2','pp4']">
-                                        <div t-attf-class="form-group col-xl-6" data-type="binary">
-                                            <label class="col-form-label" for="questionnaire">
-                                                Questionnaire dûment rempli, daté et signé
-                                                <span class="text-danger">*</span>
-                                                <span t-if="partner.questionnaire" style="color:blue">
-                                                    (Document déjà chargé)
-                                                </span>
-                                            </label>
+                                    <!-- <t t-if="partner.mode_registration in ['pp3','pm','pp1','pp2','pp4']">
+                                         <div t-attf-class="form-group col-xl-6" data-type="binary">
+                                             <label class="col-form-label" for="questionnaire">
+                                                 Questionnaire dûment rempli, daté et signé
+                                                 <span class="text-danger">*</span>
+                                                 <span t-if="partner.questionnaire" style="color:blue">
+                                                     (Document déjà chargé)
+                                                 </span>
+                                             </label>
 
 
-                                            <div>
-                                                <a href="/internship_management_module/static/src/documents/Questionnaire.rtf.doc"
-                                                   target="_blank"
-                                                   class="btn btn-outline-info btn-sm mb-2">
-                                                    📄 Télécharger le modèle du questionnaire (.docx)
-                                                </a>
-                                            </div>
+                                             <div>
+                                                 <a href="/internship_management_module/static/src/documents/Questionnaire.rtf.doc"
+                                                    target="_blank"
+                                                    class="btn btn-outline-info btn-sm mb-2">
+                                                     📄 Télécharger le modèle du questionnaire (.docx)
+                                                 </a>
+                                             </div>
 
-                                            <br/>
+                                             <br/>
 
 
-                                            <input t-att-disabled="partner.status_register == 'in_progress'"
-                                                   id="questionnaire"
-                                                   type="file"
-                                                   accept=".pdf,.jpg,.jpeg"
-                                                   name="questionnaire"
-                                                   class="file"
-                                                   data-show-upload="true"
-                                                   data-show-caption="true"
-                                                   data-show-preview="false"
-                                                   t-att-readonly="None if partner.status_register=='draft' else '1'"
-                                                   required="required"/>
-                                        </div>
+                                             <input t-att-disabled="partner.status_register == 'in_progress'"
+                                                    id="questionnaire"
+                                                    type="file"
+                                                    accept=".pdf,.jpg,.jpeg"
+                                                    name="questionnaire"
+                                                    class="file"
+                                                    data-show-upload="true"
+                                                    data-show-caption="true"
+                                                    data-show-preview="false"
+                                                    t-att-readonly="None if partner.status_register=='draft' else '1'"
+                                                    required="required"/>
+                                         </div>
 
-                                    </t>-->
+                                     </t>-->
                                     <t t-if="partner.mode_registration in ['pp3','pp1']">
                                         <div t-attf-class="form-group col-xl-6" data-type="binary">
                                             <label class="col-form-label" for="demande_inscription_salarie">
@@ -2123,7 +2115,7 @@
                                             </ul>
                                         </div>
                                     </div>
-                                    
+
                                     <t t-if="partner.mode_registration in ['pp1','pp2','pp4','pp3','pm']">
                                         <div class="form-group col-xl-6" data-type="binary">
                                             <label class="col-form-label" for="cheque_droit_entree">
@@ -2679,77 +2671,78 @@
             </form>
             <script type="text/javascript">
                 function validateForm() {
-                    var total = 0;
-                    var atLeastOneFilled = false;
-                    for (var i = 1; i &lt;= 5; i++) {
-                        var nameInput = document.querySelector('input[name=&quot;name' + i + '&quot;]');
-                        var percentageInput = document.querySelector('input[name=&quot;percentage' + i + '&quot;]');
+                var total = 0;
+                var atLeastOneFilled = false;
+                for (var i = 1; i &lt;= 5; i++) {
+                var nameInput = document.querySelector('input[name=&quot;name' + i + '&quot;]');
+                var percentageInput = document.querySelector('input[name=&quot;percentage' + i + '&quot;]');
 
-                        if (nameInput &amp;&amp; percentageInput) {
-                            var name = nameInput.value.trim();
-                            var percentageStr = percentageInput.value.trim();
+                if (nameInput &amp;&amp; percentageInput) {
+                var name = nameInput.value.trim();
+                var percentageStr = percentageInput.value.trim();
 
-                            if (name != '' &amp;&amp; percentageStr != '') {
-                                atLeastOneFilled = true;
-                                var percentage = parseFloat(percentageStr);
-                                if (isNaN(percentage) || percentage &lt; 0) {
-                                    alert('Le pourcentage à la ligne #' + i + ' doit être un nombre positif.');
-                                    return false;
-                                }
-                                total += percentage;
-                            }
-                        }
-                    }
+                if (name != '' &amp;&amp; percentageStr != '') {
+                atLeastOneFilled = true;
+                var percentage = parseFloat(percentageStr);
+                if (isNaN(percentage) || percentage &lt; 0) {
+                alert('Le pourcentage à la ligne #' + i + ' doit être un nombre positif.');
+                return false;
+                }
+                total += percentage;
+                }
+                }
+                }
 
-                    // Vérifier seulement si on est pas en mode 'e'
-                    var modeSelect = document.querySelector('select[name=&quot;mode_registration&quot;]');
-                    if (modeSelect &amp;&amp; modeSelect.value !== 'e') {
-                        if (!atLeastOneFilled) {
-                            alert('Veuillez remplir au moins une ligne avec un nom et un pourcentage.');
-                            return false;
-                        }
+                // Vérifier seulement si on est pas en mode 'e'
+                var modeSelect = document.querySelector('select[name=&quot;mode_registration&quot;]');
+                if (modeSelect &amp;&amp; modeSelect.value !== 'e') {
+                if (!atLeastOneFilled) {
+                alert('Veuillez remplir au moins une ligne avec un nom et un pourcentage.');
+                return false;
+                }
 
-                        if (Math.abs(total - 100) &gt; 0.01) {
-                            alert('La somme des pourcentages doit être exactement égale à 100%.\nSomme actuelle : ' + total.toFixed(2) + '%');
-                            return false;
-                        }
-                    }
+                if (Math.abs(total - 100) &gt; 0.01) {
+                alert('La somme des pourcentages doit être exactement égale à 100%.\nSomme actuelle : ' +
+                total.toFixed(2) + '%');
+                return false;
+                }
+                }
 
-                    // Validation du PV si nécessaire
-                    var pvInput = document.querySelector('input[name=&quot;pv_cn&quot;]');
-                    if (pvInput) {
-                        if (!pvInput.files || pvInput.files.length === 0) {
-                            alert('Le PV du Conseil National est obligatoire pour confirmer l\'inscription.');
-                            return false;
-                        }
+                // Validation du PV si nécessaire
+                var pvInput = document.querySelector('input[name=&quot;pv_cn&quot;]');
+                if (pvInput) {
+                if (!pvInput.files || pvInput.files.length === 0) {
+                alert('Le PV du Conseil National est obligatoire pour confirmer l\'inscription.');
+                return false;
+                }
 
-                        var file = pvInput.files[0];
-                        var validTypes = ['application/pdf', 'image/jpeg', 'image/png'];
-                        if (validTypes.indexOf(file.type) === -1) {
-                            alert('Le PV doit être un fichier PDF, JPG ou PNG.');
-                            return false;
-                        }
+                var file = pvInput.files[0];
+                var validTypes = ['application/pdf', 'image/jpeg', 'image/png'];
+                if (validTypes.indexOf(file.type) === -1) {
+                alert('Le PV doit être un fichier PDF, JPG ou PNG.');
+                return false;
+                }
 
-                        if (file.size &gt; 5 * 1024 * 1024) {
-                            alert('Le fichier PV est trop volumineux (max 5MB).');
-                            return false;
-                        }
-                    }
+                if (file.size &gt; 5 * 1024 * 1024) {
+                alert('Le fichier PV est trop volumineux (max 5MB).');
+                return false;
+                }
+                }
 
-                    return true;
+                return true;
                 }
 
                 // Attacher la validation à la soumission du formulaire
                 document.addEventListener('DOMContentLoaded', function() {
-                    var form = document.querySelector('form[action=&quot;/registration&quot;]');
-                    if (form) {
-                        form.addEventListener('submit', function(event) {
-                            if (!validateForm()) {
-                                event.preventDefault();
-                                return false;
-                            }
-                        });
-                    }
+                var form = document.querySelector('form[action=&quot;/registration&quot;]');
+                if (form) {
+                form.addEventListener('submit', function(event) {
+                if (!validateForm()) {
+                event.preventDefault();
+                return false;
+                }
+                });
+                }
                 });
             </script>
 
