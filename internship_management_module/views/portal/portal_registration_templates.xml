@@ -2746,7 +2746,7 @@
     const requiredDocs = requiredDocsByMode[mode] || [];
     let errors = [];
 
-    // V&amp;eacute;rification des champs communs obligatoires
+
     const requiredFields = ['name', 'second_name', 'email', 'phone', 'cin_number'];
     requiredFields.forEach(field =&gt; {
         const input = document.querySelector(`[name="${field}"]`);
@@ -2757,7 +2757,7 @@
         }
     });
 
-    // V&amp;eacute;rification des documents requis
+
     requiredDocs.forEach(doc =&gt; {
         const input = document.querySelector(`input[name="${doc}"]`);
         const hasFile = input &amp;&amp; (input.files.length &gt; 0 || input.dataset.hasFile === 'true');
@@ -2769,14 +2769,13 @@
         }
     });
 
-    // V&amp;eacute;rification de la checkbox
+
     const declarationCheckbox = document.querySelector('input[name="declaration_honneur"]');
     if (!declarationCheckbox || !declarationCheckbox.checked) {
         errors.push("Vous devez accepter la d&amp;eacute;claration sur l'honneur");
     }
 
-    // Validation de la r&amp;eacute;partition du capital (logique qui fonctionne) - VERSION CORRIG&amp;Eacute;E
-    // V&amp;eacute;rifier s'il y a des champs de pourcentage dans le formulaire
+
     const hasPercentageFields = document.querySelector('input[name="percentage1"]') !== null;
 
     if (hasPercentageFields) {
@@ -2803,7 +2802,7 @@
             }
         }
 
-        // V&amp;eacute;rifier seulement si on n'est pas en mode 'e'
+
         const modeSelect = document.querySelector('select[name="mode_registration"]');
         if (modeSelect &amp;&amp; modeSelect.value !== 'e') {
             if (!atLeastOneFilled) {
@@ -2816,7 +2815,7 @@
         console.log(`Total calcul&amp;eacute; (logique qui fonctionne): ${total}%`); // Debug
     }
 
-    // Validation du PV si n&amp;eacute;cessaire
+
     const pvInput = document.querySelector('input[name="pv_cn"]');
     if (pvInput) {
         if (!pvInput.files || pvInput.files.length === 0) {
@@ -2842,7 +2841,7 @@
     return confirm("&amp;Ecirc;tes-vous s&amp;ucirc;r de vouloir soumettre votre inscription ? Cette action est irr&amp;eacute;versible.");
 }
 
-// Attacher la validation &amp;agrave; la soumission du formulaire
+
 document.addEventListener('DOMContentLoaded', function() {
     const form = document.querySelector('form[action="/registration"]');
     if (form) {
@@ -2856,7 +2855,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Marquer les fichiers d&amp;eacute;j&amp;agrave; existants
+    
     document.querySelectorAll('input[type="file"]').forEach(input =&gt; {
         if (input.dataset.hasFile === 'true') {
             input.dataset.hasFile = 'true';
