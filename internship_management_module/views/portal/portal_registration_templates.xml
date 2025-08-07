@@ -2775,84 +2775,61 @@
         errors.push("Vous devez accepter la d&amp;eacute;claration sur l'honneur");
     }
 
-    // Validation de la r&amp;eacute;partition du capital (pour tous les modes) - VERSION CORRIG&amp;Eacute;E
+    // Validation de la r&amp;eacute;partition du capital (logique qui fonctionne) - VERSION CORRIG&amp;Eacute;E
     // V&amp;eacute;rifier s'il y a des champs de pourcentage dans le formulaire
     const hasPercentageFields = document.querySelector('input[name="percentage1"]') !== null;
 
     if (hasPercentageFields) {
-        let totalPercent = 0;
+        let total = 0;
         let atLeastOneFilled = false;
-        let associesDetails = [];
-        let hasValidationErrors = false;
 
-        // Premi&amp;egrave;re passe : collecter les donn&amp;eacute;es et v&amp;eacute;rifier les erreurs de base
         for (let i = 1; i &lt;= 5; i++) {
-            const nameInput = document.querySelector(`input[name="name${i}"]`);
-            const percentInput = document.querySelector(`input[name="percentage${i}"]`);
+            const nameInput = document.querySelector('input[name="name' + i + '"]');
+            const percentageInput = document.querySelector('input[name="percentage' + i + '"]');
 
-            const name = nameInput ? nameInput.value.trim() : '';
-            const percentValue = percentInput ? percentInput.value.trim() : '';
+            if (nameInput &amp;&amp; percentageInput) {
+                const name = nameInput.value.trim();
+                const percentageStr = percentageInput.value.trim();
 
-            console.log(`Associ&amp;eacute; ${i}: nom="${name}", pourcentage="${percentValue}"`); // Debug
-
-            if (name || percentValue) {
-                atLeastOneFilled = true;
-
-                // V&amp;eacute;rifier que si un nom est rempli, le pourcentage l'est aussi et vice versa
-                if (name &amp;&amp; !percentValue) {
-                    errors.push(`Le pourcentage pour l'associ&amp;eacute; "${name}" est manquant`);
-                    hasValidationErrors = true;
-                    continue;
+                if (name !== '' &amp;&amp; percentageStr !== '') {
+                    atLeastOneFilled = true;
+                    const percentage = parseFloat(percentageStr);
+                    if (isNaN(percentage) || percentage &lt; 0) {
+                        errors.push('Le pourcentage &amp;agrave; la ligne #' + i + ' doit &amp;ecirc;tre un nombre positif.');
+                        continue;
+                    }
+                    total += percentage;
                 }
-                if (!name &amp;&amp; percentValue) {
-                    errors.push(`Le nom pour le pourcentage ${percentValue}% est manquant`);
-                    hasValidationErrors = true;
-                    continue;
-                }
-
-                // Conversion et validation du pourcentage
-                const percent = parseFloat(percentValue.replace(',', '.')); // G&amp;eacute;rer les virgules
-
-                if (isNaN(percent)) {
-                    errors.push(`Le pourcentage pour l'associ&amp;eacute; "${name}" n'est pas un nombre valide`);
-                    hasValidationErrors = true;
-                    continue;
-                }
-
-                if (percent &lt;= 0) {
-                    errors.push(`Le pourcentage pour l'associ&amp;eacute; "${name}" doit &amp;ecirc;tre sup&amp;eacute;rieur &amp;agrave; 0`);
-                    hasValidationErrors = true;
-                    continue;
-                }
-
-                if (percent &gt; 100) {
-                    errors.push(`Le pourcentage pour l'associ&amp;eacute; "${name}" ne peut pas d&amp;eacute;passer 100%`);
-                    hasValidationErrors = true;
-                    continue;
-                }
-
-                // Si on arrive ici, les donn&amp;eacute;es sont valides
-                totalPercent += percent;
-                associesDetails.push({nom: name, pourcentage: percent});
             }
         }
 
-        console.log(`Total calcul&amp;eacute;: ${totalPercent}%`); // Debug
-        console.log('Associ&amp;eacute;s:', associesDetails); // Debug
-        console.log('Erreurs de validation:', hasValidationErrors); // Debug
+        // V&amp;eacute;rifier seulement si on n'est pas en mode 'e'
+        const modeSelect = document.querySelector('select[name="mode_registration"]');
+        if (modeSelect &amp;&amp; modeSelect.value !== 'e') {
+            if (!atLeastOneFilled) {
+                errors.push('Veuillez remplir au moins une ligne avec un nom et un pourcentage.');
+            } else if (Math.abs(total - 100) &gt; 0.01) {
+                errors.push('La somme des pourcentages doit &amp;ecirc;tre exactement &amp;eacute;gale &amp;agrave; 100%.\nSomme actuelle : ' + total.toFixed(2) + '%');
+            }
+        }
 
-        // V&amp;eacute;rifications finales
-        if (!atLeastOneFilled) {
-            errors.push("Veuillez remplir au moins un associ&amp;eacute;");
-        } else if (!hasValidationErrors &amp;&amp; associesDetails.length &gt; 0) {
-            // V&amp;eacute;rifier la somme seulement s'il n'y a pas d'erreurs de validation
-            const roundedTotal = Math.round(totalPercent * 100) / 100; // Arrondi &amp;agrave; 2 d&amp;eacute;cimales
+        console.log(`Total calcul&amp;eacute; (logique qui fonctionne): ${total}%`); // Debug
+    }
 
-            console.log(`V&amp;eacute;rification finale: ${roundedTotal} !== 100 ?`); // Debug
+    // Validation du PV si n&amp;eacute;cessaire
+    const pvInput = document.querySelector('input[name="pv_cn"]');
+    if (pvInput) {
+        if (!pvInput.files || pvInput.files.length === 0) {
+            errors.push('Le PV du Conseil National est obligatoire pour confirmer l\'inscription.');
+        } else {
+            const file = pvInput.files[0];
+            const validTypes = ['application/pdf', 'image/jpeg', 'image/png'];
+            if (validTypes.indexOf(file.type) === -1) {
+                errors.push('Le PV doit &amp;ecirc;tre un fichier PDF, JPG ou PNG.');
+            }
 
-            if (Math.abs(roundedTotal - 100) &gt; 0.01) {
-                errors.push(`La somme des pourcentages doit faire exactement 100% (actuellement: ${roundedTotal.toFixed(2)}%)`);
-                console.log('Erreur de somme ajout&amp;eacute;e !'); // Debug
+            if (file.size &gt; 5 * 1024 * 1024) {
+                errors.push('Le fichier PV est trop volumineux (max 5MB).');
             }
         }
     }
