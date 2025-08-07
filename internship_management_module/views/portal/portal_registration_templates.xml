@@ -1256,7 +1256,7 @@
                                                 <a href="/internship_management_module/static/src/documents/Modèle - Engagement.docx"
                                                    target="_blank"
                                                    class="btn btn-outline-info btn-sm">
-                                                    📄 Télécharger le modèle d'engagement de la société (.docx)
+                                                    📄 Télécharger le modèle d'engagement de la société
                                                 </a>
                                             </div>
 
@@ -1358,77 +1358,96 @@
                                     <div class="col-12 mt-4 mb-2">
                                         <strong>Documents supplémentaires pour les diplômes étrangers :</strong>
                                     </div>
+                                    <div class="row">
+                                        <div class="form-group col-xl-6" data-type="binary">
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <label class="col-form-label mb-0">
+                                                    Attestation d'équivalence
+                                                    <span t-if="partner.attestation_equivalence" style="color:blue">
+                                                        (Document déjà chargé)
+                                                    </span>
+                                                </label>
+                                            </div>
+                                            <input t-att-disabled="partner.status_register == 'in_progress'"
+                                                   type="file"
+                                                   name="attestation_equivalence"
+                                                   class="form-control"
+                                                   accept=".pdf,.jpg,.jpeg"
+                                                   t-att-readonly="None if partner.status_register=='draft' else '1'"/>
+                                        </div>
 
-                                    <div class="form-group col-xl-6" data-type="binary">
-                                        <label class="col-form-label" for="attestation_equivalence">
-                                            Attestation d’équivalence
-                                            <span t-if="partner.attestation_equivalence" style="color:blue">(Document
-                                                déjà chargé)
-                                            </span>
-                                        </label>
-                                        <input t-att-disabled="partner.status_register == 'in_progress'" type="file"
-                                               name="attestation_equivalence"
-                                               class="file" accept=".pdf,.jpg,.jpeg"
-                                               data-show-upload="true" data-show-caption="true"
-                                               t-att-readonly="None if partner.status_register=='draft' else '1'"/>
+                                        <!-- Fiches annuelles de stage -->
+                                        <div class="form-group col-xl-6" data-type="binary">
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <label class="col-form-label mb-0">
+                                                    03 Fiches annuelles de stage
+                                                    <span t-if="partner.fiche_annuelle" style="color:blue">(Document déjà
+                                                        chargé)
+                                                    </span>
+                                                </label>
+                                            </div>
+                                            <input t-att-disabled="partner.status_register == 'in_progress'"
+                                                   type="file"
+                                                   name="fiche_annuelle"
+                                                   class="form-control"
+                                                   accept=".pdf,.jpg,.jpeg"
+                                                   t-att-readonly="None if partner.status_register=='draft' else '1'"/>
+                                        </div>
+
+                                        <!-- Attestation de fin de stage -->
+                                        <div class="form-group col-xl-6" data-type="binary">
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <label class="col-form-label mb-0">
+                                                    Attestation de fin de stage
+                                                    <span t-if="partner.attestation_fin_stage" style="color:blue">(Document
+                                                        déjà chargé)
+                                                    </span>
+                                                </label>
+                                            </div>
+                                            <input t-att-disabled="partner.status_register == 'in_progress'"
+                                                   type="file"
+                                                   name="attestation_fin_stage"
+                                                   class="form-control"
+                                                   accept=".pdf,.jpg,.jpeg"
+                                                   t-att-readonly="None if partner.status_register=='draft' else '1'"/>
+                                        </div>
+
+                                        <!-- Fiche générale de synthèse -->
+                                        <div class="form-group col-xl-6" data-type="binary">
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <label class="col-form-label mb-0">
+                                                    Fiche générale de synthèse
+                                                    <span t-if="partner.fiche_generale_synthese" style="color:blue">
+                                                        (Document déjà chargé)
+                                                    </span>
+                                                </label>
+                                            </div>
+                                            <input t-att-disabled="partner.status_register == 'in_progress'"
+                                                   type="file"
+                                                   name="fiche_generale_synthese"
+                                                   class="form-control"
+                                                   accept=".pdf,.jpg,.jpeg"
+                                                   t-att-readonly="None if partner.status_register=='draft' else '1'"/>
+                                        </div>
+
+                                        <!-- Fiche annuelle d'audit -->
+                                        <div class="form-group col-xl-6" data-type="binary">
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <label class="col-form-label mb-0">
+                                                    Fiche annuelle de 200 heures d'audit
+                                                    <span t-if="partner.fiche_annuelle" style="color:blue">(Document déjà
+                                                        chargé)
+                                                    </span>
+                                                </label>
+                                            </div>
+                                            <input t-att-disabled="partner.status_register == 'in_progress'"
+                                                   type="file"
+                                                   name="fiche_annuelle_audit"
+                                                   class="form-control"
+                                                   accept=".pdf,.jpg,.jpeg"
+                                                   t-att-readonly="None if partner.status_register=='draft' else '1'"/>
+                                        </div>
                                     </div>
-
-                                    <div class="form-group col-xl-6" data-type="binary">
-                                        <label class="col-form-label" for="fiche_annuelle">
-                                            03 Fiches annuelles de stage
-                                            <span t-if="partner.fiche_annuelle" style="color:blue">(Document déjà
-                                                chargé)
-                                            </span>
-                                        </label>
-                                        <input t-att-disabled="partner.status_register == 'in_progress'" type="file"
-                                               name="fiche_annuelle"
-                                               class="file" accept=".pdf,.jpg,.jpeg"
-                                               data-show-upload="true" data-show-caption="true"
-                                               t-att-readonly="None if partner.status_register=='draft' else '1'"/>
-                                    </div>
-
-                                    <div class="form-group col-xl-6" data-type="binary">
-                                        <label class="col-form-label" for="attestation_fin_stage">
-                                            Attestation de fin de stage
-                                            <span t-if="partner.attestation_fin_stage" style="color:blue">(Document déjà
-                                                chargé)
-                                            </span>
-                                        </label>
-                                        <input t-att-disabled="partner.status_register == 'in_progress'" type="file"
-                                               name="attestation_fin_stage"
-                                               class="file" accept=".pdf,.jpg,.jpeg"
-                                               data-show-upload="true" data-show-caption="true"
-                                               t-att-readonly="None if partner.status_register=='draft' else '1'"/>
-                                    </div>
-
-                                    <div class="form-group col-xl-6" data-type="binary">
-                                        <label class="col-form-label" for="fiche_generale_synthese">
-                                            Fiche générale de synthèse
-                                            <span t-if="partner.fiche_generale_synthese" style="color:blue">(Document
-                                                déjà chargé)
-                                            </span>
-                                        </label>
-                                        <input t-att-disabled="partner.status_register == 'in_progress'" type="file"
-                                               name="fiche_generale_synthese"
-                                               class="file" accept=".pdf,.jpg,.jpeg"
-                                               data-show-upload="true" data-show-caption="true"
-                                               t-att-readonly="None if partner.status_register=='draft' else '1'"/>
-                                    </div>
-
-                                    <div class="form-group col-xl-6" data-type="binary">
-                                        <label class="col-form-label" for="fiche_annuelle_audit">
-                                            Fiche annuelle de 200 heures d’audit
-                                            <span t-if="partner.fiche_annuelle" style="color:blue">(Document déjà
-                                                chargé)
-                                            </span>
-                                        </label>
-                                        <input t-att-disabled="partner.status_register == 'in_progress'" type="file"
-                                               name="fiche_annuelle_audit"
-                                               class="file" accept=".pdf,.jpg,.jpeg"
-                                               data-show-upload="true" data-show-caption="true"
-                                               t-att-readonly="None if partner.status_register=='draft' else '1'"/>
-                                    </div>
-
                                 </div>
                             </div>
                         </div>
