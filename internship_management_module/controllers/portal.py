@@ -234,6 +234,7 @@ class CustomerPortalCustom(CustomerPortal):
 
                 _logger.error('4')
                 try:
+                    _logger.error('sss %s',partner_vals)
                     partner = request.env['res.partner'].sudo().create(partner_vals)
                 except Exception as e:
                     vals['error_message'] = ["Une erreur est survenue lors de la création: %s" % str(e)]
@@ -247,6 +248,7 @@ class CustomerPortalCustom(CustomerPortal):
             except Exception as e:
                 _logger.error('7')
                 vals['error_message'] = ["Une erreur est survenue lors de la création: %s" % str(e)]
+                _logger.error('sss %s',vals['error_message'])
                 return request.render("internship_management_module.portal_request_registration", vals)
 
         return request.render("internship_management_module.portal_request_registration", vals)
