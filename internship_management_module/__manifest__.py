@@ -50,7 +50,7 @@
 
         # Views
         'views/portal/portal_base_templates.xml',
-        'views/base/res_partner_views.xml',
+        #'views/base/res_partner_views.xml',
         'views/base/res_school_year_views.xml',
         'views/portal/portal_templates.xml',
         'views/base/res_partner_type_views.xml',
