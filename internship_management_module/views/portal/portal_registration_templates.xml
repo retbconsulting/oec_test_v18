@@ -562,135 +562,136 @@
                         </div>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="form-group col-lg-12">
-                        <label for="mode_registration">Mode d'inscription</label>
-                        <select class="form-control" id="mode_registration" name="mode_registration" disabled="true">
-                            <t t-foreach="register_types" t-as="register_type">
-                                <option t-att-selected="register_type[0] == partner.contact_registration_mode"
-                                        t-att-value="register_type[0]">
-                                    <t t-out="register_type[1]"/>
-                                </option>
-                            </t>
-                        </select>
+                <div class="col-lg-12">
+                    <div class="row">
+                        <div class="form-group col-lg-12">
+                            <label for="mode_registration">Mode d'inscription</label>
+                            <select class="form-control" id="mode_registration" name="mode_registration" disabled="true">
+                                <t t-foreach="register_types" t-as="register_type">
+                                    <option t-att-selected="register_type[0] == partner.contact_registration_mode"
+                                            t-att-value="register_type[0]">
+                                        <t t-out="register_type[1]"/>
+                                    </option>
+                                </t>
+                            </select>
+                        </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="form-group col-lg-12">
-                        <label for="type_selection">Type d'inscription</label>
-                        <select class="form-control" id="type_selection" name="type_selection" disabled="true">
-                            <t t-foreach="type_selection" t-as="item">
-                                <option t-att-value="item[0]"
-                                        t-att-selected="item[0] == partner.contact_registration_type">
-                                    <t t-esc="item[1]"/>
-                                </option>
-                            </t>
-                        </select>
+                    <div class="row">
+                        <div class="form-group col-lg-12">
+                            <label for="type_selection">Type d'inscription</label>
+                            <select class="form-control" id="type_selection" name="type_selection" disabled="true">
+                                <t t-foreach="type_selection" t-as="item">
+                                    <option t-att-value="item[0]"
+                                            t-att-selected="item[0] == partner.contact_registration_type">
+                                        <t t-esc="item[1]"/>
+                                    </option>
+                                </t>
+                            </select>
 
+                        </div>
                     </div>
-                </div>
 
-                <div class="row">
-                    <div
-                            t-attf-class="form-group #{error.get('name') and 'o_has_error' or ''} col-xl-6">
-                        <label class="col-form-label" for="name">Nom</label>
-                        <input t-att-disabled="partner.status_register == 'in_progress'" type="text"
-                               t-att-value="name or partner.name" name="name"
-                               t-attf-class="form-control #{error.get('name') and 'is-invalid' or ''}"/>
-                    </div>
-                    <div
-                            t-attf-class="form-group #{error.get('second_name') and 'o_has_error' or ''} col-xl-6">
-                        <label class="col-form-label" for="second_name">Prénom</label>
-                        <input t-att-disabled="partner.status_register == 'in_progress'" type="text"
-                               t-att-value="second_name or partner.second_name"
-                               name="second_name"
-                               t-attf-class="form-control #{error.get('second_name') and 'is-invalid' or ''}"/>
-                    </div>
-                    <!-- 					<div id="adresse_professionnelle" -->
-                    <!-- 						t-attf-class="form-group #{error.get('adresse_professionnelle') and 'o_has_error' or ''} col-xl-6"> -->
-                    <!-- 						<label class="col-form-label" for="adresse_professionnelle">Adresse professionnelle -->
-                    <!-- 						</label> -->
-                    <!-- 						<input type="text" t-att-value="street or partner.street" -->
-                    <!-- 							name="adresse_professionnelle" -->
-                    <!-- 							t-attf-class="form-control #{error.get('adresse_professionnelle') and 'is-invalid' or ''}" /> -->
-                    <!-- 					</div> -->
-                    <div id="sexe"
-                         t-attf-class="form-group #{error.get('sexe') and 'o_has_error' or ''} col-xl-6">
-                        <label class="col-form-label" for="sexe">Sexe</label>
-                        <select t-att-disabled="partner.status_register == 'in_progress'" class="form-control"
-                                name="sexe">
-                            <option value="male" t-att-selected="partner.sexe == 'male'">Homme</option>
-                            <option value="female" t-att-selected="partner.sexe == 'female'">Femme</option>
-                        </select>
-                    </div>
-                    <div
-                            t-attf-class="form-group #{error.get('cin_number') and 'o_has_error' or ''} col-xl-6">
-                        <label class="col-form-label" for="cin_number">CIN</label>
-                        <input t-att-disabled="partner.status_register == 'in_progress'" type="text" name="cin_number"
-                               t-attf-class="form-control #{error.get('cin_number') and 'is-invalid' or ''}"
-                               t-att-value="cin_number or partner.cin_number"/>
-                    </div>
-                    <div
-                            t-attf-class="form-group #{error.get('phone') and 'o_has_error' or ''} col-xl-6">
-                        <label class="col-form-label" for="phone">Téléphone fixe</label>
-                        <input t-att-disabled="partner.status_register == 'in_progress'" type="phone" name="phone"
-                               t-attf-class="form-control #{error.get('phone') and 'is-invalid' or ''}"
-                               t-att-value="phone or partner.phone"/>
-                        <small>Format: +212 5-XXXXXXXX</small>
-                    </div>
-                    <!--<div
-                            t-attf-class="form-group #{error.get('fax') and 'o_has_error' or ''} col-xl-6">
-                        <label class="col-form-label" for="fax">Fax</label>
-                        <input t-att-disabled="partner.status_register == 'in_progress'" type="text" name="fax"
-                               t-attf-class="form-control #{error.get('fax') and 'is-invalid' or ''}"
-                               t-att-value="fax or partner.phone"/>
-                    </div>-->
-                    <div
-                            t-attf-class="form-group #{error.get('gsm') and 'o_has_error' or ''} col-xl-6">
-                        <label class="col-form-label" for="gsm">Téléphone mobile</label>
-                        <input t-att-disabled="partner.status_register == 'in_progress'" type="phone" name="gsm"
-                               t-attf-class="form-control #{error.get('gsm') and 'is-invalid' or ''}"
-                               t-att-value="gsm or partner.gsm"/>
-                        <small>Format: +212 6-XXXXXXXX</small>
-                    </div>
-                    <div
-                            t-attf-class="form-group #{error.get('email') and 'o_has_error' or ''} col-xl-6">
-                        <label class="col-form-label" for="email">Adresse E-mail</label>
-                        <input t-att-disabled="partner.status_register == 'in_progress'" type="email" name="email"
-                               t-attf-class="form-control #{error.get('email') and 'is-invalid' or ''}"
-                               t-att-value="email or partner.email"/>
-                    </div>
-                    <div id="diplome_tab"
-                         t-attf-class="form-group #{error.get('diplome') and 'o_has_error' or ''} col-xl-6">
-                        <label class="col-form-label" for="diplome">Diplôme</label>
-                        <select t-att-disabled="partner.status_register == 'in_progress'" class="form-control"
-                                name="diplome" id="diplome">
-                            <option t-att-selected="partner.diplome == 'marocain'"
-                                    value="marocain">Marocain
-                            </option>
-                            <option t-att-selected="partner.diplome == 'francais'"
-                                    value="francais">Français
-                            </option>
-                            <option t-att-selected="partner.diplome == 'autre'"
-                                    value="autre">Autre
-                            </option>
-                        </select>
-                    </div>
-                    <!--<div id="country"
-                        t-attf-class="form-group #{error.get('country') and 'o_has_error' or ''} col-xl-6">
-                        <label class="col-form-label" for="country">Pays
-                        </label>
-                        <select name="country"
-                            t-attf-class="form-control #{error.get('country') and 'is-invalid' or ''}">
-                            <option value="">Pays...</option>
-                            <t t-foreach="payss or []" t-as="pays">
-                                <option t-att-value="pays.id"
-                                    t-att-selected="pays.id == int(pays) if pays else pays.id == partner.country.id">
-                                    <t t-out="pays.name" />
+                    <div class="row">
+                        <div
+                                t-attf-class="form-group #{error.get('name') and 'o_has_error' or ''} col-xl-6">
+                            <label class="col-form-label" for="name">Nom</label>
+                            <input t-att-disabled="partner.status_register == 'in_progress'" type="text"
+                                   t-att-value="name or partner.name" name="name"
+                                   t-attf-class="form-control #{error.get('name') and 'is-invalid' or ''}"/>
+                        </div>
+                        <div
+                                t-attf-class="form-group #{error.get('second_name') and 'o_has_error' or ''} col-xl-6">
+                            <label class="col-form-label" for="second_name">Prénom</label>
+                            <input t-att-disabled="partner.status_register == 'in_progress'" type="text"
+                                   t-att-value="second_name or partner.second_name"
+                                   name="second_name"
+                                   t-attf-class="form-control #{error.get('second_name') and 'is-invalid' or ''}"/>
+                        </div>
+                        <!-- 					<div id="adresse_professionnelle" -->
+                        <!-- 						t-attf-class="form-group #{error.get('adresse_professionnelle') and 'o_has_error' or ''} col-xl-6"> -->
+                        <!-- 						<label class="col-form-label" for="adresse_professionnelle">Adresse professionnelle -->
+                        <!-- 						</label> -->
+                        <!-- 						<input type="text" t-att-value="street or partner.street" -->
+                        <!-- 							name="adresse_professionnelle" -->
+                        <!-- 							t-attf-class="form-control #{error.get('adresse_professionnelle') and 'is-invalid' or ''}" /> -->
+                        <!-- 					</div> -->
+                        <div id="sexe"
+                             t-attf-class="form-group #{error.get('sexe') and 'o_has_error' or ''} col-xl-6">
+                            <label class="col-form-label" for="sexe">Sexe</label>
+                            <select t-att-disabled="partner.status_register == 'in_progress'" class="form-control"
+                                    name="sexe">
+                                <option value="male" t-att-selected="partner.sexe == 'male'">Homme</option>
+                                <option value="female" t-att-selected="partner.sexe == 'female'">Femme</option>
+                            </select>
+                        </div>
+                        <div
+                                t-attf-class="form-group #{error.get('cin_number') and 'o_has_error' or ''} col-xl-6">
+                            <label class="col-form-label" for="cin_number">CIN</label>
+                            <input t-att-disabled="partner.status_register == 'in_progress'" type="text" name="cin_number"
+                                   t-attf-class="form-control #{error.get('cin_number') and 'is-invalid' or ''}"
+                                   t-att-value="cin_number or partner.cin_number"/>
+                        </div>
+                        <div
+                                t-attf-class="form-group #{error.get('phone') and 'o_has_error' or ''} col-xl-6">
+                            <label class="col-form-label" for="phone">Téléphone fixe</label>
+                            <input t-att-disabled="partner.status_register == 'in_progress'" type="phone" name="phone"
+                                   t-attf-class="form-control #{error.get('phone') and 'is-invalid' or ''}"
+                                   t-att-value="phone or partner.phone"/>
+                            <small>Format: +212 5-XXXXXXXX</small>
+                        </div>
+                        <!--<div
+                                t-attf-class="form-group #{error.get('fax') and 'o_has_error' or ''} col-xl-6">
+                            <label class="col-form-label" for="fax">Fax</label>
+                            <input t-att-disabled="partner.status_register == 'in_progress'" type="text" name="fax"
+                                   t-attf-class="form-control #{error.get('fax') and 'is-invalid' or ''}"
+                                   t-att-value="fax or partner.phone"/>
+                        </div>-->
+                        <div
+                                t-attf-class="form-group #{error.get('gsm') and 'o_has_error' or ''} col-xl-6">
+                            <label class="col-form-label" for="gsm">Téléphone mobile</label>
+                            <input t-att-disabled="partner.status_register == 'in_progress'" type="phone" name="gsm"
+                                   t-attf-class="form-control #{error.get('gsm') and 'is-invalid' or ''}"
+                                   t-att-value="gsm or partner.gsm"/>
+                            <small>Format: +212 6-XXXXXXXX</small>
+                        </div>
+                        <div
+                                t-attf-class="form-group #{error.get('email') and 'o_has_error' or ''} col-xl-6">
+                            <label class="col-form-label" for="email">Adresse E-mail</label>
+                            <input t-att-disabled="partner.status_register == 'in_progress'" type="email" name="email"
+                                   t-attf-class="form-control #{error.get('email') and 'is-invalid' or ''}"
+                                   t-att-value="email or partner.email"/>
+                        </div>
+                        <div id="diplome_tab"
+                             t-attf-class="form-group #{error.get('diplome') and 'o_has_error' or ''} col-xl-6">
+                            <label class="col-form-label" for="diplome">Diplôme</label>
+                            <select t-att-disabled="partner.status_register == 'in_progress'" class="form-control"
+                                    name="diplome" id="diplome">
+                                <option t-att-selected="partner.diplome == 'marocain'"
+                                        value="marocain">Marocain
                                 </option>
-                            </t>
-                        </select>
-                    </div>-->
+                                <option t-att-selected="partner.diplome == 'francais'"
+                                        value="francais">Français
+                                </option>
+                                <option t-att-selected="partner.diplome == 'autre'"
+                                        value="autre">Autre
+                                </option>
+                            </select>
+                        </div>
+                        <!--<div id="country"
+                            t-attf-class="form-group #{error.get('country') and 'o_has_error' or ''} col-xl-6">
+                            <label class="col-form-label" for="country">Pays
+                            </label>
+                            <select name="country"
+                                t-attf-class="form-control #{error.get('country') and 'is-invalid' or ''}">
+                                <option value="">Pays...</option>
+                                <t t-foreach="payss or []" t-as="pays">
+                                    <option t-att-value="pays.id"
+                                        t-att-selected="pays.id == int(pays) if pays else pays.id == partner.country.id">
+                                        <t t-out="pays.name" />
+                                    </option>
+                                </t>
+                            </select>
+                        </div>-->
                 </div>
                 <br/>
                 <br/>
@@ -992,6 +993,7 @@
                                t-att-readonly="None if partner.status_register=='draft' else '1'"/>
                     </div>
                 </t>-->
+                </div>
                     <br/>
                     <br/>
                     <div class="col-lg-12">
@@ -1338,11 +1340,11 @@
 
                                     <!-- Diplôme principal obligatoire -->
                                     <div class="col-12 mb-3">
-                                        <strong>Une photocopie du diplôme national d’Expert-comptable ou d’un diplôme
+                                        <strong>Une photocopie du diplôme national d’Expert-Comptable ou d’un diplôme
                                             reconnu équivalent (certifiée conforme à l’original)
                                             <i class="bi bi-info-circle-fill text-primary"
                                                style="cursor:pointer;"
-                                               title="En cas de non-délivrance du diplôme national d’expert-comptable à la date de dépôt du dossier, une attestation officielle de réussite peut être fournie en remplacement.">
+                                               title="En cas de non-délivrance du diplôme national d’Expert-Comptable à la date de dépôt du dossier, une attestation officielle de réussite peut être fournie en remplacement.">
                                             </i>
                                             <span class="text-danger">*</span>
                                         </strong>
@@ -1724,7 +1726,7 @@
                                                 </t>
                                                 <t t-if="partner.mode_registration in ['pp1']">
                                                     Attestation d’assurance Responsabilité Civile Professionnelle (avec
-                                                    mention d’Expert-comptable)
+                                                    mention d’Expert-Comptable)
                                                 </t>
                                                 <t t-if="partner.mode_registration in ['pp4']">
                                                     Attestation d’assurance Responsabilité Civile Professionnelle
@@ -2171,7 +2173,7 @@
                     <div class="col-lg-12">
                         <div class="card mb-4">
                             <div class="card-header bg-danger text-white">
-                                <h4>règlement du droit d’inscription</h4>
+                                <h4>Règlement du droit d’inscription</h4>
                             </div>
                             <div class="card-body">
                                 <div class="row">
