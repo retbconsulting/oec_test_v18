@@ -1221,14 +1221,14 @@
                                                     <a href="/internship_management_module/static/src/documents/Modèle - Demande d'inscription PP.docx"
                                                        target="_blank"
                                                        class="btn btn-outline-info btn-sm">
-                                                        📄 Télécharger le modèle de lettre (.docx) pour salarié
+                                                        📄 Télécharger le modèle de lettre pour salarié
                                                     </a>
                                                 </t>
                                                 <t t-if="partner.mode_registration == 'pp1'">
                                                     <a href="/internship_management_module/static/src/documents/Modèle - Demande d'inscription PP.docx"
                                                        target="_blank"
                                                        class="btn btn-outline-info btn-sm">
-                                                        📄 Télécharger le modèle de lettre (.docx)
+                                                        📄 Télécharger le modèle de lettre
                                                     </a>
                                                 </t>
                                             </div>
@@ -1305,7 +1305,7 @@
                                                 <a href="/internship_management_module/static/src/documents/Modèle - Engagement.docx"
                                                    target="_blank"
                                                    class="btn btn-outline-info btn-sm">
-                                                    📄 Télécharger le modèle d'engagement (.docx)
+                                                    📄 Télécharger le modèle d'engagement
                                                 </a>
                                             </div>
 
@@ -1334,6 +1334,10 @@
                                     <div class="col-12 mb-3">
                                         <strong>Une photocopie du diplôme national d’Expert-comptable ou d’un diplôme
                                             reconnu équivalent (certifiée conforme à l’original)
+                                            <i class="bi bi-info-circle-fill text-primary"
+                                               style="cursor:pointer;"
+                                               title="En cas de non-délivrance du diplôme national d’expert-comptable à la date de dépôt du dossier, une attestation officielle de réussite peut être fournie en remplacement.">
+                                            </i>
                                             <span class="text-danger">*</span>
                                         </strong>
                                     </div>
@@ -1546,6 +1550,10 @@
                                             <label class="col-form-label" for="attestation_inscription">
                                                 Attestation d'inscription à la Taxe Professionnelle (datant de moins de
                                                 trois mois)
+                                                <i class="bi bi-info-circle-fill text-primary"
+                                                   style="cursor:pointer;"
+                                                   title="L’activité « Expert-Comptable » doit être mentionnée sur la Taxe Professionnelle.">
+                                                </i>
                                                 <span class="text-danger">*</span>
                                                 <span t-if="partner.attestation_inscription" style="color:blue">
                                                     (Document
@@ -1570,6 +1578,10 @@
                                                 de
                                                 propriété
                                                 du siège social
+                                                <i class="bi bi-info-circle-fill text-primary"
+                                                   style="cursor:pointer;"
+                                                   title="La domiciliation n’est pas acceptée.">
+                                                </i>
                                                 <span class="text-danger">*</span>
                                                 <span t-if="partner.copie_contrat_bail" style="color:blue">(Document
                                                     déjà chargé)
@@ -1632,6 +1644,10 @@
                                             <label class="col-form-label" for="bulletin_notification">
                                                 Bulletin de notification de l’Identifiant Fiscal
                                                 (datant de moins de trois mois)
+                                                <i class="bi bi-info-circle-fill text-primary"
+                                                   style="cursor:pointer;"
+                                                   title="L’activité « Expert-Comptable » doit être mentionnée sur l’Identifiant Fiscal .">
+                                                </i>
                                                 <span class="text-danger">*</span>
                                                 <span t-if="partner.bulletin_notification" style="color:blue">(Document
                                                     déjà chargé)
@@ -1786,6 +1802,10 @@
                                             <label class="col-form-label" for="modele_7">
                                                 Certificat modèle 7 du Registre du Commerce (datant de moins de trois
                                                 mois)
+                                                <i class="bi bi-info-circle-fill text-primary"
+                                                   style="cursor:pointer;"
+                                                   title="L’activité « Expert-Comptable » doit être mentionnée sur le Certificat modèle 7 du Registre du Commerce.">
+                                                </i>
                                                 <span class="text-danger">*</span>
                                                 <span t-if="partner.modele_7" style="color:blue">(Document déjà chargé)
                                                 </span>
@@ -1847,6 +1867,10 @@
                                             <label class="col-form-label" for="copie_conforme_contrat">
                                                 Le contrat de bail (copie certifiée conforme) ou certificat de propriété
                                                 du siège social
+                                                <i class="bi bi-info-circle-fill text-primary"
+                                                   style="cursor:pointer;"
+                                                   title="La domiciliation n’est pas acceptée.">
+                                                </i>
                                                 <span class="text-danger">*</span>
                                                 <span t-if="partner.copie_conforme_contrat" style="color:blue">(Document
                                                     déjà chargé)
@@ -1953,7 +1977,7 @@
                                                 <a href="/internship_management_module/static/src/documents/Modèle - Engagement.docx"
                                                    target="_blank"
                                                    class="btn btn-outline-info btn-sm mb-2">
-                                                    📄 Télécharger le modèle d'engagement (.docx)
+                                                    📄 Télécharger le modèle d'engagement
                                                 </a>
                                             </div>
 
@@ -1989,7 +2013,7 @@
                                                 <a href="/internship_management_module/static/src/documents/Modèle - Demande d'inscription PM.docx"
                                                    target="_blank"
                                                    class="btn btn-outline-info btn-sm mb-2">
-                                                    📄 Télécharger le modèle de lettre (.docx)
+                                                    📄 Télécharger le modèle de lettre
                                                 </a>
                                             </div>
 
@@ -2080,7 +2104,7 @@
                     <div class="col-lg-12">
                         <div class="card mb-4">
                             <div class="card-header bg-danger text-white">
-                                <h4>Paiement</h4>
+                                <h4>règlement du droit d’inscription</h4>
                             </div>
                             <div class="card-body">
                                 <div class="row">
@@ -2089,6 +2113,10 @@
                                             <h5>
                                                 <i class="fas fa-money-check-alt"></i>
                                                 Chèque correspondant au droit d'entrée
+                                                <i class="fas fa-info-circle text-primary"
+                                                   style="cursor: pointer; margin-left: 5px;"
+                                                   title="Les nouveaux inscrits au tableau de l’OEC sont exonérés de la cotisation annuelle de la première année de leur inscription, et bénéficient d’une réduction de 50 % sur la cotisation de la deuxième année. PS : 3.000 DH pour ceux inscrits hors de Casablanca (El Jadida, Mohammedia, Nouaceur, Mediouna, Berrechid, Settat et Benslimane)">
+                                                </i>
 
                                             </h5>
                                             <ul class="mb-3">
@@ -2098,7 +2126,7 @@
                                                 </li>
                                                 <li>
                                                     <strong>3000,00 DH</strong>
-                                                    pour ceux inscrits hors la ville de Casablanca
+                                                    pour ceux inscrits hors la ville de Casablanca ( El Jadida, Mohammedia, Nouaceur, Mediouna, Berrechid, Settat et Benslimane)
                                                 </li>
                                             </ul>
                                         </div>
@@ -2644,6 +2672,7 @@
                             personnel.
                         </label>
                     </div>
+                    <br/>
                     <!-- <t t-if="partner.status_register == 'in_progress'">
                          <form action="/update_status" method="post">
                              <button class="btn btn-primary float-right mb32" name="action" value="accept">Accepter</button>
