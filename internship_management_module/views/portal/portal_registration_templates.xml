@@ -285,7 +285,8 @@
                     <p>Vous devez être connecté en tant que personne physique déjà inscrite pour effectuer cette
                         demande.
                     </p>
-                    <a href="/web/logout?redirect=/web/login?redirect=/demande-inscription" class="btn btn-primary">Se connecter
+                    <a href="/web/logout?redirect=/web/login?redirect=/demande-inscription" class="btn btn-primary">Se
+                        connecter
                     </a>
                 </div>
 
@@ -585,7 +586,8 @@
                     <div class="row">
                         <div class="form-group col-lg-12">
                             <label for="mode_registration">Mode d'inscription</label>
-                            <select class="form-control" id="mode_registration" name="mode_registration" disabled="true">
+                            <select class="form-control" id="mode_registration" name="mode_registration"
+                                    disabled="true">
                                 <t t-foreach="register_types" t-as="register_type">
                                     <option t-att-selected="register_type[0] == partner.contact_registration_mode"
                                             t-att-value="register_type[0]">
@@ -646,7 +648,8 @@
                         <div
                                 t-attf-class="form-group #{error.get('cin_number') and 'o_has_error' or ''} col-xl-6">
                             <label class="col-form-label" for="cin_number">CIN</label>
-                            <input t-att-disabled="partner.status_register == 'in_progress'" type="text" name="cin_number"
+                            <input t-att-disabled="partner.status_register == 'in_progress'" type="text"
+                                   name="cin_number"
                                    t-attf-class="form-control #{error.get('cin_number') and 'is-invalid' or ''}"
                                    t-att-value="cin_number or partner.cin_number"/>
                         </div>
@@ -711,308 +714,321 @@
                                 </t>
                             </select>
                         </div>-->
-                </div>
-                <br/>
-                <br/>
+                    </div>
+                    <br/>
+                    <br/>
 
-                <div class="row">
-                    <t t-if="partner.mode_registration not in ['pp1']">
-                        <div id="raison_sociale"
-                             t-attf-class="form-group #{error.get('raison_sociale') and 'o_has_error' or ''} col-xl-6">
-                            <label class="col-form-label" for="raison_sociale">Raison sociale</label>
-                            <input t-att-disabled="partner.status_register == 'in_progress'" type="text"
-                                   name="raison_sociale"
-                                   t-attf-class="form-control #{error.get('raison_sociale') and 'is-invalid' or ''}"
-                                   t-att-value="raison_sociale or partner.raison_sociale"/>
-                        </div>
-                    </t>
-                    <t t-if="partner.mode_registration not in ['pp1']">
-                        <div id="forme_juridique"
-                             t-attf-class="form-group #{error.get('forme_juridique') and 'o_has_error' or ''} col-xl-6">
-                            <label class="col-form-label" for="forme_juridique">Forme juridique</label>
-                            <select t-att-disabled="partner.status_register == 'in_progress'" class="form-control"
-                                    name="forme_juridique">
-                                <option t-att-selected="partner.forme_juridique == 'sa'"
-                                        value="sa">SA
-                                </option>
-                                <option t-att-selected="partner.forme_juridique == 'sarl'"
-                                        value="sarl">SARL
-                                </option>
-                                <option t-att-selected="partner.forme_juridique == 'sas'"
-                                        value="sa">SAS
-                                </option>
-                                <option t-att-selected="partner.forme_juridique == 'sarlau'"
-                                        value="sarl">SARLAU
-                                </option>
-                            </select>
-                        </div>
-                    </t>
-                    <t t-if="partner.mode_registration not in ['e']">
-                        <div id="siege_social"
-                             t-attf-class="form-group #{error.get('siege_social') and 'o_has_error' or ''} col-xl-6">
-                            <label class="col-form-label" for="siege_social">Siège social</label>
-                            <input t-att-disabled="partner.status_register == 'in_progress'" type="text"
-                                   name="siege_social"
-                                   t-attf-class="form-control #{error.get('siege_social') and 'is-invalid' or ''}"
-                                   t-att-value="siege_social or partner.siege_social"/>
-                        </div>
-                    </t>
-                    <t t-if="partner.mode_registration not in ['e']">
-                        <div id="effectif"
-                             t-attf-class="form-group #{error.get('effectif') and 'o_has_error' or ''} col-xl-6">
-                            <label class="col-form-label" for="effectif">Effectif employé par le cabinet
+                    <div class="row">
+                        <t t-if="partner.mode_registration not in ['pp1']">
+                            <div id="raison_sociale"
+                                 t-attf-class="form-group #{error.get('raison_sociale') and 'o_has_error' or ''} col-xl-6">
+                                <label class="col-form-label" for="raison_sociale">Raison sociale</label>
+                                <input t-att-disabled="partner.status_register == 'in_progress'" type="text"
+                                       name="raison_sociale"
+                                       t-attf-class="form-control #{error.get('raison_sociale') and 'is-invalid' or ''}"
+                                       t-att-value="raison_sociale or partner.raison_sociale"/>
+                            </div>
+                        </t>
+                        <t t-if="partner.mode_registration not in ['pp1']">
+                            <div id="forme_juridique"
+                                 t-attf-class="form-group #{error.get('forme_juridique') and 'o_has_error' or ''} col-xl-6">
+                                <label class="col-form-label" for="forme_juridique">Forme juridique</label>
+                                <select t-att-disabled="partner.status_register == 'in_progress'" class="form-control"
+                                        name="forme_juridique">
+                                    <option t-att-selected="partner.forme_juridique == 'sa'"
+                                            value="sa">SA
+                                    </option>
+                                    <option t-att-selected="partner.forme_juridique == 'sarl'"
+                                            value="sarl">SARL
+                                    </option>
+                                    <option t-att-selected="partner.forme_juridique == 'sas'"
+                                            value="sa">SAS
+                                    </option>
+                                    <option t-att-selected="partner.forme_juridique == 'sarlau'"
+                                            value="sarl">SARLAU
+                                    </option>
+                                </select>
+                            </div>
+                        </t>
+                        <t t-if="partner.mode_registration not in ['e']">
+                            <div id="siege_social"
+                                 t-attf-class="form-group #{error.get('siege_social') and 'o_has_error' or ''} col-xl-6">
+                                <label class="col-form-label" for="siege_social">Siège social</label>
+                                <input t-att-disabled="partner.status_register == 'in_progress'" type="text"
+                                       name="siege_social"
+                                       t-attf-class="form-control #{error.get('siege_social') and 'is-invalid' or ''}"
+                                       t-att-value="siege_social or partner.siege_social"/>
+                            </div>
+                        </t>
+                        <t t-if="partner.mode_registration not in ['e']">
+                            <div id="effectif"
+                                 t-attf-class="form-group #{error.get('effectif') and 'o_has_error' or ''} col-xl-6">
+                                <label class="col-form-label" for="effectif">Effectif employé par le cabinet
+                                </label>
+                                <input t-att-disabled="partner.status_register == 'in_progress'" type="number"
+                                       name="effectif"
+                                       t-attf-class="form-control #{error.get('effectif') and 'is-invalid' or ''}"
+                                       t-att-value="effectif or partner.effectif"/>
+                            </div>
+                        </t>
+                        <t t-if="partner.mode_registration not in ['e']">
+                            <div id="identifiant_fiscal"
+                                 t-attf-class="form-group #{error.get('identifiant_fiscal') and 'o_has_error' or ''} col-xl-6">
+                                <label class="col-form-label" for="identifiant_fiscal">Identifiant fiscal</label>
+                                <input t-att-disabled="partner.status_register == 'in_progress'" type="text"
+                                       name="identifiant_fiscal"
+                                       t-attf-class="form-control #{error.get('identifiant_fiscal') and 'is-invalid' or ''}"
+                                       t-att-value="identifiant_fiscal or partner.identifiant_fiscal"/>
+                            </div>
+                        </t>
+                        <t t-if="partner.mode_registration not in ['e']">
+                            <div id="taxe_professionnelle"
+                                 t-attf-class="form-group #{error.get('taxe_professionnelle') and 'o_has_error' or ''} col-xl-6">
+                                <label class="col-form-label" for="taxe_professionnelle">Taxe professionnelle
+                                </label>
+                                <input t-att-disabled="partner.status_register == 'in_progress'" type="text"
+                                       name="taxe_professionnelle"
+                                       t-attf-class="form-control #{error.get('taxe_professionnelle') and 'is-invalid' or ''}"
+                                       t-att-value="taxe_professionnelle or partner.taxe_professionnelle"/>
+                            </div>
+                        </t>
+                        <t t-if="partner.mode_registration not in ['e']">
+                            <div id="conseil_regional"
+                                 t-attf-class="form-group #{error.get('conseil_regional') and 'o_has_error' or ''} col-lg-12">
+                                <label class="col-form-label" for="conseil_regional">Conseil Régional de l'Ordre auquel
+                                    vous
+                                    souhaitez appartenir
+                                </label>
+                                <select t-att-disabled="partner.status_register == 'in_progress'"
+                                        name="conseil_regional"
+                                        t-attf-class="form-control #{error.get('conseil_regional') and 'is-invalid' or ''}">
+                                    <option value="">Conseil régional...</option>
+                                    <!-- Option activée -->
+                                    <option value="casablanca_centre"
+                                            t-att-selected="'casablanca_centre' == conseil_regional or (not conseil_regional and partner.conseil_regional == 'casablanca_centre')">
+                                        Casablanca et Centre
+                                    </option>
+
+                                    <!-- Options désactivées pour le moment -->
+                                    <option value="rabat_sale_kenitra" disabled="disabled">Rabat-Salé-Kénitra</option>
+                                    <option value="tanger_tetouan_alhoceima" disabled="disabled">Tanger-Tétouan-Al
+                                        Hoceima
+                                    </option>
+                                    <option value="fes_meknes_oriental" disabled="disabled">Fès-Meknès et Régions de
+                                        l'Oriental
+                                    </option>
+                                    <option value="marrakech_safi" disabled="disabled">Marrakech-Safi</option>
+                                    <option value="souss_massa_sud" disabled="disabled">Souss-Massa et Régions du Sud
+                                    </option>
+
+                                </select>
+                            </div>
+                        </t>
+                        <t t-if="partner.mode_registration not in ['pp1','pp2']">
+                            <label class="col-form-label" for="conseil_regional">Etat de répartition du capital social
                             </label>
-                            <input t-att-disabled="partner.status_register == 'in_progress'" type="number"
-                                   name="effectif"
-                                   t-attf-class="form-control #{error.get('effectif') and 'is-invalid' or ''}"
-                                   t-att-value="effectif or partner.effectif"/>
-                        </div>
-                    </t>
-                    <t t-if="partner.mode_registration not in ['e']">
-                        <div id="identifiant_fiscal"
-                             t-attf-class="form-group #{error.get('identifiant_fiscal') and 'o_has_error' or ''} col-xl-6">
-                            <label class="col-form-label" for="identifiant_fiscal">Identifiant fiscal</label>
-                            <input t-att-disabled="partner.status_register == 'in_progress'" type="text"
-                                   name="identifiant_fiscal"
-                                   t-attf-class="form-control #{error.get('identifiant_fiscal') and 'is-invalid' or ''}"
-                                   t-att-value="identifiant_fiscal or partner.identifiant_fiscal"/>
-                        </div>
-                    </t>
-                    <t t-if="partner.mode_registration not in ['e']">
-                        <div id="taxe_professionnelle"
-                             t-attf-class="form-group #{error.get('taxe_professionnelle') and 'o_has_error' or ''} col-xl-6">
-                            <label class="col-form-label" for="taxe_professionnelle">Taxe professionnelle
-                            </label>
-                            <input t-att-disabled="partner.status_register == 'in_progress'" type="text"
-                                   name="taxe_professionnelle"
-                                   t-attf-class="form-control #{error.get('taxe_professionnelle') and 'is-invalid' or ''}"
-                                   t-att-value="taxe_professionnelle or partner.taxe_professionnelle"/>
-                        </div>
-                    </t>
-                    <t t-if="partner.mode_registration not in ['e']">
-                        <div id="conseil_regional"
-                             t-attf-class="form-group #{error.get('conseil_regional') and 'o_has_error' or ''} col-lg-12">
-                            <label class="col-form-label" for="conseil_regional">Conseil Régional de l'Ordre auquel vous
-                                souhaitez appartenir
-                            </label>
-                            <select t-att-disabled="partner.status_register == 'in_progress'" name="conseil_regional"
-                                    t-attf-class="form-control #{error.get('conseil_regional') and 'is-invalid' or ''}">
-                                <option value="">Conseil régional...</option>
-                                <!-- Option activée -->
-                                <option value="casablanca_centre"
-                                        t-att-selected="'casablanca_centre' == conseil_regional or (not conseil_regional and partner.conseil_regional == 'casablanca_centre')">
-                                    Casablanca et Centre
-                                </option>
+                            <table
+                                    class="form-group col-lg-12 table table-striped table-sm js_cart_lines">
+                                <thead>
+                                    <tr>
+                                        <th name="associe_label" colspan="2" style="text-align:center">Associé</th>
+                                        <th name="percentage_label">Pourcentage</th>
+                                        <th name="associe_qualite_label">Qualité de l'associé</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>#1</td>
+                                        <td>
+                                            <input t-att-disabled="partner.status_register == 'in_progress'" type="text"
+                                                   name="name1" class="form-control" t-att-value="name1"/>
+                                        </td>
+                                        <td>
+                                            <input t-att-disabled="partner.status_register == 'in_progress'"
+                                                   type="number"
+                                                   name="percentage1" class="form-control"
+                                                   t-att-value="percentage1"/>
+                                        </td>
+                                        <td>
+                                            <select t-att-disabled="partner.status_register == 'in_progress'"
+                                                    class="form-control" name="status1">
+                                                <option t-att-selected="status1 == 'associe_expert_comptable'"
+                                                        value="associe_expert_comptable">Associé Expert comptable
+                                                    inscrit
+                                                </option>
+                                                <option t-att-selected="status1 == 'associe_salarie'"
+                                                        value="associe_salarie">Associé Salarié
+                                                </option>
+                                                <option t-att-selected="status1 == 'associe_non_salarie'"
+                                                        value="associe_non_salarie">Associé Non Salarié
+                                                </option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>#2</td>
+                                        <td>
+                                            <input t-att-disabled="partner.status_register == 'in_progress'" type="text"
+                                                   name="name2" class="form-control" t-att-value="name2"/>
+                                        </td>
+                                        <td>
+                                            <input t-att-disabled="partner.status_register == 'in_progress'"
+                                                   type="number"
+                                                   name="percentage2" class="form-control"
+                                                   t-att-value="percentage2"/>
+                                        </td>
+                                        <td>
+                                            <select t-att-disabled="partner.status_register == 'in_progress'"
+                                                    class="form-control" name="status2">
+                                                <option t-att-selected="status2 == 'associe_expert_comptable'"
+                                                        value="associe_expert_comptable">Associé Expert comptable
+                                                    inscrit
+                                                </option>
+                                                <option t-att-selected="status2 == 'associe_salarie'"
+                                                        value="associe_salarie">Associé Salarié
+                                                </option>
+                                                <option t-att-selected="status2 == 'associe_non_salarie'"
+                                                        value="associe_non_salarie">Associé Non Salarié
+                                                </option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>#3</td>
+                                        <td>
+                                            <input t-att-disabled="partner.status_register == 'in_progress'" type="text"
+                                                   name="name3" class="form-control" t-att-value="name3"/>
+                                        </td>
+                                        <td>
+                                            <input t-att-disabled="partner.status_register == 'in_progress'"
+                                                   type="number"
+                                                   name="percentage3" class="form-control"
+                                                   t-att-value="percentage3"/>
+                                        </td>
+                                        <td>
+                                            <select t-att-disabled="partner.status_register == 'in_progress'"
+                                                    class="form-control" name="status3">
+                                                <option t-att-selected="status3 == 'associe_expert_comptable'"
+                                                        value="associe_expert_comptable">Associé Expert comptable
+                                                    inscrit
+                                                </option>
+                                                <option t-att-selected="status3 == 'associe_salarie'"
+                                                        value="associe_salarie">Associé Salarié
+                                                </option>
+                                                <option t-att-selected="status3 == 'associe_non_salarie'"
+                                                        value="associe_non_salarie">Associé Non Salarié
+                                                </option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>#4</td>
+                                        <td>
+                                            <input t-att-disabled="partner.status_register == 'in_progress'" type="text"
+                                                   name="name4" class="form-control" t-att-value="name4"/>
+                                        </td>
+                                        <td>
+                                            <input t-att-disabled="partner.status_register == 'in_progress'"
+                                                   type="number"
+                                                   name="percentage4" class="form-control"
+                                                   t-att-value="percentage4"/>
+                                        </td>
+                                        <td>
+                                            <select t-att-disabled="partner.status_register == 'in_progress'"
+                                                    class="form-control" name="status4">
+                                                <option t-att-selected="status4 == 'associe_expert_comptable'"
+                                                        value="associe_expert_comptable">Associé Expert comptable
+                                                    inscrit
+                                                </option>
+                                                <option t-att-selected="status4 == 'associe_salarie'"
+                                                        value="associe_salarie">Associé Salarié
+                                                </option>
+                                                <option t-att-selected="status4 == 'associe_non_salarie'"
+                                                        value="associe_non_salarie">Associé Non Salarié
+                                                </option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>#5</td>
+                                        <td>
+                                            <input t-att-disabled="partner.status_register == 'in_progress'" type="text"
+                                                   name="name5" class="form-control" t-att-value="name5"/>
+                                        </td>
+                                        <td>
+                                            <input t-att-disabled="partner.status_register == 'in_progress'"
+                                                   type="number"
+                                                   name="percentage5" class="form-control"
+                                                   t-att-value="percentage5"/>
+                                        </td>
+                                        <td>
+                                            <select t-att-disabled="partner.status_register == 'in_progress'"
+                                                    class="form-control" name="status5">
+                                                <option t-att-selected="status5 == 'associe_expert_comptable'"
+                                                        value="associe_expert_comptable">Associé Expert comptable
+                                                    inscrit
+                                                </option>
+                                                <option t-att-selected="status5 == 'associe_salarie'"
+                                                        value="associe_salarie">Associé Salarié
+                                                </option>
+                                                <option t-att-selected="status5 == 'associe_non_salarie'"
+                                                        value="associe_non_salarie">Associé Non Salarié
+                                                </option>
+                                            </select>
+                                        </td>
+                                    </tr>
 
-                                <!-- Options désactivées pour le moment -->
-                                <option value="rabat_sale_kenitra" disabled="disabled">Rabat-Salé-Kénitra</option>
-                                <option value="tanger_tetouan_alhoceima" disabled="disabled">Tanger-Tétouan-Al Hoceima
-                                </option>
-                                <option value="fes_meknes_oriental" disabled="disabled">Fès-Meknès et Régions de
-                                    l'Oriental
-                                </option>
-                                <option value="marrakech_safi" disabled="disabled">Marrakech-Safi</option>
-                                <option value="souss_massa_sud" disabled="disabled">Souss-Massa et Régions du Sud
-                                </option>
+                                </tbody>
+                            </table>
+                        </t>
 
-                            </select>
-                        </div>
-                    </t>
-                    <t t-if="partner.mode_registration not in ['pp1','pp2']">
-                        <label class="col-form-label" for="conseil_regional">Etat de répartition du capital social
-                        </label>
-                        <table
-                                class="form-group col-lg-12 table table-striped table-sm js_cart_lines">
-                            <thead>
-                                <tr>
-                                    <th name="associe_label" colspan="2" style="text-align:center">Associé</th>
-                                    <th name="percentage_label">Pourcentage</th>
-                                    <th name="associe_qualite_label">Qualité de l'associé</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>#1</td>
-                                    <td>
-                                        <input t-att-disabled="partner.status_register == 'in_progress'" type="text"
-                                               name="name1" class="form-control" t-att-value="name1"/>
-                                    </td>
-                                    <td>
-                                        <input t-att-disabled="partner.status_register == 'in_progress'" type="number"
-                                               name="percentage1" class="form-control"
-                                               t-att-value="percentage1"/>
-                                    </td>
-                                    <td>
-                                        <select t-att-disabled="partner.status_register == 'in_progress'"
-                                                class="form-control" name="status1">
-                                            <option t-att-selected="status1 == 'associe_expert_comptable'"
-                                                    value="associe_expert_comptable">Associé Expert comptable inscrit
-                                            </option>
-                                            <option t-att-selected="status1 == 'associe_salarie'"
-                                                    value="associe_salarie">Associé Salarié
-                                            </option>
-                                            <option t-att-selected="status1 == 'associe_non_salarie'"
-                                                    value="associe_non_salarie">Associé Non Salarié
-                                            </option>
-                                        </select>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>#2</td>
-                                    <td>
-                                        <input t-att-disabled="partner.status_register == 'in_progress'" type="text"
-                                               name="name2" class="form-control" t-att-value="name2"/>
-                                    </td>
-                                    <td>
-                                        <input t-att-disabled="partner.status_register == 'in_progress'" type="number"
-                                               name="percentage2" class="form-control"
-                                               t-att-value="percentage2"/>
-                                    </td>
-                                    <td>
-                                        <select t-att-disabled="partner.status_register == 'in_progress'"
-                                                class="form-control" name="status2">
-                                            <option t-att-selected="status2 == 'associe_expert_comptable'"
-                                                    value="associe_expert_comptable">Associé Expert comptable inscrit
-                                            </option>
-                                            <option t-att-selected="status2 == 'associe_salarie'"
-                                                    value="associe_salarie">Associé Salarié
-                                            </option>
-                                            <option t-att-selected="status2 == 'associe_non_salarie'"
-                                                    value="associe_non_salarie">Associé Non Salarié
-                                            </option>
-                                        </select>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>#3</td>
-                                    <td>
-                                        <input t-att-disabled="partner.status_register == 'in_progress'" type="text"
-                                               name="name3" class="form-control" t-att-value="name3"/>
-                                    </td>
-                                    <td>
-                                        <input t-att-disabled="partner.status_register == 'in_progress'" type="number"
-                                               name="percentage3" class="form-control"
-                                               t-att-value="percentage3"/>
-                                    </td>
-                                    <td>
-                                        <select t-att-disabled="partner.status_register == 'in_progress'"
-                                                class="form-control" name="status3">
-                                            <option t-att-selected="status3 == 'associe_expert_comptable'"
-                                                    value="associe_expert_comptable">Associé Expert comptable inscrit
-                                            </option>
-                                            <option t-att-selected="status3 == 'associe_salarie'"
-                                                    value="associe_salarie">Associé Salarié
-                                            </option>
-                                            <option t-att-selected="status3 == 'associe_non_salarie'"
-                                                    value="associe_non_salarie">Associé Non Salarié
-                                            </option>
-                                        </select>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>#4</td>
-                                    <td>
-                                        <input t-att-disabled="partner.status_register == 'in_progress'" type="text"
-                                               name="name4" class="form-control" t-att-value="name4"/>
-                                    </td>
-                                    <td>
-                                        <input t-att-disabled="partner.status_register == 'in_progress'" type="number"
-                                               name="percentage4" class="form-control"
-                                               t-att-value="percentage4"/>
-                                    </td>
-                                    <td>
-                                        <select t-att-disabled="partner.status_register == 'in_progress'"
-                                                class="form-control" name="status4">
-                                            <option t-att-selected="status4 == 'associe_expert_comptable'"
-                                                    value="associe_expert_comptable">Associé Expert comptable inscrit
-                                            </option>
-                                            <option t-att-selected="status4 == 'associe_salarie'"
-                                                    value="associe_salarie">Associé Salarié
-                                            </option>
-                                            <option t-att-selected="status4 == 'associe_non_salarie'"
-                                                    value="associe_non_salarie">Associé Non Salarié
-                                            </option>
-                                        </select>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>#5</td>
-                                    <td>
-                                        <input t-att-disabled="partner.status_register == 'in_progress'" type="text"
-                                               name="name5" class="form-control" t-att-value="name5"/>
-                                    </td>
-                                    <td>
-                                        <input t-att-disabled="partner.status_register == 'in_progress'" type="number"
-                                               name="percentage5" class="form-control"
-                                               t-att-value="percentage5"/>
-                                    </td>
-                                    <td>
-                                        <select t-att-disabled="partner.status_register == 'in_progress'"
-                                                class="form-control" name="status5">
-                                            <option t-att-selected="status5 == 'associe_expert_comptable'"
-                                                    value="associe_expert_comptable">Associé Expert comptable inscrit
-                                            </option>
-                                            <option t-att-selected="status5 == 'associe_salarie'"
-                                                    value="associe_salarie">Associé Salarié
-                                            </option>
-                                            <option t-att-selected="status5 == 'associe_non_salarie'"
-                                                    value="associe_non_salarie">Associé Non Salarié
-                                            </option>
-                                        </select>
-                                    </td>
-                                </tr>
-
-                            </tbody>
-                        </table>
-                    </t>
-
-                    <!--<t t-if="partner.mode_registration in ['pp']">
+                        <!--<t t-if="partner.mode_registration in ['pp']">
+                            <div t-attf-class="form-group col-xl-6" data-type="binary">
+                                <label class="col-form-label" for="lettre_demande_inscription">
+                                    Lettre de demande d’inscription à l'ordre
+                                    <span t-if="partner.lettre_demande_inscription" style="color:blue">(Document
+                                        déjà chargé)
+                                    </span>
+                                </label>
+                                <br/>
+                                <input t-att-disabled="partner.status_register == 'in_progress'" id="upload" type="file"
+                                       name="lettre_demande_inscription"
+                                       class="file" data-show-upload="true" data-show-caption="true"
+                                       data-show-preview="true"
+                                       t-att-readonly="None if partner.status_register=='draft' else '1'"/>
+                            </div>-->
+                        <!-- <div t-attf-class="form-group col-xl-6" data-type="binary"
+                              t-att-style="'visibility:hidden;' if partner.mode_registration in ['pm'] else ''">
+                             <label class="col-form-label" for="extrait_casier_judiciaire">
+                                 Un extrait du casier judiciaire ou une fiche anthropométrique datant de moins de trois
+                                 mois
+                                 <span t-if="partner.extrait_casier_judiciaire" style="color:blue">(Document
+                                     déjà chargé)
+                                 </span>
+                             </label>
+                             <br/>
+                             <input t-att-disabled="partner.status_register == 'in_progress'" id="upload" type="file"
+                                    name="extrait_casier_judiciaire"
+                                    class="file" data-show-upload="true" data-show-caption="true"
+                                    data-show-preview="true"
+                                    t-att-readonly="None if partner.status_register=='draft' else '1'"/>
+                         </div>
                         <div t-attf-class="form-group col-xl-6" data-type="binary">
-                            <label class="col-form-label" for="lettre_demande_inscription">
-                                Lettre de demande d’inscription à l'ordre
-                                <span t-if="partner.lettre_demande_inscription" style="color:blue">(Document
+                            <label class="col-form-label" for="extrait_acte_naissance">
+                                Un extrait d’acte de naissance datant de moins de trois mois (Recto/Verso)
+                                <span t-if="partner.extrait_acte_naissance" style="color:blue">(Document
                                     déjà chargé)
                                 </span>
                             </label>
                             <br/>
                             <input t-att-disabled="partner.status_register == 'in_progress'" id="upload" type="file"
-                                   name="lettre_demande_inscription"
+                                   name="extrait_acte_naissance"
                                    class="file" data-show-upload="true" data-show-caption="true"
                                    data-show-preview="true"
                                    t-att-readonly="None if partner.status_register=='draft' else '1'"/>
-                        </div>-->
-                    <!-- <div t-attf-class="form-group col-xl-6" data-type="binary"
-                          t-att-style="'visibility:hidden;' if partner.mode_registration in ['pm'] else ''">
-                         <label class="col-form-label" for="extrait_casier_judiciaire">
-                             Un extrait du casier judiciaire ou une fiche anthropométrique datant de moins de trois
-                             mois
-                             <span t-if="partner.extrait_casier_judiciaire" style="color:blue">(Document
-                                 déjà chargé)
-                             </span>
-                         </label>
-                         <br/>
-                         <input t-att-disabled="partner.status_register == 'in_progress'" id="upload" type="file"
-                                name="extrait_casier_judiciaire"
-                                class="file" data-show-upload="true" data-show-caption="true"
-                                data-show-preview="true"
-                                t-att-readonly="None if partner.status_register=='draft' else '1'"/>
-                     </div>
-                    <div t-attf-class="form-group col-xl-6" data-type="binary">
-                        <label class="col-form-label" for="extrait_acte_naissance">
-                            Un extrait d’acte de naissance datant de moins de trois mois (Recto/Verso)
-                            <span t-if="partner.extrait_acte_naissance" style="color:blue">(Document
-                                déjà chargé)
-                            </span>
-                        </label>
-                        <br/>
-                        <input t-att-disabled="partner.status_register == 'in_progress'" id="upload" type="file"
-                               name="extrait_acte_naissance"
-                               class="file" data-show-upload="true" data-show-caption="true"
-                               data-show-preview="true"
-                               t-att-readonly="None if partner.status_register=='draft' else '1'"/>
+                        </div>
+                    </t>-->
                     </div>
-                </t>-->
-                </div>
                     <br/>
                     <br/>
                     <div class="col-lg-12">
@@ -1032,7 +1048,7 @@
                                         <br/>
                                         <input t-att-disabled="partner.status_register == 'in_progress'" id="upload"
                                                type="file"
-                                               class="unified-file-input"
+                                               class="form-control"
                                                accept=".pdf,.jpg,.jpeg"
                                                name="copie_cin"
                                                data-show-upload="true" data-show-caption="true"
@@ -1183,14 +1199,14 @@
                                             </a>
 
 
-                                        <!-- Champ de chargement -->
+                                            <!-- Champ de chargement -->
                                             <input t-att-disabled="partner.status_register == 'in_progress'"
-                                               type="file"
-                                               accept=".pdf,.jpg,.jpeg"
-                                               name="declaration_sur_honneur"
-                                               class="form-control"
-                                               t-att-readonly="None if partner.status_register=='draft' else '1'"
-                                               required="required"/>
+                                                   type="file"
+                                                   accept=".pdf,.jpg,.jpeg"
+                                                   name="declaration_sur_honneur"
+                                                   class="form-control"
+                                                   t-att-readonly="None if partner.status_register=='draft' else '1'"
+                                                   required="required"/>
                                         </t>
                                     </div>
 
@@ -1360,7 +1376,8 @@
                                         <div class="form-group col-xl-6" data-type="binary">
                                             <div class="d-flex justify-content-between align-items-center">
                                                 <label class="col-form-label mb-0">
-                                                    Attestation d'équivalence au diplôme national d’expertise comptable, délivrée par le ministère d’enseignement supérieur.
+                                                    Attestation d'équivalence au diplôme national d’expertise comptable,
+                                                    délivrée par le ministère d’enseignement supérieur.
                                                     <span t-if="partner.attestation_equivalence" style="color:blue">
                                                         (Document déjà chargé)
                                                     </span>
@@ -2151,10 +2168,10 @@
                                                 </span>
                                             </label>
                                             <a href="/internship_management_module/static/src/Modèle avenant de contart .docx"
-                                                   target="_blank"
-                                                   class="btn btn-outline-info btn-sm">
-                                                    📄 Télécharger le modèle d'engagement
-                                                </a>
+                                               target="_blank"
+                                               class="btn btn-outline-info btn-sm">
+                                                📄 Télécharger le modèle d'engagement
+                                            </a>
                                             <br/>
                                             <input t-att-disabled="partner.status_register == 'in_progress'" id="upload"
                                                    type="file" name="avenant_contrat_travail" accept=".pdf,.jpg,.jpeg"
@@ -2679,11 +2696,11 @@
                                                 Autres fichiers (PDF ou JPG uniquement)
                                             </label>
                                             <br/>
-                                            <input t-att-disabled="partner.status_register == 'in_progress'"
-                                                   id="autres_fichiers"
-                                                   type="file" name="autres_fichiers[]"
-                                                   class="form-control" multiple="multiple" accept=".pdf,.jpg,.jpeg"
-                                                   data-show-upload="true" data-show-caption="true"/>
+                                            <input id="fileInput"
+                                                   type="file"
+                                                   accept=".pdf,.jpg,.jpeg"
+                                                   class="form-control"/>
+                                            <ul id="fileList" class="mt-2"></ul>
                                         </div>
                                     </div>
                                 </div>
@@ -2767,6 +2784,7 @@
             </form>
             <script type="text/javascript">
                 document.addEventListener('DOMContentLoaded', function() {
+                // --- Partie gestion table capital social ---
                 const modeSelect = document.querySelector('select[name="mode_registration"]');
                 const capitalSocialTable = document.querySelector('.js_cart_lines').closest('table');
 
@@ -2778,8 +2796,35 @@
                 }
                 }
 
+                if (modeSelect) {
                 modeSelect.addEventListener('change', toggleTable);
-                toggleTable(); // appel initial au chargement
+                toggleTable();
+                }
+
+                // --- Partie ajout fichiers un par un ---
+                const fileInput = document.getElementById('autres_fichiers');
+                let selectedFiles = [];
+
+                // Créer un affichage
+                const fileListDisplay = document.createElement('ul');
+                fileInput.parentNode.appendChild(fileListDisplay);
+
+                fileInput.addEventListener('change', function(event) {
+                const newFiles = Array.from(event.target.files);
+                selectedFiles = selectedFiles.concat(newFiles);
+
+                // Nettoyer l’affichage
+                fileListDisplay.innerHTML = '';
+
+                // Afficher tous les fichiers
+                selectedFiles.forEach((file, index) => {
+                const li = document.createElement('li');
+                li.textContent = file.name + ' (' + Math.round(file.size / 1024) + ' Ko)';
+                fileListDisplay.appendChild(li);
+                });
+
+                // Réinitialiser l’input pour permettre de re-sélectionner
+                fileInput.value = '';
                 });
 
                 function validateForm() {
