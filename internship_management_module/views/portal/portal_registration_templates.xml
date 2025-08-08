@@ -1802,11 +1802,12 @@
                                             <label class="col-form-label" for="modele_7">
                                                 Certificat modèle 7 du Registre du Commerce (datant de moins de trois
                                                 mois)
+
+                                                <span class="text-danger">*</span>
                                                 <i class="bi bi-info-circle-fill text-primary"
                                                    style="cursor:pointer;"
                                                    title="L’activité « Expert-Comptable » doit être mentionnée sur le Certificat modèle 7 du Registre du Commerce.">
                                                 </i>
-                                                <span class="text-danger">*</span>
                                                 <span t-if="partner.modele_7" style="color:blue">(Document déjà chargé)
                                                 </span>
                                             </label>
