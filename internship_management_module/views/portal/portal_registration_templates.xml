@@ -2633,11 +2633,10 @@
                         </t>
                     </div>-->
                     <br/>
-                    <br/>
-                    <div class="form-group">
+                    <div class="form-group" style="display: flex; align-items: center;">
                         <input t-att-disabled="partner.status_register == 'in_progress'" type="checkbox"
                                name="declaration_honneur" id="declaration_honneur" required="required"/>
-                        <label for="declaration_honneur">
+                        <label for="declaration_honneur" style="margin-left: 5px;">
                             J’autorise le Conseil Régional de l’Ordre des Experts-Comptables de Casablanca et Régions du
                             Centre
                             à collecter et traiter mes données personnelles, conformément à la loi 09-08 relative à la
