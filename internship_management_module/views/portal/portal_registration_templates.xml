@@ -2696,8 +2696,7 @@
                                                 Autres fichiers (PDF ou JPG uniquement)
                                             </label>
                                             <small class="form-text text-muted">
-                                                Vous pouvez sélectionner plusieurs fichiers en les choisissant un par
-                                                un.
+                                                Vous pouvez sélectionner plusieurs fichiers.
                                             </small>
                                             <br/>
                                             <input id="autres_fichiers"
@@ -2808,18 +2807,15 @@
 
                 // --- Partie ajout fichiers un par un (avec multiple) ---
                 const fileInput = document.getElementById('autres_fichiers');
+                const fileListDisplay = document.getElementById('fileList');
                 let selectedFiles = [];
-
-                // Créer un affichage
-                const fileListDisplay = document.createElement('ul');
-                fileListDisplay.style.marginTop = '10px';
-                fileInput.parentNode.appendChild(fileListDisplay);
 
                 fileInput.addEventListener('change', function(event) {
                 const newFiles = Array.from(event.target.files);
 
-                // Empiler les nouveaux fichiers (sans écraser les anciens)
+                // Ajouter les nouveaux fichiers à la liste existante
                 selectedFiles = selectedFiles.concat(newFiles);
+
 
                 // Nettoyer l’affichage
                 fileListDisplay.innerHTML = '';
