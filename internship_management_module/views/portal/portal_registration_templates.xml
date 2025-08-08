@@ -2796,7 +2796,7 @@
                 const capitalSocialTable = document.querySelector('.js_cart_lines')?.closest('table');
 
                 function toggleTable() {
-                if (modeSelect && capitalSocialTable) {
+                if (modeSelect &amp;&amp; capitalSocialTable) {
                 capitalSocialTable.style.display = (modeSelect.value === 'pp1') ? 'none' : '';
                 }
                 }
