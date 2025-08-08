@@ -488,9 +488,9 @@
                         <div class="o_website_calendar">
                             <ul class="wizard mt32 float-right">
                                 <li
-                                        t-attf-class="#{partner.status_register=='draft' and 'text-primary' or 'text-muted'}"
+                                        t-attf-class="#{partner.status_register=='draft' and 'text-primary active-step' or 'text-muted'}"
                                         class="text-primary">
-                                    Création du compte
+                                    Création de compte
                                     <span class="chevron"/>
                                 </li>
                                 <li
@@ -538,6 +538,10 @@
                                 border-bottom-color: #007bff; /* Adjust color as needed */
                                 color: #007bff;
                                 font-weight: bold;
+                                }
+                                .active-step {
+                                border-bottom: 2px solid red; /* ligne rouge en bas */
+                                padding-bottom: 2px; /* espace pour que la ligne soit jolie */
                                 }
 
                                 .chevron {
@@ -702,7 +706,7 @@
                                    t-att-value="raison_sociale or partner.raison_sociale"/>
                         </div>
                     </t>
-                    <t t-if="partner.mode_registration not in ['PP1']">
+                    <t t-if="partner.mode_registration not in ['pp1']">
                         <div id="forme_juridique"
                              t-attf-class="form-group #{error.get('forme_juridique') and 'o_has_error' or ''} col-xl-6">
                             <label class="col-form-label" for="forme_juridique">Forme juridique</label>
@@ -988,7 +992,8 @@
                                t-att-readonly="None if partner.status_register=='draft' else '1'"/>
                     </div>
                 </t>-->
-
+                    <br/>
+                    <br/>
                     <div class="col-lg-12">
                         <div class="card mb-4">
                             <div class="card-header bg-danger text-white">
@@ -1367,7 +1372,7 @@
                                         <div class="form-group col-xl-6" data-type="binary">
                                             <div class="d-flex justify-content-between align-items-center">
                                                 <label class="col-form-label mb-0">
-                                                    Attestation d'équivalence
+                                                    Attestation d'équivalence au diplôme national d’expertise comptable, délivrée par le ministère d’enseignement supérieur.
                                                     <span t-if="partner.attestation_equivalence" style="color:blue">
                                                         (Document déjà chargé)
                                                     </span>
@@ -1719,7 +1724,7 @@
                                                 </t>
                                                 <t t-if="partner.mode_registration in ['pp1']">
                                                     Attestation d’assurance Responsabilité Civile Professionnelle (avec
-                                                    mention d’expert-comptable)
+                                                    mention d’Expert-comptable)
                                                 </t>
                                                 <t t-if="partner.mode_registration in ['pp4']">
                                                     Attestation d’assurance Responsabilité Civile Professionnelle
