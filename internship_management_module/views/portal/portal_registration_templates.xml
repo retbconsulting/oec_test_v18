@@ -2793,7 +2793,7 @@
 
                 // Vérifier seulement si on est pas en mode 'e'
                 var modeSelect = document.querySelector('select[name=&quot;mode_registration&quot;]');
-                if (modeSelect &amp;&amp; modeSelect.value !== 'e') {
+                if (modeSelect &amp;&amp; modeSelect.value !== 'pp1') {
                 if (!atLeastOneFilled) {
                 alert('Veuillez remplir au moins une ligne avec un nom et un pourcentage.');
                 return false;
