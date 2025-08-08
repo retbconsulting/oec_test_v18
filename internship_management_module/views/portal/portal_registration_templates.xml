@@ -1197,7 +1197,7 @@
                                                class="btn btn-outline-primary btn-sm d-block mb-2">
                                                 📥 Télécharger le document existant
                                             </a>
-
+                                        </t>
 
                                             <!-- Champ de chargement -->
                                             <input t-att-disabled="partner.status_register == 'in_progress'"
@@ -1207,7 +1207,7 @@
                                                    class="form-control"
                                                    t-att-readonly="None if partner.status_register=='draft' else '1'"
                                                    required="required"/>
-                                        </t>
+
                                     </div>
 
 
@@ -2695,9 +2695,13 @@
                                             <label class="col-form-label" for="autres_fichiers">
                                                 Autres fichiers (PDF ou JPG uniquement)
                                             </label>
+                                            <small class="form-text text-muted">
+                                                Vous pouvez sélectionner plusieurs fichiers en les choisissant un par un.
+                                            </small>
                                             <br/>
-                                            <input id="fileInput"
+                                            <input id="autres_fichiers"
                                                    type="file"
+
                                                    accept=".pdf,.jpg,.jpeg"
                                                    class="form-control"/>
                                             <ul id="fileList" class="mt-2"></ul>
@@ -2784,7 +2788,7 @@
             </form>
             <script type="text/javascript">
                 document.addEventListener('DOMContentLoaded', function() {
-                // --- Partie gestion table capital social ---
+
                 const modeSelect = document.querySelector('select[name="mode_registration"]');
                 const capitalSocialTable = document.querySelector('.js_cart_lines').closest('table');
 
