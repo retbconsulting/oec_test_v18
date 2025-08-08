@@ -1568,7 +1568,7 @@
                                                                 cursor: pointer;
                                                             "
                                                       title="L’activité « Expert-Comptable » doit être mentionnée sur la taxe professionnelle.">
-                                                    (i)
+                                                    i
                                                 </span>
 
                                                 <span class="text-danger">*</span>
@@ -1609,7 +1609,7 @@
                                                                 cursor: pointer;
                                                             "
                                                       title="La domicilation n'est pas acceptée.">
-                                                    (i)
+                                                    i
                                                 </span>
                                                 <span class="text-danger">*</span>
                                                 <span t-if="partner.copie_contrat_bail" style="color:blue">(Document
@@ -1687,7 +1687,7 @@
                                                                 cursor: pointer;
                                                             "
                                                       title="L’activité « Expert-Comptable » doit être mentionnée sur le Certificat modèle 7 du Registre du Commerce.">
-                                                    (i)
+                                                    i
                                                 </span>
 
                                                 <span class="text-danger">*</span>
@@ -1848,7 +1848,7 @@
                                                 <span class="text-danger">*</span>
                                                 <span style="cursor: pointer; color: #007bff; font-weight: bold; margin-left: 5px;"
                                                       title="L’activité « Expert-Comptable » doit être mentionnée sur le Certificat modèle 7 du Registre du Commerce.">
-                                                    (i)
+                                                    i
                                                 </span>
 
                                                 <span t-if="partner.modele_7" style="color:blue">(Document déjà chargé)
@@ -2145,6 +2145,11 @@
                                                     déjà chargé)
                                                 </span>
                                             </label>
+                                            <a href="/internship_management_module/static/src/Modèle avenant de contart .docx"
+                                                   target="_blank"
+                                                   class="btn btn-outline-info btn-sm">
+                                                    📄 Télécharger le modèle d'engagement
+                                                </a>
                                             <br/>
                                             <input t-att-disabled="partner.status_register == 'in_progress'" id="upload"
                                                    type="file" name="avenant_contrat_travail" accept=".pdf,.jpg,.jpeg"
