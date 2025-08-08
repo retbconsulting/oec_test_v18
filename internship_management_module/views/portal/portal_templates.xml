@@ -682,6 +682,13 @@
                     <t t-set="url" t-value="'/my-profil'"/>
                     <t t-set="config_card" t-value="True"/>
                 </t>
+                <t t-call="portal.portal_docs_entry">
+                    <t t-set="icon" t-value="'/mandat_cotisation_management/static/src/img/profile.svg'"/>
+                    <t t-set="title">Inscription</t>
+                    <t t-set="text">Veuillez compléter votre demande d’inscription ici.</t>
+                    <t t-set="url" t-value="'/registration'"/>
+                    <t t-set="config_card" t-value="True"/>
+                </t>
 
 
                 <t t-if="partner.status_register in ['registered']">
