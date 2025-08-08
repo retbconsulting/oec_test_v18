@@ -2768,6 +2768,22 @@
                 </div>
             </form>
             <script type="text/javascript">
+                document.addEventListener('DOMContentLoaded', function() {
+                const modeSelect = document.querySelector('select[name="mode_registration"]');
+                const capitalSocialTable = document.querySelector('.js_cart_lines').closest('table');
+
+                function toggleTable() {
+                if (modeSelect.value === 'pp1') {
+                capitalSocialTable.style.display = 'none';
+                } else {
+                capitalSocialTable.style.display = '';
+                }
+                }
+
+                modeSelect.addEventListener('change', toggleTable);
+                toggleTable(); // appel initial au chargement
+                });
+
                 function validateForm() {
                 var total = 0;
                 var atLeastOneFilled = false;
