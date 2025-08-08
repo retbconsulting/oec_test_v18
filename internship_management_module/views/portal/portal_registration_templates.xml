@@ -1199,14 +1199,14 @@
                                             </a>
                                         </t>
 
-                                            <!-- Champ de chargement -->
-                                            <input t-att-disabled="partner.status_register == 'in_progress'"
-                                                   type="file"
-                                                   accept=".pdf,.jpg,.jpeg"
-                                                   name="declaration_sur_honneur"
-                                                   class="form-control"
-                                                   t-att-readonly="None if partner.status_register=='draft' else '1'"
-                                                   required="required"/>
+                                        <!-- Champ de chargement -->
+                                        <input t-att-disabled="partner.status_register == 'in_progress'"
+                                               type="file"
+                                               accept=".pdf,.jpg,.jpeg"
+                                               name="declaration_sur_honneur"
+                                               class="form-control"
+                                               t-att-readonly="None if partner.status_register=='draft' else '1'"
+                                               required="required"/>
 
                                     </div>
 
@@ -2696,12 +2696,14 @@
                                                 Autres fichiers (PDF ou JPG uniquement)
                                             </label>
                                             <small class="form-text text-muted">
-                                                Vous pouvez sélectionner plusieurs fichiers en les choisissant un par un.
+                                                Vous pouvez sélectionner plusieurs fichiers en les choisissant un par
+                                                un.
                                             </small>
                                             <br/>
                                             <input id="autres_fichiers"
                                                    type="file"
-
+                                                   multiple=""
+                                                   t-att-disabled="partner.status_register == 'in_progress'"
                                                    accept=".pdf,.jpg,.jpeg"
                                                    class="form-control"/>
                                             <ul id="fileList" class="mt-2"></ul>
@@ -2789,14 +2791,13 @@
             <script type="text/javascript">
                 document.addEventListener('DOMContentLoaded', function() {
 
+                // --- Masquer ou afficher la table selon le mode ---
                 const modeSelect = document.querySelector('select[name="mode_registration"]');
-                const capitalSocialTable = document.querySelector('.js_cart_lines').closest('table');
+                const capitalSocialTable = document.querySelector('.js_cart_lines')?.closest('table');
 
                 function toggleTable() {
-                if (modeSelect.value === 'pp1') {
-                capitalSocialTable.style.display = 'none';
-                } else {
-                capitalSocialTable.style.display = '';
+                if (modeSelect && capitalSocialTable) {
+                capitalSocialTable.style.display = (modeSelect.value === 'pp1') ? 'none' : '';
                 }
                 }
 
@@ -2805,25 +2806,28 @@
                 toggleTable();
                 }
 
-                // --- Partie ajout fichiers un par un ---
+                // --- Partie ajout fichiers un par un (avec multiple) ---
                 const fileInput = document.getElementById('autres_fichiers');
                 let selectedFiles = [];
 
                 // Créer un affichage
                 const fileListDisplay = document.createElement('ul');
+                fileListDisplay.style.marginTop = '10px';
                 fileInput.parentNode.appendChild(fileListDisplay);
 
                 fileInput.addEventListener('change', function(event) {
                 const newFiles = Array.from(event.target.files);
+
+                // Empiler les nouveaux fichiers (sans écraser les anciens)
                 selectedFiles = selectedFiles.concat(newFiles);
 
                 // Nettoyer l’affichage
                 fileListDisplay.innerHTML = '';
 
-                // Afficher tous les fichiers
-                selectedFiles.forEach((file, index) => {
+                // Afficher tous les fichiers sélectionnés
+                selectedFiles.forEach((file) => {
                 const li = document.createElement('li');
-                li.textContent = file.name + ' (' + Math.round(file.size / 1024) + ' Ko)';
+                li.textContent = `${file.name} (${Math.round(file.size / 1024)} Ko)`;
                 fileListDisplay.appendChild(li);
                 });
 
