@@ -1550,10 +1550,11 @@
                                             <label class="col-form-label" for="attestation_inscription">
                                                 Attestation d'inscription à la Taxe Professionnelle (datant de moins de
                                                 trois mois)
-                                                <i class="bi bi-info-circle-fill text-primary"
-                                                   style="cursor:pointer;"
-                                                   title="L’activité « Expert-Comptable » doit être mentionnée sur la Taxe Professionnelle.">
-                                                </i>
+                                                <span style="cursor: pointer; color: #007bff; font-weight: bold; margin-left: 5px;"
+                                                      title="L’activité « Expert-Comptable » doit être mentionnée sur la taxe professionnelle.">
+                                                    (i)
+                                                </span>
+
                                                 <span class="text-danger">*</span>
                                                 <span t-if="partner.attestation_inscription" style="color:blue">
                                                     (Document
@@ -1578,10 +1579,10 @@
                                                 de
                                                 propriété
                                                 du siège social
-                                                <i class="bi bi-info-circle-fill text-primary"
-                                                   style="cursor:pointer;"
-                                                   title="La domiciliation n’est pas acceptée.">
-                                                </i>
+                                                <span style="cursor: pointer; color: #007bff; font-weight: bold; margin-left: 5px;"
+                                                      title="La domicilation n'est pas acceptée.">
+                                                    (i)
+                                                </span>
                                                 <span class="text-danger">*</span>
                                                 <span t-if="partner.copie_contrat_bail" style="color:blue">(Document
                                                     déjà chargé)
@@ -1644,10 +1645,11 @@
                                             <label class="col-form-label" for="bulletin_notification">
                                                 Bulletin de notification de l’Identifiant Fiscal
                                                 (datant de moins de trois mois)
-                                                <i class="bi bi-info-circle-fill text-primary"
-                                                   style="cursor:pointer;"
-                                                   title="L’activité « Expert-Comptable » doit être mentionnée sur l’Identifiant Fiscal .">
-                                                </i>
+                                                <span style="cursor: pointer; color: #007bff; font-weight: bold; margin-left: 5px;"
+                                                      title="L’activité « Expert-Comptable » doit être mentionnée sur le Certificat modèle 7 du Registre du Commerce.">
+                                                    (i)
+                                                </span>
+
                                                 <span class="text-danger">*</span>
                                                 <span t-if="partner.bulletin_notification" style="color:blue">(Document
                                                     déjà chargé)
@@ -1804,10 +1806,11 @@
                                                 mois)
 
                                                 <span class="text-danger">*</span>
-                                                <i class="bi bi-info-circle-fill text-primary"
-                                                   style="cursor:pointer;"
-                                                   title="L’activité « Expert-Comptable » doit être mentionnée sur le Certificat modèle 7 du Registre du Commerce.">
-                                                </i>
+                                                <span style="cursor: pointer; color: #007bff; font-weight: bold; margin-left: 5px;"
+                                                      title="L’activité « Expert-Comptable » doit être mentionnée sur le Certificat modèle 7 du Registre du Commerce.">
+                                                    (i)
+                                                </span>
+
                                                 <span t-if="partner.modele_7" style="color:blue">(Document déjà chargé)
                                                 </span>
                                             </label>
@@ -1868,10 +1871,11 @@
                                             <label class="col-form-label" for="copie_conforme_contrat">
                                                 Le contrat de bail (copie certifiée conforme) ou certificat de propriété
                                                 du siège social
-                                                <i class="bi bi-info-circle-fill text-primary"
-                                                   style="cursor:pointer;"
-                                                   title="La domiciliation n’est pas acceptée.">
-                                                </i>
+                                                <span style="cursor: pointer; color: #007bff; font-weight: bold; margin-left: 5px;"
+                                                      title="La domicilation n'est pas acceptée.">
+                                                    (i)
+                                                </span>
+
                                                 <span class="text-danger">*</span>
                                                 <span t-if="partner.copie_conforme_contrat" style="color:blue">(Document
                                                     déjà chargé)
@@ -2114,10 +2118,10 @@
                                             <h5>
                                                 <i class="fas fa-money-check-alt"></i>
                                                 Chèque correspondant au droit d'entrée
-                                                <i class="fas fa-info-circle text-primary"
-                                                   style="cursor: pointer; margin-left: 5px;"
-                                                   title="Les nouveaux inscrits au tableau de l’OEC sont exonérés de la cotisation annuelle de la première année de leur inscription, et bénéficient d’une réduction de 50 % sur la cotisation de la deuxième année. PS : 3.000 DH pour ceux inscrits hors de Casablanca (El Jadida, Mohammedia, Nouaceur, Mediouna, Berrechid, Settat et Benslimane)">
-                                                </i>
+                                                <span style="cursor: pointer; color: #007bff; font-weight: bold; margin-left: 5px;"
+                                                      title="Les nouveaux inscrits au tableau de l’OEC sont exonérés de la cotisation annuelle de la première année de leur inscription, et bénéficient d’une réduction de 50 % sur la cotisation de la deuxième année.">
+                                                    (i)
+                                                </span>
 
                                             </h5>
                                             <ul class="mb-3">
