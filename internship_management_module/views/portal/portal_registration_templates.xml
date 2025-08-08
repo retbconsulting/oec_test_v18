@@ -285,7 +285,8 @@
                     <p>Vous devez être connecté en tant que personne physique déjà inscrite pour effectuer cette
                         demande.
                     </p>
-                    <a href="/web/login?redirect=/demande-inscription" class="btn btn-primary">Se connecter</a>
+                    <a href="/web/logout?redirect=/web/login?redirect=/demande-inscription" class="btn btn-primary">Se connecter
+                    </a>
                 </div>
 
                 <div class="form-section">
@@ -1553,7 +1554,19 @@
                                             <label class="col-form-label" for="attestation_inscription">
                                                 Attestation d'inscription à la Taxe Professionnelle (datant de moins de
                                                 trois mois)
-                                                <span style="cursor: pointer; color: #007bff; font-weight: bold; margin-left: 5px;"
+                                                <span style="
+                                                                display: inline-block;
+                                                                width: 18px;
+                                                                height: 18px;
+                                                                border-radius: 50%;
+                                                                background-color: #007bff;
+                                                                color: white;
+                                                                font-size: 12px;
+                                                                text-align: center;
+                                                                line-height: 18px;
+                                                                font-weight: bold;
+                                                                cursor: pointer;
+                                                            "
                                                       title="L’activité « Expert-Comptable » doit être mentionnée sur la taxe professionnelle.">
                                                     (i)
                                                 </span>
@@ -1582,7 +1595,19 @@
                                                 de
                                                 propriété
                                                 du siège social
-                                                <span style="cursor: pointer; color: #007bff; font-weight: bold; margin-left: 5px;"
+                                                <span style="
+                                                                display: inline-block;
+                                                                width: 18px;
+                                                                height: 18px;
+                                                                border-radius: 50%;
+                                                                background-color: #007bff;
+                                                                color: white;
+                                                                font-size: 12px;
+                                                                text-align: center;
+                                                                line-height: 18px;
+                                                                font-weight: bold;
+                                                                cursor: pointer;
+                                                            "
                                                       title="La domicilation n'est pas acceptée.">
                                                     (i)
                                                 </span>
@@ -1648,7 +1673,19 @@
                                             <label class="col-form-label" for="bulletin_notification">
                                                 Bulletin de notification de l’Identifiant Fiscal
                                                 (datant de moins de trois mois)
-                                                <span style="cursor: pointer; color: #007bff; font-weight: bold; margin-left: 5px;"
+                                                <span style="
+                                                                display: inline-block;
+                                                                width: 18px;
+                                                                height: 18px;
+                                                                border-radius: 50%;
+                                                                background-color: #007bff;
+                                                                color: white;
+                                                                font-size: 12px;
+                                                                text-align: center;
+                                                                line-height: 18px;
+                                                                font-weight: bold;
+                                                                cursor: pointer;
+                                                            "
                                                       title="L’activité « Expert-Comptable » doit être mentionnée sur le Certificat modèle 7 du Registre du Commerce.">
                                                     (i)
                                                 </span>
@@ -1874,7 +1911,19 @@
                                             <label class="col-form-label" for="copie_conforme_contrat">
                                                 Le contrat de bail (copie certifiée conforme) ou certificat de propriété
                                                 du siège social
-                                                <span style="cursor: pointer; color: #007bff; font-weight: bold; margin-left: 5px;"
+                                                <span style="
+                                                                display: inline-block;
+                                                                width: 18px;
+                                                                height: 18px;
+                                                                border-radius: 50%;
+                                                                background-color: #007bff;
+                                                                color: white;
+                                                                font-size: 12px;
+                                                                text-align: center;
+                                                                line-height: 18px;
+                                                                font-weight: bold;
+                                                                cursor: pointer;
+                                                            "
                                                       title="La domicilation n'est pas acceptée.">
                                                     (i)
                                                 </span>
