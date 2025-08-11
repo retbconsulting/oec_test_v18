@@ -305,7 +305,6 @@
 
                 <button type="submit" class="btn btn-primary">Envoyer la demande</button>
             </form>
-
             <script type="text/javascript">
                 document.addEventListener("DOMContentLoaded", function() {
                 var optionsConfig = {
@@ -374,6 +373,7 @@
 
                 // Initial load
                 loadTypeOptions();
+                updateFields();
                 });
             </script>
         </t>
