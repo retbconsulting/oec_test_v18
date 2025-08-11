@@ -305,75 +305,80 @@
 
                 <button type="submit" class="btn btn-primary">Envoyer la demande</button>
             </form>
-
             <script type="text/javascript">
+                <![CDATA[
                 document.addEventListener("DOMContentLoaded", function() {
-                var optionsConfig = {
-                pp: [
-                ["e", "Inscription d'une personne physique à titre individuel"],
-                ["b", "Inscription d'une personne physique en tant que salarié d'un cabinet inscrit"],
-                ["d", "Inscription d'une personne physique en tant qu'associé d'un cabinet inscrit"]
-                ],
-                pm: [
-                ["c", "Inscription d'une personne morale et d'une personne physique"],
-                ["a", "Inscription d'une personne morale nouvelle par une personne physique déjà inscrite"]
-                ]
-                };
+                   var optionsConfig = {
+                        pp: [
+                            ["e", "Inscription d'une personne physique à titre individuel"],
+                            ["b", "Inscription d'une personne physique en tant que salarié d'un cabinet inscrit"],
+                            ["d", "Inscription d'une personne physique en tant qu'associé d'un cabinet inscrit"],
+                            ["c", "Inscription d'une personne morale et d'une personne physique"] // Ajout direct ici
+                        ],
+                        pm: [
+                            ["c", "Inscription d'une personne morale et d'une personne physique"],
+                            ["a", "Inscription d'une personne morale nouvelle par une personne physique déjà inscrite"]
+                        ]
+                    };
 
-                function loadTypeOptions() {
-                var mode = document.getElementById("mode_registration_inscription").value;
-                var typeSelect = document.getElementById("type_selection");
 
-                typeSelect.innerHTML = '';
-                typeSelect.add(new Option("-- Sélectionner --", ""));
 
-                if (mode &amp;&amp; optionsConfig[mode]) {
-                optionsConfig[mode].forEach(function(opt) {
-                typeSelect.add(new Option(opt[1], opt[0]));
+                    function loadTypeOptions() {
+                        var mode = document.getElementById("mode_registration_inscription").value;
+                        var typeSelect = document.getElementById("type_selection");
+
+                        typeSelect.innerHTML = '';
+                        typeSelect.add(new Option("-- Sélectionner --", ""));
+
+                        if (mode && optionsConfig[mode]) {
+                            optionsConfig[mode].forEach(function(opt) {
+                                typeSelect.add(new Option(opt[1], opt[0]));
+                            });
+                        }
+                    }
+
+                    function updateFields() {
+                        var mode = document.getElementById("mode_registration_inscription").value;
+                        var type = document.getElementById("type_selection").value;
+
+                        // Reset
+                        document.getElementById("base_fields").style.display = "none";
+                        document.getElementById("cabinet_rattache_row").style.display = "none";
+                        document.getElementById("pm_fields").style.display = "none";
+                        document.getElementById("login_required_section").style.display = "none";
+
+                        // PP individuelle
+                        if (mode === "pp" && type === "e") {
+                            document.getElementById("base_fields").style.display = "block";
+                        }
+                        // PP salarié/associé
+                        else if (mode === "pp" && (type === "b" || type === "d")) {
+                            document.getElementById("base_fields").style.display = "block";
+                            document.getElementById("cabinet_rattache_row").style.display = "block";
+                        }
+                        // PM + PP (disponible pour les deux modes)
+                        else if ((mode === "pm" || mode === "pp") && type === "c") {
+                            document.getElementById("base_fields").style.display = "block";
+                            document.getElementById("pm_fields").style.display = "block";
+                        }
+                        // PM par PP existante
+                        else if (mode === "pm" && type === "a") {
+                            document.getElementById("login_required_section").style.display = "block";
+                        }
+                    }
+
+                    document.getElementById("mode_registration_inscription").addEventListener("change", function() {
+                        loadTypeOptions();
+                        updateFields();
+                    });
+
+                    document.getElementById("type_selection").addEventListener("change", updateFields);
+
+                    // Initial load
+                    loadTypeOptions();
+                    updateFields();
                 });
-                }
-                }
-
-                function updateFields() {
-                var mode = document.getElementById("mode_registration_inscription").value;
-                var type = document.getElementById("type_selection").value;
-
-                // Reset
-                document.getElementById("base_fields").style.display = "none";
-                document.getElementById("cabinet_rattache_row").style.display = "none";
-                document.getElementById("pm_fields").style.display = "none";
-                document.getElementById("login_required_section").style.display = "none";
-
-                // PP individuelle
-                if (mode === "pp" &amp;&amp; type === "e") {
-                document.getElementById("base_fields").style.display = "block";
-                }
-                // PP salarié/associé
-                else if (mode === "pp" &amp;&amp; (type === "b" || type === "d")) {
-                document.getElementById("base_fields").style.display = "block";
-                document.getElementById("cabinet_rattache_row").style.display = "block";
-                }
-                // PM + PP
-                else if (mode === "pm" &amp;&amp; type === "c") {
-                document.getElementById("base_fields").style.display = "block";
-                document.getElementById("pm_fields").style.display = "block";
-                }
-                // PM par PP existante
-                else if (mode === "pm" &amp;&amp; type === "a") {
-                document.getElementById("login_required_section").style.display = "block";
-                }
-                }
-
-                document.getElementById("mode_registration_inscription").addEventListener("change", function() {
-                loadTypeOptions();
-                updateFields();
-                });
-
-                document.getElementById("type_selection").addEventListener("change", updateFields);
-
-                // Initial load
-                loadTypeOptions();
-                });
+                ]]>
             </script>
         </t>
     </template>
