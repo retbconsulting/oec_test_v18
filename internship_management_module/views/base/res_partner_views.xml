@@ -246,7 +246,7 @@
                                 groups="internship_management_module.group_gestionnaire"/>
                         <button name="button_retour" string="Retour" type="object"
                                 class="btn btn-warning"
-                                invisible="[('status_register', 'in', ['in_progress', 'draft'])]"
+                                invisible="[('status_register', 'in', ['draft', 'account_created', 'in_progress', 'registred', 'rejected'])]"
                                 groups="internship_management_module.group_gestionnaire"/>
 
                         <field name="status_register" widget="statusbar" options="{'clickable': '1'}"
