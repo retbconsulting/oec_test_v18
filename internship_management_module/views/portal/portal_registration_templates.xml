@@ -1358,8 +1358,8 @@
                                     </div>
 
                                     <div class="form-group col-xl-6" data-type="binary">
-                                        <label class="col-form-label" for="photocopie_diplome">
-                                            <span t-if="partner.photocopie_diplome" style="color:blue">(Document déjà
+                                        <label class="col-form-label" for="diplome_document">
+                                            <span t-if="partner.diplome_document" style="color:blue">(Document déjà
                                                 chargé)
                                             </span>
                                         </label>
