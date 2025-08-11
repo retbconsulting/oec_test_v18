@@ -1359,19 +1359,48 @@
 
                                     <div class="form-group col-xl-6" data-type="binary">
                                         <label class="col-form-label" for="diplome_document">
-                                            <span t-if="partner.diplome_document" style="color:blue">(Document déjà
-                                                chargé)
+                                            <span t-if="partner.diplome_document" style="color:blue">
+                                                Document déjà chargé :
+                                                <a t-att-href="'/web/content/' + str(partner.id) + '/diplome_document?download=true'"
+                                                   target="_blank">
+                                                    Voir le document
+                                                </a>
                                             </span>
                                         </label>
-                                        <input t-att-disabled="partner.status_register == 'in_progress'"
-                                               type="file"
-                                               name="diplome_document"
-                                               class="form-control"
-                                               accept=".pdf,.jpg,.jpeg"
-                                               required="required"
-                                               data-show-upload="true" data-show-caption="true"
-                                               t-att-readonly="None if partner.status_register=='draft' else '1'"/>
+
+                                        <t t-if="not partner.diplome_document">
+                                            <!-- Afficher uniquement le champ fichier si aucun document -->
+                                            <input
+                                                    t-att-disabled="partner.status_register == 'in_progress'"
+                                                    type="file"
+                                                    name="diplome_document"
+                                                    class="form-control"
+                                                    accept=".pdf,.jpg,.jpeg"
+                                                    required="required"
+                                                    data-show-upload="true"
+                                                    data-show-caption="true"
+                                                    t-att-readonly="None if partner.status_register=='draft' else '1'"
+                                            />
+                                        </t>
+
+                                        <t t-if="partner.diplome_document">
+                                            
+
+                                            <div id="replace_diplome_document" style="display:none;">
+                                                <input
+                                                        t-att-disabled="partner.status_register == 'in_progress'"
+                                                        type="file"
+                                                        name="diplome_document"
+                                                        class="form-control"
+                                                        accept=".pdf,.jpg,.jpeg"
+                                                        data-show-upload="true"
+                                                        data-show-caption="true"
+                                                        t-att-readonly="None if partner.status_register=='draft' else '1'"
+                                                />
+                                            </div>
+                                        </t>
                                     </div>
+
 
                                     <!-- Bloc pour diplômes étrangers -->
                                     <div class="col-12 mt-4 mb-2">
