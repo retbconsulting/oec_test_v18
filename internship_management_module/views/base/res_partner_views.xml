@@ -244,6 +244,11 @@
                         <button name="print_recu_depot_physique" string="Accusé de réception" type="object"
                                 class="btn btn-success" invisible="status_register != 'in_progress_member_elu'"
                                 groups="internship_management_module.group_gestionnaire"/>
+                        <button name="button_retour" string="Retour" type="object"
+                                class="btn btn-warning"
+                                invisible="status_register = 'in_progress' or status_register = 'draft'"
+                                groups="internship_management_module.group_gestionnaire"/>
+
                         <field name="status_register" widget="statusbar" options="{'clickable': '1'}"
                                statusbar_visible="draft,account_created,in_progress,in_progress_to_depose,in_progress_member_elu,in_progress_secretaire_general,in_progress_president_conseil,in_progress_conseil_national,registred,rejected"/>
                     </header>

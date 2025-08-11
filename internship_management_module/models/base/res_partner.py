@@ -1260,6 +1260,9 @@ class ResPartner(models.Model):
             }
         }
 
+    def button_retour(self):
+        self.write({'status_register': 'in_progress'})
+
     @api.model
     def _get_registration_mode(self):
         return [

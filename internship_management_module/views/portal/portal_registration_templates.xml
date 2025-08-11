@@ -1360,11 +1360,7 @@
                                     <div class="form-group col-xl-6" data-type="binary">
                                         <label class="col-form-label" for="diplome_document">
                                             <span t-if="partner.diplome_document" style="color:blue">
-                                                Document déjà chargé :
-                                                <a t-att-href="'/web/content/%d/diplome_document?download=true&amp;filename=%s' % (partner.id, partner.diplome_document_filename or 'document')"
-                                                   target="_blank">
-                                                    Voir le document
-                                                </a>
+                                                Document déjà chargé
                                             </span>
                                         </label>
 
