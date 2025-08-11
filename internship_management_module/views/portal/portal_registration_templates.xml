@@ -306,6 +306,7 @@
                 <button type="submit" class="btn btn-primary">Envoyer la demande</button>
             </form>
             <script type="text/javascript">
+                <![CDATA[
                 document.addEventListener("DOMContentLoaded", function() {
                 var optionsConfig = {
                 pp: [
@@ -327,7 +328,7 @@
                 typeSelect.innerHTML = '';
                 typeSelect.add(new Option("-- Sélectionner --", ""));
 
-                if (mode &amp;&amp; optionsConfig[mode]) {
+                if (mode && optionsConfig[mode]) {
                 optionsConfig[mode].forEach(function(opt) {
                 typeSelect.add(new Option(opt[1], opt[0]));
                 });
@@ -345,21 +346,21 @@
                 document.getElementById("login_required_section").style.display = "none";
 
                 // PP individuelle
-                if (mode === "pp" &amp;&amp; type === "e") {
+                if (mode === "pp" && type === "e") {
                 document.getElementById("base_fields").style.display = "block";
                 }
                 // PP salarié/associé
-                else if (mode === "pp" &amp;&amp; (type === "b" || type === "d")) {
+                else if (mode === "pp" && (type === "b" || type === "d")) {
                 document.getElementById("base_fields").style.display = "block";
                 document.getElementById("cabinet_rattache_row").style.display = "block";
                 }
                 // PM + PP
-                else if ((mode === "pm" || mode === "pp") &amp;&amp; type === "c") {
+                else if ((mode === "pm" || mode === "pp") && type === "c") {
                 document.getElementById("base_fields").style.display = "block";
                 document.getElementById("pm_fields").style.display = "block";
                 }
                 // PM par PP existante
-                else if (mode === "pm" &amp;&amp; type === "a") {
+                else if (mode === "pm" && type === "a") {
                 document.getElementById("login_required_section").style.display = "block";
                 }
                 }
@@ -375,6 +376,7 @@
                 loadTypeOptions();
                 updateFields();
                 });
+                ]]>
             </script>
         </t>
     </template>
