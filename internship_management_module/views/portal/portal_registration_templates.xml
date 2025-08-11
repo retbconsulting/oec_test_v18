@@ -312,15 +312,15 @@
                 pp: [
                 ["e", "Inscription d'une personne physique à titre individuel"],
                 ["b", "Inscription d'une personne physique en tant que salarié d'un cabinet inscrit"],
-                ["d", "Inscription d'une personne physique en tant qu'associé d'un cabinet inscrit"],
-                ["c", "Inscription d'une personne morale et d'une personne physique"]
+                ["d", "Inscription d'une personne physique en tant qu'associé d'un cabinet inscrit"]
+
                 ],
                 pm: [
                 ["c", "Inscription d'une personne morale et d'une personne physique"],
                 ["a", "Inscription d'une personne morale nouvelle par une personne physique déjà inscrite"]
                 ]
                 };
-
+                optionsConfig.pp.push(optionsConfig.pm[0]);
                 function loadTypeOptions() {
                 var mode = document.getElementById("mode_registration_inscription").value;
                 var typeSelect = document.getElementById("type_selection");
@@ -355,7 +355,7 @@
                 document.getElementById("cabinet_rattache_row").style.display = "block";
                 }
                 // PM + PP
-                else if (mode === "pm" &amp;&amp; type === "c") {
+                else if ((mode === "pm" || mode === "pp") &amp;&amp; type === "c") {
                 document.getElementById("base_fields").style.display = "block";
                 document.getElementById("pm_fields").style.display = "block";
                 }
