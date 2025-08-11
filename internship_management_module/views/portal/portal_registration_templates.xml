@@ -312,7 +312,8 @@
                 pp: [
                 ["e", "Inscription d'une personne physique à titre individuel"],
                 ["b", "Inscription d'une personne physique en tant que salarié d'un cabinet inscrit"],
-                ["d", "Inscription d'une personne physique en tant qu'associé d'un cabinet inscrit"]
+                ["d", "Inscription d'une personne physique en tant qu'associé d'un cabinet inscrit"],
+                ["c", "Inscription d'une personne morale et d'une personne physique"]
                 ],
                 pm: [
                 ["c", "Inscription d'une personne morale et d'une personne physique"],
