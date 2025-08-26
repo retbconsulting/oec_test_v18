@@ -491,34 +491,115 @@
 
                 <div class="row">
                     <div class="form-group col-lg-12">
+                        <!-- <div class="o_website_calendar">
+                             <ul class="wizard mt32 float-right">
+                                 <li
+                                         t-attf-class="#{partner.status_register=='draft' and 'text-primary active-step' or 'text-muted'}"
+                                         class="text-primary">
+                                     Création de compte
+                                     <span class="chevron"/>
+                                 </li>
+                                 <li
+                                         t-attf-class="#{partner.status_register=='in_progress' and 'text-primary' or 'text-muted'}">
+                                     En cours de traitement
+                                     <span class="chevron"/>
+                                 </li>
+                                 <li
+                                         t-attf-class="#{partner.status_register=='registred' and 'text-primary' or 'text-muted'}">
+                                     Inscrit
+                                     <span class="chevron"/>
+                                 </li>
+                                 <li
+                                         t-attf-class="#{partner.status_register=='rejected' and 'text-primary' or 'text-muted'}">
+                                     Rejeté
+                                     <span class="chevron"/>
+                                 </li>
+                             </ul>
+                             <style>
+                                 .o_website_calendar {
+                                 /* Overall container styling */
+                                 background-color: #f0f0f0; /* Adjust background color as needed */
+                                 border: 1px solid #ccc;
+                                 border-radius: 5px;
+                                 padding: 20px;
+                                 }
+
+                                 .wizard {
+                                 display: flex;
+                                 justify-content: space-between;
+                                 list-style: none;
+                                 padding: 0;
+                                 margin: 0;
+                                 }
+
+                                 .wizard li {
+                                 flex: 1;
+                                 text-align: center;
+                                 padding: 10px;
+                                 border-bottom: 2px solid transparent; /* For active step */
+                                 }
+
+                                 .wizard li.text-primary {
+                                 /* Active step styling */
+                                 border-bottom-color: #007bff; /* Adjust color as needed */
+                                 color: #007bff;
+                                 font-weight: bold;
+                                 }
+                                 .active-step {
+                                 border-bottom: 2px solid red; /* ligne rouge en bas */
+                                 padding-bottom: 2px; /* espace pour que la ligne soit jolie */
+                                 }
+                                 .unified-file-input {
+                                 border-radius: 5px;
+                                 border: 1px solid #ced4da;
+                                 padding: 6px 12px;
+                                 font-size: 1rem;
+                                 cursor: pointer;
+                                 width: 100%;
+                                 box-sizing: border-box;
+                                 transition: border-color 0.3s;
+                                 }
+
+                                 .unified-file-input:hover {
+                                 border-color: #80bdff;
+                                 outline: none;
+                                 }
+
+                                 .document-upload {
+                                 margin-bottom: 1.5rem;
+                                 }
+
+                                 .chevron {
+                                 /* Style the chevron as needed */
+                                 display: inline-block;
+                                 margin-left: 5px;
+                                 /* Add appropriate font-family, font-size, and color */
+                                 }
+                             </style>-->
+                        <!-- Replace your existing wizard section with this -->
                         <div class="o_website_calendar">
                             <ul class="wizard mt32 float-right">
-                                <li
-                                        t-attf-class="#{partner.status_register=='draft' and 'text-primary active-step' or 'text-muted'}"
-                                        class="text-primary">
+                                <li t-attf-class="#{partner.status_register=='draft' and 'text-primary active-step' or 'text-muted'}">
                                     Création de compte
                                     <span class="chevron"/>
                                 </li>
-                                <li
-                                        t-attf-class="#{partner.status_register=='in_progress' and 'text-primary' or 'text-muted'}">
+                                <li t-attf-class="#{partner.status_register=='in_progress' and 'text-primary active-step' or 'text-muted'}">
                                     En cours de traitement
                                     <span class="chevron"/>
                                 </li>
-                                <li
-                                        t-attf-class="#{partner.status_register=='registred' and 'text-primary' or 'text-muted'}">
+                                <li t-attf-class="#{partner.status_register=='registred' and 'text-primary active-step' or 'text-muted'}">
                                     Inscrit
                                     <span class="chevron"/>
                                 </li>
-                                <li
-                                        t-attf-class="#{partner.status_register=='rejected' and 'text-primary' or 'text-muted'}">
+                                <li t-attf-class="#{partner.status_register=='rejected' and 'text-primary active-step' or 'text-muted'}">
                                     Rejeté
                                     <span class="chevron"/>
                                 </li>
                             </ul>
+
                             <style>
                                 .o_website_calendar {
-                                /* Overall container styling */
-                                background-color: #f0f0f0; /* Adjust background color as needed */
+                                background-color: #f0f0f0;
                                 border: 1px solid #ccc;
                                 border-radius: 5px;
                                 padding: 20px;
@@ -536,19 +617,24 @@
                                 flex: 1;
                                 text-align: center;
                                 padding: 10px;
-                                border-bottom: 2px solid transparent; /* For active step */
+                                position: relative;
                                 }
 
                                 .wizard li.text-primary {
-                                /* Active step styling */
-                                border-bottom-color: #007bff; /* Adjust color as needed */
                                 color: #007bff;
                                 font-weight: bold;
                                 }
-                                .active-step {
-                                border-bottom: 2px solid red; /* ligne rouge en bas */
-                                padding-bottom: 2px; /* espace pour que la ligne soit jolie */
+
+                                /* This is the key class for the red underline */
+                                .wizard li.active-step {
+                                border-bottom: 2px solid #dc3545; /* Rouge Bootstrap */
+                                padding-bottom: 8px;
                                 }
+
+                                .text-muted {
+                                color: #6c757d !important;
+                                }
+
                                 .unified-file-input {
                                 border-radius: 5px;
                                 border: 1px solid #ced4da;
@@ -570,10 +656,8 @@
                                 }
 
                                 .chevron {
-                                /* Style the chevron as needed */
                                 display: inline-block;
                                 margin-left: 5px;
-                                /* Add appropriate font-family, font-size, and color */
                                 }
                             </style>
                             <div class="col-lg-12">

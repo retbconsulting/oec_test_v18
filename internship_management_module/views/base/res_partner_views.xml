@@ -244,11 +244,14 @@
                         <button name="print_recu_depot_physique" string="Accusé de réception" type="object"
                                 class="btn btn-success" invisible="status_register != 'in_progress_member_elu'"
                                 groups="internship_management_module.group_gestionnaire"/>
-                        <button name="button_retour" string="Retour" type="object"
+                        <!--<button name="button_retour" string="Retour" type="object"
                                 class="btn btn-warning"
                                 invisible="[('status_register', 'in', ['draft', 'account_created', 'in_progress', 'in_progress_to_depose', 'registred', 'rejected'])]"
+                                groups="internship_management_module.group_gestionnaire"/>-->
+                        <button name="button_retour_croec" string="Retour vers CROEC" type="object"
+                                class="btn btn-warning"
+                                invisible="status_register not in ['in_progress_member_elu', 'in_progress_secretaire_general', 'in_progress_president_conseil', 'in_progress_conseil_national']"
                                 groups="internship_management_module.group_gestionnaire"/>
-
                         <field name="status_register" widget="statusbar" options="{'clickable': '1'}"
                                statusbar_visible="draft,account_created,in_progress,in_progress_to_depose,in_progress_member_elu,in_progress_secretaire_general,in_progress_president_conseil,in_progress_conseil_national,registred,rejected"/>
                     </header>
@@ -1107,6 +1110,24 @@
                     <attribute name="invisible">contact_type != False</attribute>
                 </page>
             </field>
+        </record>
+
+        <record id="email_template_retour_croec" model="mail.template">
+            <field name="name">Retour au CROEC</field>
+            <field name="model_id" ref="model_res_partner"/>
+            <field name="subject">Dossier retourné au CROEC - ${object.name}</field>
+            <field name="email_from">${object.env.ref('base.user_admin').email}</field>
+            <field name="email_to">
+                ${object.env.ref('internship_management_module.group_gestionnaire').users[0].email if object.env.ref('internship_management_module.group_gestionnaire').users else object.env.ref('base.user_admin').email}
+            </field>
+            <field name="body_html"><![CDATA[
+        <p>Bonjour,</p>
+        <p>Le dossier de <strong>${object.name}</strong> a été retourné au CROEC pour correction.</p>
+        <p>Statut précédent : ${ctx.get('current_status', 'N/A')}</p>
+        <p>Date du retour : ${fields.Date.today()}</p>
+        <p>Veuillez consulter le dossier ici : <a href="${ctx.get('url')}">${ctx.get('url')}</a></p>
+        <p>Cordialement,</p>
+    ]]></field>
         </record>
 
     </data>
