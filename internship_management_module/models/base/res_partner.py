@@ -1658,72 +1658,16 @@ class ResPartner(models.Model):
 
     def button_retour_croec(self):
         """
-        Retourne le dossier au responsable CROEC avec les statuts appropriés
+        Retour au CROEC avec contrôle minimal
         """
-        for record in self:
-            # Déterminer le statut précédent en fonction du statut actuel
-            status_mapping = {
-                'in_progress_member_elu': 'in_progress_to_depose',
-                'in_progress_secretaire_general': 'in_progress_member_elu',
-                'in_progress_president_conseil': 'in_progress_secretaire_general',
-                'in_progress_conseil_national': 'in_progress_president_conseil'
-            }
+        if self.status_register == 'in_progress':
+            raise ValidationError(_("Le dossier est déjà au CROEC"))
 
-            new_status = status_mapping.get(record.status_register)
-
-            if new_status:
-                # Réinitialiser les dates de traitement des étapes suivantes
-                update_vals = {
-                    'status_register': new_status,
-                    'reserve_croec': 'Dossier retourné pour correction - ' + fields.Date.today().strftime('%Y-%m-%d')
-                }
-
-                # Réinitialiser les dates selon le statut de destination
-                if new_status == 'in_progress_to_depose':
-                    update_vals.update({
-                        'date_final_member_elu': False,
-                        'date_initial_secretaire_general': False,
-                        'date_final_secretaire_general': False,
-                        'date_initial_president_conseil': False,
-                        'date_final_president_conseil': False,
-                        'date_initial_conseil_national': False,
-                        'date_final_conseil_national': False,
-                        'reserve_member_elu': False,
-                        'reserve_secretaire_general': False,
-                        'reserve_president_conseil': False,
-                        'reserve_conseil_national': False
-                    })
-                elif new_status == 'in_progress_member_elu':
-                    update_vals.update({
-                        'date_final_secretaire_general': False,
-                        'date_initial_president_conseil': False,
-                        'date_final_president_conseil': False,
-                        'date_initial_conseil_national': False,
-                        'date_final_conseil_national': False,
-                        'reserve_secretaire_general': False,
-                        'reserve_president_conseil': False,
-                        'reserve_conseil_national': False
-                    })
-                elif new_status == 'in_progress_secretaire_general':
-                    update_vals.update({
-                        'date_final_president_conseil': False,
-                        'date_initial_conseil_national': False,
-                        'date_final_conseil_national': False,
-                        'reserve_president_conseil': False,
-                        'reserve_conseil_national': False
-                    })
-                elif new_status == 'in_progress_president_conseil':
-                    update_vals.update({
-                        'date_final_conseil_national': False,
-                        'reserve_conseil_national': False
-                    })
-
-                record.write(update_vals)
-
-                # Envoyer une notification email
-                self._send_retour_croec_notification()
-            else:
-                raise ValidationError(_("Action de retour non autorisée depuis ce statut"))
+        self.write({
+            'status_register': 'in_progress',
+            'reserve_croec': f"Dossier retourné au CROEC - {fields.Date.today()}"
+        })
+        self._send_retour_croec_notification()
 
     def _send_retour_croec_notification(self):
         """Envoie une notification lors du retour au CROEC"""

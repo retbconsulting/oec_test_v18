@@ -248,9 +248,9 @@
                                 class="btn btn-warning"
                                 invisible="[('status_register', 'in', ['draft', 'account_created', 'in_progress', 'in_progress_to_depose', 'registred', 'rejected'])]"
                                 groups="internship_management_module.group_gestionnaire"/>-->
-                        <button name="button_retour_croec" string="Retour vers CROEC" type="object"
-                                class="btn btn-warning"
-                                invisible="status_register not in ['in_progress_member_elu', 'in_progress_secretaire_general', 'in_progress_president_conseil', 'in_progress_conseil_national']"
+                        <button name="button_retour_croec" string="Retour" type="object"
+                                class="btn btn-danger"
+                                invisible="status_register not in ['in_progress_to_depose', 'in_progress_member_elu', 'in_progress_secretaire_general', 'in_progress_conseil_national']"
                                 groups="internship_management_module.group_gestionnaire"/>
                         <field name="status_register" widget="statusbar" options="{'clickable': '1'}"
                                statusbar_visible="draft,account_created,in_progress,in_progress_to_depose,in_progress_member_elu,in_progress_secretaire_general,in_progress_president_conseil,in_progress_conseil_national,registred,rejected"/>
