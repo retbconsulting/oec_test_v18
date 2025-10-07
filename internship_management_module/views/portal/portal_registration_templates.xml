@@ -188,6 +188,14 @@
                 }
             </style>
             <input type="hidden" name="send_notification" value="1"/>
+            <t t-if="error_message">
+                <div class="alert alert-danger" role="alert" style="margin-bottom: 20px;">
+                    <t t-foreach="error_message" t-as="msg">
+                        <p><t t-esc="msg"/></p>
+                    </t>
+                </div>
+            </t>
+
             <form action="/demande-inscription" method="post" enctype="multipart/form-data">
                 <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
 
