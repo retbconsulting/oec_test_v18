@@ -151,7 +151,8 @@
 						Vos identifiants d'accès sont les suivants:
 						<ul>
 							<li>
-								<b> Login : ${ctx['login']}</b>
+								<!-- <b> Login : ${ctx['login']}</b> -->
+								<b> Login : {{object.login}}</b>
 							</li>
 							<li>
 								<b> Mot de passe : ${ctx['password']}</b>
